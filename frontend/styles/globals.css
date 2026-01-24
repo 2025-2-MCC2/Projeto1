@@ -109,14 +109,6 @@ input[type="number"] {
   --button-hover: #195b41;
 }
 
-@font-face {
-  font-family: 'MinhaFonte';
-  src: url('/fonts/MinhaFonte.woff2') format('woff2'),
-       url('/fonts/MinhaFonte.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 
 @theme inline {
   --color-background: var(--background);
