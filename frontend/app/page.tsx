@@ -195,7 +195,7 @@ export default function PublicDashboard() {
                   </h2>
                   <div>
                     {biggestMoneyDonations.length > 0 ? (
-                      biggestMoneyDonations.slice(0, 6).map((item, index) => (
+                      biggestMoneyDonations.slice(0, 10).map((item, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary/20 cursor-pointer transition-colors"
@@ -223,7 +223,7 @@ export default function PublicDashboard() {
                   </h2>
                   <div>
                     {biggestFoodDonations.length > 0 ? (
-                      biggestFoodDonations.slice(0, 6).map((item, index) => (
+                      biggestFoodDonations.slice(0, 10).map((item, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary/20 cursor-pointer transition-colors"

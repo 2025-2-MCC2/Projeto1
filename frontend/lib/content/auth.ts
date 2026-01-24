@@ -17,7 +17,13 @@ export const authContent = {
       mentor: "Login Mentores",
       admin: "Login Administradores",
     },
+    studentMentorHint:
+      "Use essas credenciais padrão para explorar o app",
     submit: "Entrar",
+  },
+  defaults: {
+    studentMentorRa: "20231234",
+    studentMentorPassword: "ana123",
   },
   inputs: {
     user: {

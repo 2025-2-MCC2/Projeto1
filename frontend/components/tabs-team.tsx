@@ -63,9 +63,9 @@ export default function TeamTabs({ raUsuario }: Props) {
         <div className="flex flex-col md:flex-row w-full max-w-3xl">
           <section className="bg-primary h-120 m-1 flex flex-col rounded-lg items-center justify-center md:w-1/2 p-6 text-white max-w-screen">
             <h1 className="flex text-center font-bold text-[#fff] text-[22px] mb-1">
-              {teamContent.header.split(\"\\n\")[0]}
+              {teamContent.header.split(" ")[0]}
               <br />
-              {teamContent.header.split(\"\\n\")[1]}
+              {teamContent.header.split(" ")[1]}
             </h1>
             <img
               src={images.external.liderancasLogo}

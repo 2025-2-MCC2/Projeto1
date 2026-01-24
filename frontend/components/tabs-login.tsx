@@ -14,8 +14,12 @@ export default function TabsLogin() {
   const [IdTime] = React.useState("");
   const [EmailMentor, setEmailMentor] = React.useState("");
   const [SenhaMentor, setSenhaMentor] = React.useState("");
-  const [RaUsuario, setRaUsuario] = React.useState("");
-  const [SenhaUsuario, setSenhaUsuario] = React.useState("");
+  const [RaUsuario, setRaUsuario] = React.useState(
+    authContent.defaults.studentMentorRa
+  );
+  const [SenhaUsuario, setSenhaUsuario] = React.useState(
+    authContent.defaults.studentMentorPassword
+  );
 
   // Login Student
   const handleSubmitAluno = async (e: React.FormEvent) => {
@@ -84,6 +88,9 @@ export default function TabsLogin() {
           <h2 className="text-secondary text-center font-bold text-xl md:text-xl my-4">
             {authContent.tabs.headers.studentMentor}
           </h2>
+          <p className="text-sm text-center text-gray-600 mb-2">
+            {authContent.tabs.studentMentorHint}
+          </p>
           <form
             onSubmit={handleSubmitAluno}
             className="flex flex-col gap-4 w-full"
