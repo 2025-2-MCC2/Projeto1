@@ -54,8 +54,7 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
               <h2 className="text-xl font-semibold">{data.Fonte}</h2>
               <div>
                 <p className="text-base text-gray-600 mt-3 mb-0">
-                  {historyContent.modal.contributionDatePrefix}{" "}
-                  {new Date(data.DataContribuicao).toLocaleDateString()}{" "}
+                  {new Date(data.DataContribuicao).toLocaleDateString()}
                 </p>
               </div>
               <button
@@ -116,27 +115,23 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                     <ul className="flex justify-between">
                       <div>
                         <p className="text-sm text-gray-600">
-                          {" "}
                           {historyContent.modal.foodsLabel}
                         </p>
                         {data.alimentos.map((a, i) => (
                           <li key={i} className="font-semibold">
-                            {" "}
                             {a.NomeAlimento}
                           </li>
                         ))}
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">
-                          {" "}
                           {historyContent.modal.scoreLabel}
                         </p>
                         {data.alimentos.map((a, i) => (
                           <li key={i} className="font-semibold">
                             <p>
-                              {" "}
                               {a.Pontuacao ? a.Pontuacao * data.Quantidade : 0}{" "}
-                              {historyContent.modal.units.pointsSuffix}{" "}
+                              {historyContent.modal.units.pointsSuffix}
                             </p>
                           </li>
                         ))}
@@ -146,7 +141,7 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                     <p>{historyContent.modal.noFood}</p>
                   ) : null}
 
-                  {data.comprovante?.Imagem ? (
+                  {data.comprovante?.Imagem && (
                     <div>
                       <p className="text-sm text-gray-600 mb-2">
                         {historyContent.modal.receiptLabel}
@@ -157,17 +152,8 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                         rel="noopener noreferrer"
                         className="text-black-600 underline"
                       >
-                        {" "}
                         {historyContent.modal.receiptLink}
                       </a>
-                    </div>
-                  ) : (
-                    <div>
-                      <img
-                        src={images.placeholderComprovante.src}
-                        alt={historyContent.modal.noReceiptAlt}
-                        className="rounded-md aspect-square max-h-[45px] object-contain border border-gray-200 mb-6"
-                      />
                     </div>
                   )}
                 </div>

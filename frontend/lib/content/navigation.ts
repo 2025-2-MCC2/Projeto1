@@ -4,7 +4,7 @@ export const navigationContent = {
     iconAlt: "Voltar",
   },
   menu: {
-    closeLabel: "✖",
+    closeLabel: "X",
     mobile: {
       ariaLabel: "Menu mobile",
       tabs: {

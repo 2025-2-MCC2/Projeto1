@@ -252,7 +252,7 @@ export default function DonationsForm({
 
           <span className="ml-3 text-sm text-gray-700">
             {comprovante
-              ? `${donationsContent.financialForm.receiptSelectedPrefix} ${comprovante.name}`
+              ? `${comprovante.name}`
               : donationsContent.financialForm.receiptEmpty}
           </span>
         </div>

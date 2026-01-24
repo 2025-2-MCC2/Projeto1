@@ -49,15 +49,17 @@ export type MockAlimento = {
   Quantidade?: number;
 };
 
+export type TipoDoacao = "Financeira" | "Alimenticia";
+
 export type MockContribution = {
-  IdContribuicao?: number;
+  IdContribuicao: number;
   IdContribuicaoFinanceira?: number;
   IdContribuicaoAlimenticia?: number;
   IdTime?: number;
   IdMentor?: number;
   RaUsuario: number;
   NomeTime?: string;
-  TipoDoacao: "Financeira" | "Alimenticia";
+  TipoDoacao: TipoDoacao;
   Quantidade: number;
   Meta?: number;
   Gastos?: number;
@@ -79,6 +81,7 @@ export type MockContribution = {
   RaAluno8?: number;
   RaAluno9?: number | null;
   RaAluno10?: number | null;
+  uuid?: string;
 };
 
 const mockUsers: MockUser[] = [
@@ -205,7 +208,11 @@ const receiptUrls = [
   "https://images.unsplash.com/photo-1523287562758-66c7fc7a3534?q=80&w=1200&auto=format&fit=crop",
 ];
 
-const mockContributionsBase: MockContribution[] = [
+type MockContributionSeed =
+  Omit<MockContribution, "IdContribuicao" | "uuid"> &
+    Partial<Pick<MockContribution, "IdContribuicao" | "uuid">>;
+
+const mockContributionsBase: MockContributionSeed[] = [
   {
     IdContribuicaoFinanceira: 5001,
     RaUsuario: 20231234,
@@ -332,10 +339,14 @@ const mockContributionsBase: MockContribution[] = [
   },
 ];
 
-let contributionsStore: MockContribution[] = mockContributionsBase.map((c, i) => ({
-  ...c,
-  IdContribuicao: c.IdContribuicao ?? 7000 + i,
-}));
+let contributionsStore: MockContribution[] = mockContributionsBase.map((c, i) => {
+  const IdContribuicao = c.IdContribuicao ?? 7000 + i;
+  return {
+    ...c,
+    IdContribuicao,
+    uuid: c.uuid ?? `contrib-${IdContribuicao}`,
+  };
+});
 
 let nextContributionId = 8000;
 let nextReceiptId = 9500;
@@ -530,7 +541,7 @@ export async function createAdminMock(payload: {
 
 export async function createContributionMock(payload: {
   RaUsuario: number;
-  TipoDoacao: "Financeira" | "Alimenticia";
+  TipoDoacao: string;
   Quantidade: number;
   Meta?: number;
   Gastos?: number;
@@ -540,20 +551,22 @@ export async function createContributionMock(payload: {
 }): Promise<{ data: { IdContribuicaoFinanceira?: number; IdContribuicaoAlimenticia?: number } } > {
   const now = new Date();
   const IdContribuicao = nextContributionId++;
+  const tipoDoacao = normalizeTipoDoacao(payload.TipoDoacao);
   const base: MockContribution = {
     IdContribuicao,
     RaUsuario: payload.RaUsuario,
-    TipoDoacao: payload.TipoDoacao,
+    TipoDoacao: tipoDoacao,
     Quantidade: payload.Quantidade,
     Meta: payload.Meta ?? 0,
     Gastos: payload.Gastos ?? 0,
     Fonte: payload.Fonte,
     DataContribuicao: now.toISOString().slice(0, 10),
+    uuid: `contrib-${IdContribuicao}`,
   };
 
   let result: { IdContribuicaoFinanceira?: number; IdContribuicaoAlimenticia?: number } = {};
 
-  if (payload.TipoDoacao === "Financeira") {
+  if (tipoDoacao === "Financeira") {
     const idFinanceira = IdContribuicao + 1000;
     base.IdContribuicaoFinanceira = idFinanceira;
     result = { IdContribuicaoFinanceira: idFinanceira };
@@ -580,12 +593,12 @@ export async function createContributionMock(payload: {
 }
 
 export async function uploadComprovanteMock(payload: {
-  TipoDoacao: "Financeira" | "Alimenticia";
+  TipoDoacao: string;
   IdContribuicao: number;
   url?: string;
 }): Promise<MockComprovante | undefined> {
   const entry = contributionsStore.find((c) => {
-    if (payload.TipoDoacao === "Financeira") {
+    if (normalizeTipoDoacao(payload.TipoDoacao) === "Financeira") {
       return c.IdContribuicaoFinanceira === payload.IdContribuicao;
     }
     return c.IdContribuicaoAlimenticia === payload.IdContribuicao;
@@ -612,6 +625,10 @@ export async function deleteContributionMock(payload: {
     return c.IdContribuicaoAlimenticia !== payload.IdContribuicao;
   });
   return { ok: true };
+}
+
+function normalizeTipoDoacao(value: string): TipoDoacao {
+  return value === "Alimenticia" ? "Alimenticia" : "Financeira";
 }
 
 function alimentoLabel(id: number): string {

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useParams } from "next/navigation";
 
 import { images, navigationContent } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
 export default function MenuMobile() {
   const pathname = usePathname();
@@ -32,13 +33,12 @@ export default function MenuMobile() {
     }
   };
 
-  // ---------- Estilos base ----------
   const basePill =
-    "relative flex items-center justify-center h-10 w-16 rounded-[10px] transition-all duration-300 ease-out";
-  const neutralPill = "bg-transparent hover:bg-primary/20";
-  const activePill = "bg-[#3B5D3D] text-white border border-[#3B5D3D]";
+    "relative flex items-center justify-center h-14 w-14 rounded-full bg-background border border-secondary/40 shadow-sm transition-all duration-300 ease-out";
+  const neutralPill = "text-primary hover:bg-secondary/20";
+  const activePill =
+    "bg-primary text-white border-primary ring-2 ring-secondary/40 ring-offset-2 ring-offset-background shadow-sm";
 
-  // ---------- Ícones ----------
   const icons = useMemo(
     () => ({
       home: images.menu.home,
@@ -50,7 +50,6 @@ export default function MenuMobile() {
     []
   );
 
-  // ---------- Efeito "pop" ----------
   const [pressed, setPressed] = useState<{ [key: string]: boolean }>({});
   const timersRef = useRef<{ [key: string]: number }>({});
 
@@ -82,7 +81,7 @@ export default function MenuMobile() {
     <nav
       role="navigation"
       aria-label={navigationContent.menu.mobile.ariaLabel}
-      className="md:hidden fixed inset-x-0 bottom-0 z-50"
+      className="md:hidden fixed inset-x-0 bottom-2 z-50"
     >
       <style jsx global>{`
         @keyframes pop {
@@ -109,9 +108,8 @@ export default function MenuMobile() {
         }
       `}</style>
 
-      <div className="mx-auto w-[300px] px-4 sm:px-6 rounded-2xl">
-        <div className="flex items-center justify-center gap-8 sm:gap-12 py-2 bg-primary rounded-[30px]">
-          {/* Aba 1: Home */}
+      <div className="mx-auto w-[300px] px-4 sm:px-6 my-4 rounded-2xl">
+        <div className="flex items-center justify-center gap-8 sm:gap-12 py-2">
           <Link
             href={homeHref}
             aria-label={navigationContent.menu.mobile.tabs.home.ariaLabel}
@@ -126,13 +124,15 @@ export default function MenuMobile() {
               alt={navigationContent.menu.mobile.tabs.home.alt}
               width={24}
               height={24}
-              className="pointer-events-none select-none"
+              className={cn(
+                "pointer-events-none select-none",
+                isActive(homeHref) ? "brightness-0 invert" : "brightness-0"
+              )}
               draggable={false}
               priority
             />
           </Link>
 
-          {/* Aba 2: Cadastrar */}
           <Link
             href={createHref}
             aria-label={navigationContent.menu.mobile.tabs.create.ariaLabel}
@@ -148,13 +148,15 @@ export default function MenuMobile() {
               alt={navigationContent.menu.mobile.tabs.create.alt}
               width={24}
               height={24}
-              className="pointer-events-none select-none"
+              className={cn(
+                "pointer-events-none select-none",
+                isActive(createHref) ? "brightness-0 invert" : "brightness-0"
+              )}
               draggable={false}
               priority
             />
           </Link>
 
-          {/* Aba 3: Histórico */}
           <Link
             href={historyHref}
             aria-label={navigationContent.menu.mobile.tabs.history.ariaLabel}
@@ -173,7 +175,10 @@ export default function MenuMobile() {
               alt={navigationContent.menu.mobile.tabs.history.alt}
               width={24}
               height={24}
-              className="pointer-events-none select-none"
+              className={cn(
+                "pointer-events-none select-none",
+                isActive(historyHref) ? "brightness-0 invert" : "brightness-0"
+              )}
               draggable={false}
               priority
             />

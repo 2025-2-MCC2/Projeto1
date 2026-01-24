@@ -185,7 +185,7 @@ export default function RenderContributionTableAdmin({
 
   if (!contributions.length) {
     return (
-      <div className="col-start-2 border rounded-xl border-gray-200 shadow-xl w-auto max-w-100 mx-auto">
+      <div className="col-start-2 border rounded-xl border-secondary/40 bg-background shadow-sm w-auto max-w-100 mx-auto">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">

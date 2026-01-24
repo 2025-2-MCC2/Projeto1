@@ -1,8 +1,4 @@
 export const historyContent = {
-  pages: {
-    title: "Histórico de contribuições",
-    adminTitle: "Histórico de contribuições de todos os grupos",
-  },
   placeholders: {
     teamName: "Nome do time aparecerá aqui",
     classFallback: "X",
@@ -26,7 +22,6 @@ export const historyContent = {
     studentRa: "Ra do Aluno:",
   },
   modal: {
-    contributionDatePrefix: "Data da Contribuição -",
     typeLabel: "Tipo de Doação",
     quantityLabel: "Quantidade",
     goalLabel: "Meta",

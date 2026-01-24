@@ -1,6 +1,5 @@
 export const donationsContent = {
   newContribution: {
-    title: "Adicionar Contribuição",
     tabs: {
       finance: "Financeira",
       food: "Alimentos",
@@ -27,7 +26,6 @@ export const donationsContent = {
     receiptLabel: "Comprovante (PNG/JPEG/PDF)",
     receiptButtonAria: "Selecionar comprovante",
     receiptAlt: "Selecionar comprovante",
-    receiptSelectedPrefix: "Selecionado:",
     receiptEmpty: "Nenhum arquivo escolhido",
   },
   foodForm: {
@@ -48,7 +46,6 @@ export const donationsContent = {
     kgPlaceholder: "Kg",
     receiptLabel: "Imagem dos Alimentos (PNG/JPEG/PDF)",
     receiptAlt: "Selecionar comprovante",
-    receiptSelectedPrefix: "Selecionado:",
     receiptEmpty: "Nenhum arquivo escolhido",
   },
   foodOptions: [

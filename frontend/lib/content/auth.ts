@@ -13,7 +13,6 @@ export const authContent = {
       admin: "Admin",
     },
     headers: {
-      studentMentor: "Login de Alunos-Mentores",
       mentor: "Login Mentores",
       admin: "Login Administradores",
     },

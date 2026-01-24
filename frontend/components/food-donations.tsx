@@ -147,14 +147,16 @@ export default function FoodDonations({
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      <label>{donationsContent.foodForm.eventLabel}</label>
-      <input
-        className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-black"
-        type="text"
-        placeholder={donationsContent.foodForm.eventPlaceholder}
-        value={fonte}
-        onChange={(e) => setFonte(e.target.value)}
-      />
+      <div>
+        <label>{donationsContent.foodForm.eventLabel}</label>
+        <input
+          className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-black"
+          type="text"
+          placeholder={donationsContent.foodForm.eventPlaceholder}
+          value={fonte}
+          onChange={(e) => setFonte(e.target.value)}
+        />
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
         <div>
@@ -190,62 +192,65 @@ export default function FoodDonations({
           <input
             type="text"
             readOnly
+            disabled
             value={totais.kgTotal.toLocaleString("pt-BR")}
             className="h-10 w-full bg-white border border-gray-300 rounded-lg px-3 text-center"
           />
         </div>
       </div>
 
-      <div className="flex gap-4 font-bold mt-2">
-        <div className="w-[40%] text-center">
-          {donationsContent.foodForm.columns.food}
+      <div>
+        <div className="flex gap-4 mt-2">
+          <div className="w-[40%] text-left">
+            {donationsContent.foodForm.columns.food}
+          </div>
+          <div className="w-[25%] text-left">
+            {donationsContent.foodForm.columns.units}
+          </div>
+          <div className="w-[25%] text-left">
+            {donationsContent.foodForm.columns.kgPerUnit}
+          </div>
         </div>
-        <div className="w-[25%] text-center">
-          {donationsContent.foodForm.columns.units}
-        </div>
-        <div className="w-[25%] text-center">
-          {donationsContent.foodForm.columns.kgPerUnit}
-        </div>
-      </div>
 
-      <div className="flex gap-4 mt-2">
-        <select
-          className="w-[40%] bg-white border border-gray-300 rounded-lg px-3 py-2"
-          value={idAlimento}
-          onChange={(e) => setIdAlimento(parseInt(e.target.value))}
-        >
-          <option value={0} disabled>
-            {donationsContent.foodForm.selectPlaceholder}
-          </option>
-          {ALIMENTOS.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.nome}
+        <div className="flex gap-4">
+          <select
+            className="w-[40%] bg-white border border-gray-300 rounded-lg px-3 py-2"
+            value={idAlimento}
+            onChange={(e) => setIdAlimento(parseInt(e.target.value))}
+          >
+            <option value={0} disabled>
+              {donationsContent.foodForm.selectPlaceholder}
             </option>
-          ))}
-        </select>
+            {ALIMENTOS.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.nome}
+              </option>
+            ))}
+          </select>
 
-        <input
-          className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
-          type="number"
-          placeholder={donationsContent.foodForm.quantityPlaceholder}
-          value={quantidade === 0 ? "" : quantidade}
-          onChange={(e) => {
-            const v = e.target.value;
-            setQuantidade(v === "" ? 0 : Math.floor(Number(v)));
-          }}
-        />
+          <input
+            className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
+            type="number"
+            placeholder={donationsContent.foodForm.quantityPlaceholder}
+            value={quantidade === 0 ? "" : quantidade}
+            onChange={(e) => {
+              const v = e.target.value;
+              setQuantidade(v === "" ? 0 : Math.floor(Number(v)));
+            }}
+          />
 
-        <input
-          className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
-          type="number"
-          step="1"
-          placeholder={donationsContent.foodForm.kgPlaceholder}
-          value={pesoUnidade === 0 ? "" : pesoUnidade}
-          onChange={(e) => {
-            const v = e.target.value;
-            setPesoUnidade(v === "" ? 0 : Math.floor(Number(v)));
-          }}
-        />
+          <input
+            className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
+            type="number"
+            step="1"
+            placeholder={donationsContent.foodForm.kgPlaceholder}
+            value={pesoUnidade === 0 ? "" : pesoUnidade}
+            onChange={(e) => {
+              const v = e.target.value;
+              setPesoUnidade(v === "" ? 0 : Math.floor(Number(v)));
+            }}
+          />
+        </div>
       </div>
 
       <label className="block mt-9">
@@ -280,7 +285,7 @@ export default function FoodDonations({
         </button>
         <span className="ml-3 text-sm text-gray-700">
           {comprovante instanceof File
-            ? `${donationsContent.foodForm.receiptSelectedPrefix} ${comprovante.name}`
+            ? `${comprovante.name}`
             : donationsContent.foodForm.receiptEmpty}
         </span>
       </div>

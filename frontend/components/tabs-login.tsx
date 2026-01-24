@@ -85,10 +85,7 @@ export default function TabsLogin() {
 
       <TabsContent value="Aluno">
         <section className="border border-gray-300 h-full rounded-lg mb-2 flex flex-col items-center justify-center md:w-[365px] px-6 py-8">
-          <h2 className="text-secondary text-center font-bold text-xl md:text-xl my-4">
-            {authContent.tabs.headers.studentMentor}
-          </h2>
-          <p className="text-sm text-center text-gray-600 mb-2">
+          <p className="text-sm text-center max-w-45 text-gray-600 mb-4">
             {authContent.tabs.studentMentorHint}
           </p>
           <form
