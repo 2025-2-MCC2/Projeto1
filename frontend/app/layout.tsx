@@ -3,10 +3,11 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
 import "@/styles/globals.css";
+import { metaContent } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Arkana",
-  description: "Arkana Description",
+  title: metaContent.siteName,
+  description: metaContent.description,
 };
 
 export default function RootLayout({
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="PT-BR">
+    <html lang={metaContent.htmlLang}>
       <head>
         <style>{`html {
             font-family: ${GeistSans.style.fontFamily};

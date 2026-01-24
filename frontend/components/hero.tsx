@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 import Link from "next/link";
-import heroBackground from "@/assets/texture.png";
+import { images, metaContent } from "@/lib/content";
 
 const Hero = () => {
   return (
@@ -10,21 +10,27 @@ const Hero = () => {
       <div className="relative pt-10 z-300 bg-transparent h-full mx-auto flex flex-col justify-between items-center">
         <div className="pointer-events-none select-none h-full flex flex-col justify-center gap-2 items-center">
           <h1 className="changa-one-bold text-responsive text-5xl md:text-7xl text-white max-w-4xl text-center mx-auto">
-            LIDERANÇAS
+            {metaContent.hero.titleLines[0]}
             <br />
-            EMPÁTICAS
+            {metaContent.hero.titleLines[1]}
           </h1>
           <p className="changa-one-regular text-2xl mt-0 text-white">
-            + ARKANA
+            {metaContent.hero.subtitle}
           </p>
         </div>
         <Link href="#public-graph">
-          <p className="text-3xl z-300 text-white pb-10 animate-bounce">↓</p>
+          <p className="text-3xl z-300 text-white pb-10 animate-bounce">
+            {metaContent.hero.scrollHint}
+          </p>
         </Link>
       </div>
 
       <div className="absolute w-full h-full top-0 right-0 opacity-55">
-        <Image src={heroBackground} alt="Background Hero" fill />
+        <Image
+          src={images.heroBackground}
+          alt={metaContent.hero.backgroundAlt}
+          fill
+        />
       </div>
     </section>
   );

@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Clipboard, Eye } from "lucide-react";
 import formatBRL from "../formatBRL";
+import { tablesContent } from "@/lib/content";
 
 export type Contribution = {
   IdContribuicao: number;
@@ -52,7 +53,7 @@ export const makeContributionColumns = (
           variant="prettyHeader"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Fonte da doação
+          {tablesContent.columns.source}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -71,7 +72,7 @@ export const makeContributionColumns = (
           variant="prettyHeader"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Data
+          {tablesContent.columns.date}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -90,7 +91,7 @@ export const makeContributionColumns = (
           variant="prettyHeader"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tipo
+          {tablesContent.columns.type}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -104,7 +105,7 @@ export const makeContributionColumns = (
           variant="prettyHeader"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Quantidade
+          {tablesContent.columns.amount}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -132,7 +133,7 @@ export const makeContributionColumns = (
         variant="prettyHeader"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Peso Total
+        {tablesContent.columns.totalWeight}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -155,7 +156,7 @@ export const makeContributionColumns = (
         variant="prettyHeader"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Pontuação Total
+        {tablesContent.columns.totalScore}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -178,7 +179,7 @@ export const makeContributionColumns = (
           variant="prettyHeader"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Gastos
+          {tablesContent.columns.expenses}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -193,7 +194,7 @@ export const makeContributionColumns = (
           variant="prettyHeader"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Meta
+          {tablesContent.columns.goal}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -211,7 +212,7 @@ export const makeContributionColumns = (
   },
   {
     accessorKey: "comprovante",
-    header: "Comprovante",
+    header: tablesContent.columns.receipt,
     cell: ({ row }) => {
       const url = row.original.comprovante?.Imagem;
       return url ? (
@@ -221,7 +222,7 @@ export const makeContributionColumns = (
           rel="noopener noreferrer"
           className="text-primary underline"
         >
-          Abrir comprovante
+          {tablesContent.actions.openReceipt}
         </a>
       ) : (
         <span className="text-muted-foreground">-</span>
@@ -239,13 +240,13 @@ export const makeContributionColumns = (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
+              <span className="sr-only">{tablesContent.actions.openMenu}</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+            <DropdownMenuLabel>{tablesContent.actions.actions}</DropdownMenuLabel>
 
             <DropdownMenuItem
               onClick={async () => {
@@ -255,13 +256,15 @@ export const makeContributionColumns = (
                 actions.onCopied?.(c.IdContribuicao);
               }}
             >
-              <Clipboard className="mr-2 h-4 w-4" /> Copiar ID
+              <Clipboard className="mr-2 h-4 w-4" />{" "}
+              {tablesContent.actions.copyId}
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem onClick={() => actions.onView?.(c)}>
-              <Eye className="mr-2 h-4 w-4" /> Ver detalhes
+              <Eye className="mr-2 h-4 w-4" />{" "}
+              {tablesContent.actions.viewDetails}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

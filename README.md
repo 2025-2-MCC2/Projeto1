@@ -22,19 +22,6 @@
 [Katia Milani Lara Bossi](https://www.linkedin.com/)  
 <br/>
 
-# Entregas
-- [Banner Apresentação](https://github.com/2025-2-MCC2/Projeto1/blob/main/entregas/Banner_FECAP_CCOMP2MA_Arkana.md)
-- [DERS - Documento Especificação de Requisitos](https://github.com/2025-2-MCC2/Projeto1/blob/main/entregas/DERS.md)
-
-| Disciplina | Entrega 1 | Entrega 2 |  
-| :-------: | :------: | :-------: |
-| web dev fullstack | - | [https://arkana-projeto1.vercel.app/](https://arkana-projeto1.vercel.app/) |   
-| calculo II | [/entregas/entrega-1/calculo-2/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/calculo-2) | [/entregas/entrega-2/calculo-2/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/calculo-2) |    
-| banco de dados | [/entregas/entrega-1/banco-de-dados/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/banco-de-dados) | [/entregas/entrega-2/banco-de-dados/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/banco-de-dados) |  
-| gestao empresarial | [/entregas/entrega-1/gestao-empresarial/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/gestao-empresarial) | [/entregas/entrega-2/gestao-empresarial/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/gestao-empresarial) |  
-| projeto interdisciplinar | [/entregas/entrega-1/proj-interdisciplinar/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/proj-interdisciplinar) | [Projeto de Extensão](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/proj-interdisciplinar) |   
-<br/>
-
 # Descrição
 ## 🤝 Proposta Principal
 Desenvolvimento de uma Aplicação Web para o [Projeto Lideranças Empáticas](https://liderancasempaticas.com/), uma iniciativa do Centro Universitário FECAP que une impacto social e educação empreendedora através da arrecadação de alimentos e recursos financeiros. Essa aplicação objetiva gerenciar as edições deste projeto, incluindo controle de equipes, atividades, metas e resultados.
@@ -81,17 +68,7 @@ Procuramos desenvolver uma interface que traga a identidade visual do Projeto Li
     |-->hooks  
     |-->lib  
     |-->styles  
-|-->entregas
-    |-->entrega-1  
-       |-->calculo-2  
-       |-->banco-de-dados  
-       |-->gestao-empresarial
-       |-->proj-interdisciplinar
-    |-->entrega-2  
-       |-->calculo-2  
-       |-->banco-de-dados  
-       |-->gestao-empresarial
-       |-->proj-interdisciplinar
+|-->banco-de-dados
 |README.md  
 |LICENSE  
 ```
@@ -116,7 +93,7 @@ npm install
 yarn install
 ```
 
-3. Rode o banco de dados SQL (disponível no arquivo [/entregas/entrega-1/banco-de-dados/arkana-database.sql](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/banco-de-dados) localmente no Workbench ou interface sa sua preferência. Popule o .env do /backend com as variáveis do seu ambiente.  
+3. Rode o banco de dados SQL (disponível no arquivo /database/arkana-database.sql localmente no Workbench ou interface sa sua preferência. Popule o .env do /backend com as variáveis do seu ambiente.  
 
 
 4. Entre nas pastas /frontend e /backend e rode o seguinte comando em cada uma delas  

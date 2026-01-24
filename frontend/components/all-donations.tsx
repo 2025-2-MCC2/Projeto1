@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { donationsContent } from "@/lib/content";
+import { createContributionMock } from "@/lib/mock-data";
 
 interface Properties {
   nomeEvento: string;
@@ -16,29 +18,19 @@ export default function AllDonations({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     try {
-      const res = await fetch(`${backend_url}/createContribution`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          //meta: Number(metaEvento),
-          nomeEvento: String(nomeEvento),
-        }),
+      await createContributionMock({
+        RaUsuario: 20231234,
+        TipoDoacao: "Financeira",
+        Quantidade: 150,
+        Meta: 0,
+        Gastos: 0,
+        Fonte: String(nomeEvento),
       });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({} as any));
-        alert(err?.error || "Erro ao cadastrar contribuição");
-        return;
-      }
-
-      const data = await res.json();
-      alert("Contribuição registrada com sucesso!");
-      //setMetaEnvento(0);
+      alert(donationsContent.allDonations.createSuccess);
     } catch (error) {
       console.error("Erro ao enviar contribuição:", error);
-      alert("Erro de conexão com o servidor.");
+      alert(donationsContent.allDonations.connectionError);
     } finally {
       setLoading(false);
     }
@@ -49,7 +41,7 @@ export default function AllDonations({
       <input
         className="w-[80%] bg-white border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-1.5 text-base focus:outline-none"
         type="text"
-        placeholder="Nome do evento"
+        placeholder={donationsContent.allDonations.eventPlaceholder}
         value={nomeEvento}
         onChange={(e) => setNomeEvento(e.target.value)}
       />

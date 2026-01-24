@@ -1,7 +1,7 @@
-import placeholderComprovante from "@/assets/placeholderComprovante.jpg";
 import Modal from "../hooks/use-modal";
 import DeleteContribution from "@/components/delete-contribution";
 import formatBRL from "./formatBRL";
+import { historyContent, images } from "@/lib/content";
 
 interface ContributionData {
   RaUsuario: number;
@@ -54,8 +54,7 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
               <h2 className="text-xl font-semibold">{data.Fonte}</h2>
               <div>
                 <p className="text-base text-gray-600 mt-3 mb-0">
-                  Data da Contribuição -{" "}
-                  {new Date(data.DataContribuicao).toLocaleDateString()}{" "}
+                  {new Date(data.DataContribuicao).toLocaleDateString()}
                 </p>
               </div>
               <button
@@ -66,34 +65,46 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
               <div className="flex flex-col gap-4 text-gray-800">
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
                   <div>
-                    <p className="text-sm text-gray-600">Tipo de Doação</p>
+                    <p className="text-sm text-gray-600">
+                      {historyContent.modal.typeLabel}
+                    </p>
                     <p className="font-semibold">{data.TipoDoacao}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm text-gray-600">Quantidade</p>
+                    <p className="text-sm text-gray-600">
+                      {historyContent.modal.quantityLabel}
+                    </p>
                     <p className="font-semibold">
                       {Intl.NumberFormat("pt-BR").format(data.Quantidade)}
-                      {data.TipoDoacao === "Financeira" ? " reais" : " kg"}
+                      {data.TipoDoacao === "Financeira"
+                        ? ` ${historyContent.modal.units.money}`
+                        : ` ${historyContent.modal.units.kg}`}
                     </p>
                   </div>
 
                   {data.Meta !== null && (
                     <div>
-                      <p className="text-sm text-gray-600">Meta</p>
+                      <p className="text-sm text-gray-600">
+                        {historyContent.modal.goalLabel}
+                      </p>
                       <p className="font-semibold">
                         {typeof data.Meta === "number" &&
                         Number.isFinite(data.Meta)
                           ? new Intl.NumberFormat("pt-BR").format(data.Meta)
                           : "-"}
-                        {data.TipoDoacao === "Financeira" ? " reais" : " kg"}
+                        {data.TipoDoacao === "Financeira"
+                          ? ` ${historyContent.modal.units.money}`
+                          : ` ${historyContent.modal.units.kg}`}
                       </p>
                     </div>
                   )}
 
                   {data.Gastos !== null && (
                     <div>
-                      <p className="text-sm text-gray-600">Gastos</p>
+                      <p className="text-sm text-gray-600">
+                        {historyContent.modal.expensesLabel}
+                      </p>
                       <p className="font-semibold"> {formatBRL(data.Gastos)}</p>
                     </div>
                   )}
@@ -104,33 +115,36 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                     <ul className="flex justify-between">
                       <div>
                         <p className="text-sm text-gray-600">
-                          {" "}
-                          Alimentos arrecadados
+                          {historyContent.modal.foodsLabel}
                         </p>
                         {data.alimentos.map((a, i) => (
                           <li key={i} className="font-semibold">
-                            {" "}
                             {a.NomeAlimento}
                           </li>
                         ))}
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600"> Pontuação</p>
+                        <p className="text-sm text-gray-600">
+                          {historyContent.modal.scoreLabel}
+                        </p>
                         {data.alimentos.map((a, i) => (
                           <li key={i} className="font-semibold">
-                            <p> {a.Pontuacao ? a.Pontuacao * data.Quantidade : 0} ponto(s) </p>
+                            <p>
+                              {a.Pontuacao ? a.Pontuacao * data.Quantidade : 0}{" "}
+                              {historyContent.modal.units.pointsSuffix}
+                            </p>
                           </li>
                         ))}
                       </div>
                     </ul>
                   ) : data.TipoDoacao === "Alimenticia" ? (
-                    <p>Nenhum alimento registrado.</p>
+                    <p>{historyContent.modal.noFood}</p>
                   ) : null}
 
-                  {data.comprovante?.Imagem ? (
+                  {data.comprovante?.Imagem && (
                     <div>
                       <p className="text-sm text-gray-600 mb-2">
-                        Comprovante da doação
+                        {historyContent.modal.receiptLabel}
                       </p>
                       <a
                         href={data.comprovante.Imagem}
@@ -138,17 +152,8 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                         rel="noopener noreferrer"
                         className="text-black-600 underline"
                       >
-                        {" "}
-                        Abrir comprovante
+                        {historyContent.modal.receiptLink}
                       </a>
-                    </div>
-                  ) : (
-                    <div>
-                      <img
-                        src={placeholderComprovante.src}
-                        alt="Sem comprovantes anexados"
-                        className="rounded-md aspect-square max-h-[45px] object-contain border border-gray-200 mb-6"
-                      />
                     </div>
                   )}
                 </div>

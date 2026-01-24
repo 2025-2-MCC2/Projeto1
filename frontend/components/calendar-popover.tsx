@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { commonContent } from "@/lib/content";
 
 export default function CalendarPopover() {
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -20,7 +21,7 @@ export default function CalendarPopover() {
           id="date"
           className="justify-between font-normal"
         >
-          {date ? date.toLocaleDateString() : "Selecione a data"}
+          {date ? date.toLocaleDateString() : commonContent.calendar.placeholder}
           <ChevronDownIcon />
         </Button>
       </PopoverTrigger>
