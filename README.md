@@ -4,7 +4,7 @@
 <a href= "https://www.fecap.br/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhZPrRa89Kma0ZZogxm0pi-tCn_TLKeHGVxywp-LXAFGR3B1DPouAJYHgKZGV0XTEf4AE&usqp=CAU" alt="FECAP - Fundação de Comércio Álvares Penteado" border="0"></a>
 
 <h1>Nome do Projeto: Arkana 📑</h1>
-<p>Acesse o app (em construção): <a href="https://arkana-projeto1.vercel.app/">https://arkana-projeto1.vercel.app/</a></p>
+<p>Acesse o app: <a href="https://arkana-projeto1.vercel.app">https://arkana-projeto1.vercel.app</a></p>
 </div>
 <br/>
 
