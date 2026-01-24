@@ -7,15 +7,7 @@ import MenuDesktopAdmin from "@/components/menu-desktop-admin";
 import MenuMobileAdmin from "@/components/menu-mobile-admin";
 import RenderContributionTableAdmin from "@/components/table-contribution-admin";
 import RenderContributionCardAdmin from "@/components/grid-contribution-admin";
-
-{
-  /** 
- * 
- corrigir modal admin - tirar Gastos, aumentar fonte da data 
- adicionar filtro de pesquisar por ediçao
- adicionar filtro de edições
-  */
-}
+import { historyContent } from "@/lib/content";
 
 export default function AdminPageVision() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -25,7 +17,7 @@ export default function AdminPageVision() {
     React.useState<any>(null);
 
   return (
-    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-[#f4f3f1]/60">
+    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-background">
       <div className="flex flex-col left-0 top-0">
         <header className="py-4 mt-6 relative flex justify-center items-center">
           <button
@@ -35,24 +27,12 @@ export default function AdminPageVision() {
             }`}
             onClick={() => setMenuOpen(true)}
           >
-            {" "}
-            ☰{" "}
+            ☰
           </button>
-          <h1
-            className={`text-4xl font-semibold text-[#cc3983] text-center transition-all duration-300 ease-in-out ${
-              menuOpen ? "md:pl-[270px]" : "ml-0"
-            }`}
-          >
-            Histórico de contribuições
-          </h1>
         </header>
       </div>
 
-      <div
-        className={`w-full flex justify-center pt-4 transition-all duration-300 ease-in-out ${
-          menuOpen ? "md:pl-[270px]" : "ml-0"
-        }`}
-      >
+      <div className="w-full flex justify-center md:pt-10 transition-all duration-300 ease-in-out">
         <MenuDesktopAdmin menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
         <MenuMobileAdmin />
@@ -66,9 +46,7 @@ export default function AdminPageVision() {
             />
           )}
           <div className="flex flex-col gap-2 mx-3 text-center">
-            <h3 className="text-2xl uppercase font-semibold text-primary ">
-              Histórico de contribuições de todos os grupos
-            </h3>
+
             <div className="self-end">
               <SwitchViewButton
                 buttonSelected={buttonSelected}

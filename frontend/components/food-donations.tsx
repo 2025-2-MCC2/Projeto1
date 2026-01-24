@@ -2,8 +2,7 @@
 
 import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import uploadStatic from "@/assets/icons/upload-static.png";
-import uploadGif from "@/assets/icons/upload-anim.gif";
+import { donationsContent, images } from "@/lib/content";
 
 type Img = StaticImageData | string;
 
@@ -57,27 +56,8 @@ export default function FoodDonations({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const timerRef = useRef<number | null>(null);
 
-  const ALIMENTOS = [
-    { id: 1, nome: "Arroz Polido" },
-    { id: 2, nome: "Feijão Preto" },
-    { id: 3, nome: "Leite em Pó" },
-    { id: 4, nome: "Óleo de Soja" },
-    { id: 5, nome: "Açúcar Refinado" },
-    { id: 6, nome: "Fubá" },
-    { id: 7, nome: "Macarrão" },
-    { id: 8, nome: "Outros" },
-  ];
-
-  const PONTOS_POR_KG: Record<string, number> = {
-    "Arroz Polido": 4,
-    "Feijão Preto": 5.5,
-    "Açúcar Refinado": 4,
-    "Leite em Pó": 15,
-    Fubá: 2.5,
-    Macarrão: 2.5,
-    "Óleo de Soja": 7,
-    Outros: 0,
-  };
+  const ALIMENTOS = donationsContent.foodOptions;
+  const PONTOS_POR_KG = donationsContent.foodPointsPerKg;
 
   useEffect(() => {
     if (!Number.isInteger(idAlimento)) setIdAlimento(0);
@@ -145,13 +125,13 @@ export default function FoodDonations({
     const isValidSize = file.size <= 5 * 1024 * 1024;
 
     if (!isValidType) {
-      alert("Formato inválido. Use PNG, JPEG ou PDF.");
+      alert(donationsContent.errors.invalidFileType);
       stopGif();
       return;
     }
 
     if (!isValidSize) {
-      alert("Arquivo muito grande (máx. 5MB).");
+      alert(donationsContent.errors.invalidFileSize);
       stopGif();
       return;
     }
@@ -160,29 +140,30 @@ export default function FoodDonations({
     setComprovante(file);
     e.target.value = "";
 
-    // Para o GIF depois de 1s
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = window.setTimeout(() => stopGif(), 1000);
   };
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      <label>Nome do Evento</label>
-      <input
-        className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-black"
-        type="text"
-        placeholder="Ex: Instituto Alma"
-        value={fonte}
-        onChange={(e) => setFonte(e.target.value)}
-      />
+      <div>
+        <label>{donationsContent.foodForm.eventLabel}</label>
+        <input
+          className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-black"
+          type="text"
+          placeholder={donationsContent.foodForm.eventPlaceholder}
+          value={fonte}
+          onChange={(e) => setFonte(e.target.value)}
+        />
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
         <div>
-          <label>Meta</label>
+          <label>{donationsContent.foodForm.goalLabel}</label>
           <input
             className="h-10 w-full bg-white border border-gray-300 rounded-lg px-3"
             type="number"
-            placeholder="100 Kg"
+            placeholder={donationsContent.foodForm.goalPlaceholder}
             value={meta === 0 ? "" : meta}
             onChange={(e) => {
               const v = e.target.value;
@@ -192,11 +173,11 @@ export default function FoodDonations({
         </div>
 
         <div>
-          <label>Gastos</label>
+          <label>{donationsContent.foodForm.expensesLabel}</label>
           <input
             className="h-10 w-full bg-white border border-gray-300 rounded-lg px-3"
             type="number"
-            placeholder="Ex: R$100"
+            placeholder={donationsContent.foodForm.expensesPlaceholder}
             value={gastos === 0 ? "" : gastos}
             onChange={(e) => {
               const v = e.target.value;
@@ -206,60 +187,74 @@ export default function FoodDonations({
         </div>
 
         <div>
-          <label>Total em Kg</label>
+          <label>{donationsContent.foodForm.totalKgLabel}</label>
           <input
             type="text"
             readOnly
+            disabled
             value={totais.kgTotal.toLocaleString("pt-BR")}
             className="h-10 w-full bg-white border border-gray-300 rounded-lg px-3 text-center"
           />
         </div>
       </div>
 
-      <div className="flex gap-4 font-bold mt-2">
-        <div className="w-[40%] text-center">Alimento</div>
-        <div className="w-[25%] text-center">Unidades</div>
-        <div className="w-[25%] text-center">Kg/Unidade</div>
-      </div>
+      <div>
+        <div className="flex gap-4 mt-2">
+          <div className="w-[40%] text-left">
+            {donationsContent.foodForm.columns.food}
+          </div>
+          <div className="w-[25%] text-left">
+            {donationsContent.foodForm.columns.units}
+          </div>
+          <div className="w-[25%] text-left">
+            {donationsContent.foodForm.columns.kgPerUnit}
+          </div>
+        </div>
 
-      <div className="flex gap-4 mt-2">
-        <select
-          className="w-[40%] bg-white border border-gray-300 rounded-lg px-3 py-2"
-          value={idAlimento}
-          onChange={(e) => setIdAlimento(parseInt(e.target.value))}
-        >
-          {ALIMENTOS.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.nome}
+        <div className="flex gap-4">
+          <select
+            className="w-[40%] bg-white border border-gray-300 rounded-lg px-3 py-2"
+            value={idAlimento}
+            onChange={(e) => setIdAlimento(parseInt(e.target.value))}
+          >
+            <option value={0} disabled>
+              {donationsContent.foodForm.selectPlaceholder}
             </option>
-          ))}
-        </select>
+            {ALIMENTOS.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.nome}
+              </option>
+            ))}
+          </select>
 
-        <input
-          className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
-          type="number"
-          placeholder="Qtd"
-          value={quantidade === 0 ? "" : quantidade}
-          onChange={(e) => {
-            const v = e.target.value;
-            setQuantidade(v === "" ? 0 : Math.floor(Number(v)));
-          }}
-        />
+          <input
+            className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
+            type="number"
+            placeholder={donationsContent.foodForm.quantityPlaceholder}
+            value={quantidade === 0 ? "" : quantidade}
+            onChange={(e) => {
+              const v = e.target.value;
+              setQuantidade(v === "" ? 0 : Math.floor(Number(v)));
+            }}
+          />
 
-        <input
-          className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
-          type="number"
-          step="1"
-          placeholder="Kg"
-          value={pesoUnidade === 0 ? "" : pesoUnidade}
-          onChange={(e) => {
-            const v = e.target.value;
-            setPesoUnidade(v === "" ? 0 : Math.floor(Number(v)));
-          }}
-        />
+          <input
+            className="w-[25%] bg-white border border-gray-300 rounded-lg px-3 py-2 text-center"
+            type="number"
+            step="1"
+            placeholder={donationsContent.foodForm.kgPlaceholder}
+            value={pesoUnidade === 0 ? "" : pesoUnidade}
+            onChange={(e) => {
+              const v = e.target.value;
+              setPesoUnidade(v === "" ? 0 : Math.floor(Number(v)));
+            }}
+          />
+        </div>
       </div>
 
-      <label className="block mt-9">Imagem dos Alimentos (PNG/JPEG/PDF)</label>
+      <label className="block mt-9">
+        {donationsContent.foodForm.receiptLabel}
+      </label>
       <input
         ref={fileInputRef}
         type="file"
@@ -276,8 +271,12 @@ export default function FoodDonations({
           disabled={loading}
         >
           <Image
-            src={picking ? (uploadGif as Img) : (uploadStatic as Img)}
-            alt="Selecionar comprovante"
+            src={
+              picking
+                ? (images.upload.animated as Img)
+                : (images.upload.static as Img)
+            }
+            alt={donationsContent.foodForm.receiptAlt}
             width={35}
             height={35}
             draggable={false}
@@ -285,8 +284,8 @@ export default function FoodDonations({
         </button>
         <span className="ml-3 text-sm text-gray-700">
           {comprovante instanceof File
-            ? `Selecionado: ${comprovante.name}`
-            : "Nenhum arquivo escolhido"}
+            ? `${comprovante.name}`
+            : donationsContent.foodForm.receiptEmpty}
         </span>
       </div>
     </div>

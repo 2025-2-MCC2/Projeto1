@@ -9,9 +9,11 @@ import { v4 as uuidv4 } from "uuid";
 import Hero from "@/components/hero";
 import Footer from "@/components/footer";
 
-import { overallMetrics } from "@/lib/overall-metrics";
+import { overallMetrics } from "@/lib/mock-data";
 import { useEffect, useState } from "react";
 import { Contribution } from "@/components/contribution-table-admin/columns";
+import { commonContent, dashboardContent, metaContent } from "@/lib/content";
+import { getMockContributions } from "@/lib/mock-data";
 
 export default function PublicDashboard() {
   const [biggestMoneyDonations, setBiggestMoneyDonations] = useState<
@@ -25,21 +27,13 @@ export default function PublicDashboard() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     let active = true;
 
     async function fetchContributions() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`${backend_url}/api/contributions`, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!res.ok) throw new Error("Erro ao buscar contribuições");
-        const raw = await res.json();
+        const raw = await getMockContributions();
         if (!active) return;
 
         const data: Contribution[] = Array.isArray(raw)
@@ -140,10 +134,7 @@ export default function PublicDashboard() {
           }
         });
       } catch (err: any) {
-        if (err?.name === "AbortError") {
-          return;
-        }
-        setError(err?.message ?? "Erro inesperado");
+        setError(err?.message ?? commonContent.errors.unexpected);
       } finally {
         if (active) setLoading(false);
       }
@@ -153,25 +144,26 @@ export default function PublicDashboard() {
 
     return () => {
       active = false;
-      controller.abort();
+      
     };
   }, [contributions.length]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <Hero />
 
       <main
         id="public-graph"
-        className="w-full lg:p-10 p-6 flex align-center justify-center"
+        className="w-full lg:p-10 p-6 flex align-center justify-center grow"
       >
         <div className="w-full">
           <div className="flex justify-center w-full pb-4">
-            <h1 className="font-light text-white text-sm">Arkana Dashboard</h1>
+            <h1 className="font-light text-white text-sm">
+              {metaContent.dashboardTitle}
+            </h1>
           </div>
 
           <div className="max-w-7xl mx-auto">
-            {/* Cards de Estatísticas */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               {overallMetrics.map((metric, index) => (
                 <Card
@@ -193,22 +185,21 @@ export default function PublicDashboard() {
               ))}
             </div>
 
-            {/* Dashboard */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <Card className="hover:border-secondary/50 bg-transparent border border-secondary/40">
                 <CardContent className="px-6">
                   <h2 className="text-lg text-center font-semibold text-gray-900 pb-3">
-                    Maiores Doações Financeiras
+                    {dashboardContent.stats.biggestMoneyTitle}
                   </h2>
                   <div>
                     {biggestMoneyDonations.length > 0 ? (
-                      biggestMoneyDonations.slice(0, 6).map((item, index) => (
+                      biggestMoneyDonations.slice(0, 10).map((item, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary/20 cursor-pointer transition-colors"
                         >
                           <p className="text-gray-900">
-                            {item.Fonte ?? "Fonte desconhecida"}
+                            {item.Fonte ?? dashboardContent.stats.unknownSource}
                           </p>
                           <span className="text-secondary">
                             R$ {item.Quantidade}
@@ -217,7 +208,7 @@ export default function PublicDashboard() {
                       ))
                     ) : (
                       <div className="mx-auto text-center text-gray-700">
-                        Nenhuma doação financeira encontrada.
+                        {dashboardContent.stats.emptyMoney}
                       </div>
                     )}
                   </div>
@@ -226,25 +217,26 @@ export default function PublicDashboard() {
               <Card className="hover:border-secondary/50 bg-transparent border border-secondary/40">
                 <CardContent className="px-6">
                   <h2 className="text-lg text-center font-semibold text-gray-900 pb-3">
-                    Maiores Doações Alimentícias
+                    {dashboardContent.stats.biggestFoodTitle}
                   </h2>
                   <div>
                     {biggestFoodDonations.length > 0 ? (
-                      biggestFoodDonations.slice(0, 6).map((item, index) => (
+                      biggestFoodDonations.slice(0, 10).map((item, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 rounded-lg hover:bg-secondary/20 cursor-pointer transition-colors"
                         >
                           <p className="text-gray-900">
-                            {item.Fonte ?? "Fonte desconhecida"}
+                            {item.Fonte ?? dashboardContent.stats.unknownSource}
                           </p>
-                          <span className="text-secondary"> {item.Quantidade * item.PesoUnidade} kg
+                          <span className="text-secondary">
+                            {item.Quantidade * item.PesoUnidade} kg
                           </span>
                         </div>
                       ))
                     ) : (
                       <div className="mx-auto text-center text-gray-700">
-                        Nenhuma doação alimentícia encontrada.
+                        {dashboardContent.stats.emptyFood}
                       </div>
                     )}
                   </div>
@@ -263,7 +255,7 @@ export default function PublicDashboard() {
                     >
                       <BookOpen className="w-6 h-6 text-gray-600" />
                       <span className="text-sm text-gray-900 font-medium">
-                        Registrar Doações
+                        {dashboardContent.quickActions.registerDonations}
                       </span>
                     </Link>
                   </Button>
@@ -274,7 +266,7 @@ export default function PublicDashboard() {
                     >
                       <FileText className="w-6 h-6 text-gray-600" />
                       <span className="text-sm text-gray-900 font-medium">
-                        Ver Relatórios
+                        {dashboardContent.quickActions.viewReports}
                       </span>
                     </Link>
                   </Button>
@@ -284,6 +276,7 @@ export default function PublicDashboard() {
           </div>
         </div>
       </main>
+
       {/* Footer */}
       <Footer />
     </div>

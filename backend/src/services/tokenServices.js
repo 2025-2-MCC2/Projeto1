@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 const denylist = new Set();
 
 export const createToken = (payload, options = {}) => {
-  const jti = uuidv4; // id único de token
+  const jti = uuidv4; 
   const token = jwt.sign({ ...payload, jti }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES || "2h",
     ...options,

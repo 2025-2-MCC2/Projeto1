@@ -15,6 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { reportsContent } from "@/lib/content";
 
 interface Contribution {
   month: string;
@@ -23,7 +24,7 @@ interface Contribution {
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: reportsContent.charts.overview.desktopLabel,
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
@@ -36,10 +37,10 @@ export function Chart({ chartData }: ChartProps) {
   return (
     <Card className="rounded-md border border-gray-400 shadow-none">
       <CardHeader>
-        <CardTitle>Histórico de Arrecadações</CardTitle>
+        <CardTitle>{reportsContent.charts.overview.title}</CardTitle>
         <CardDescription>
           <div className="text-muted-foreground flex items-center gap-2 leading-none">
-            Arrecadações Totais: R$0,00 | 00kg
+            {reportsContent.charts.overview.totals}
           </div>
         </CardDescription>
       </CardHeader>
