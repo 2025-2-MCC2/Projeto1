@@ -25,25 +25,25 @@ export default function MenuDesktop({ menuOpen, setMenuOpen }: Properties) {
       </button>
       <nav>
         <Link href="/">
-          <button className="p-2 m-2 rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
+          <button className="p-2 my-2 w-full rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base">
             {navigationContent.menu.desktop.backToDashboard}
           </button>
         </Link>
 
         <Link href={`/user/${RaUsuario}/user-profile`}>
-          <button className="p-2 m-2 rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
+          <button className="p-2 my-2 w-full rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base">
             {navigationContent.menu.desktop.profile}
           </button>
         </Link>
 
         <Link href={`/user/${RaUsuario}/new-contribution`}>
-          <button className="p-2 m-2 rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
+          <button className="p-2 my-2 w-full rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base">
             {navigationContent.menu.desktop.newContribution}
           </button>
         </Link>
 
         <Link href={`/user/${RaUsuario}/team-history`}>
-          <button className="p-2 m-2 rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
+          <button className="p-2 my-2 w-full rounded-xl text-left bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base">
             {navigationContent.menu.desktop.history}
           </button>
         </Link>

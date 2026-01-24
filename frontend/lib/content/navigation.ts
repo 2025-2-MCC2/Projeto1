@@ -25,7 +25,7 @@ export const navigationContent = {
     desktop: {
       backToDashboard: "Voltar ao Dashboard",
       profile: "Meu perfil",
-      newContribution: "Cadastrar novas contribuições",
+      newContribution: "Cadastrar contribuições",
       history: "Histórico de contribuições",
       loading: "Carregando...",
     },

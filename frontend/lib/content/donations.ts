@@ -2,7 +2,7 @@ export const donationsContent = {
   newContribution: {
     tabs: {
       finance: "Financeira",
-      food: "Alimentos",
+      food: "Alimentícia",
     },
     sections: {
       finance: "Financeiras",

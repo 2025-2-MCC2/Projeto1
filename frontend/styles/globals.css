@@ -109,7 +109,7 @@ input[type="number"] {
   --chart-1: var(--primary);
   --chart-2: #195b41; /* lighter green for layering */
   --chart-3: var(--secondary);
-  --chart-4: var(--muted);
+  --chart-4: #e3d4c3;
   --chart-5: #a7b96e; /* soft complementary olive tone */
 
   /* Common tokens */

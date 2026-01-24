@@ -57,8 +57,8 @@ const generateColor = (index: number): string => {
     "#cd6184",
     "#195b41",
     "#a7b96e",
-    "#fffefb",
-    "#fad8db",
+    "#e3d4c3",
+    "#f2b9c7",
   ];
   return colors[index % colors.length];
 };

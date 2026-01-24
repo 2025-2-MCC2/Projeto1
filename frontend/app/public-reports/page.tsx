@@ -60,7 +60,7 @@ export default function PublicReports() {
       </div>
 
       <div className="mx-auto mt-5 grid grid-cols-1 md:grid-cols-3">
-        <div className="w-full h-full md:col-span-2">
+        <div className="order-2 md:order-1 w-full h-full md:col-span-2">
           {/* Edition Selector */}
           {/*
           <div className="flex justify-center mb-6">
@@ -112,7 +112,7 @@ export default function PublicReports() {
           )}
         </div>
 
-        <div className="w-full h-full flex flex-col gap-6">
+        <div className="order-1 md:order-2 w-full h-full flex flex-col gap-6 pt-8">
           <BiggestContributionsChart />
           <FoodDonationsChart />
           <FinanContribuitionsChart />
