@@ -12,8 +12,6 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { Contribution } from "./contribution-table-admin/columns";
 import Loading from "./loading";
-import { commonContent, historyContent } from "@/lib/content";
-import { getMockContributions } from "@/lib/mock-data";
 
 interface RenderContributionProps {
   onSelect?: (contribution: Contribution) => void;
@@ -40,13 +38,21 @@ export default function RenderContributionCardAdmin({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     let active = true;
 
     async function fetchContributions() {
       try {
         setLoading(true);
         setError(null);
-        const raw = await getMockContributions();
+        const res = await fetch(`${backend_url}/api/contributions`, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!res.ok) throw new Error("Erro ao buscar contribuições");
+        const raw = await res.json();
         if (!active) return;
 
         const data: ContributionAdmin[] = Array.isArray(raw)
@@ -149,7 +155,10 @@ export default function RenderContributionCardAdmin({
           : [];
         setContributions(data);
       } catch (err: any) {
-        setError(err?.message ?? commonContent.errors.unexpected);
+        if (err?.name === "AbortError") {
+          return;
+        }
+        setError(err?.message ?? "Erro inesperado");
       } finally {
         if (active) setLoading(false);
       }
@@ -159,21 +168,22 @@ export default function RenderContributionCardAdmin({
 
     return () => {
       active = false;
-      
+      controller.abort();
     };
   }, [refreshKey]);
 
   if (contributions.length === 0) {
     return (
-      <div className="col-start-2 border rounded-xl border-secondary/40 bg-background shadow-sm w-auto max-w-100 mx-auto">
+      <div className="col-start-2 border rounded-xl border-gray-200 shadow-xl w-auto max-w-100 mx-auto">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <HandHeart size={44} strokeWidth={1.2} />
             </EmptyMedia>
-            <EmptyTitle>{historyContent.emptyStates.noneYetTitle}</EmptyTitle>
+            <EmptyTitle>Nenhuma contribuição por enquanto!</EmptyTitle>
             <EmptyDescription>
-              {historyContent.emptyStates.adminNoneYetDescription}
+              Nessa edição, nenhum grupo arrecadou doações. Quando os alunos
+              líderes adicionarem ao Arkana, aparecerá aqui!
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
@@ -194,55 +204,51 @@ export default function RenderContributionCardAdmin({
           {contributions.map((c) => (
             <div
               key={c.uuid}
-              className="p-3 rounded-xl bg-background hover:bg-secondary/10 hover:text-secondary border border-secondary/40 shadow-sm transition-shadow duration-300 cursor-pointer"
+              className="p-3 rounded-xl hover:bg-secondary/5 hover:text-secondary border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
               onClick={() => onSelect?.(c)}
             >
-              <p className="font-semibold text-lg mb-2">{c.NomeTime}</p>
-              <p className="text-sm text-primary/90">
-                {historyContent.cards.date}
-                {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
+              <p className="font-semibold text-lg ">{c.NomeTime}</p>
+              <p className="text-base text-gray-950">
+                Data: {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
               </p>
-              <p className="text-sm text-primary/90">
-                {historyContent.cards.source} {c.Fonte}
+              <p className="text-base text-gray-950">
+                Fonte da doação: {c.Fonte}
               </p>
-              <p className="text-sm text-primary/90">
-                {historyContent.cards.studentRa} {c.RaUsuario}
+              <p className="text-base text-gray-950">
+                Ra do Aluno: {c.RaUsuario}
               </p>
-              <p className="text-sm text-primary/80">
-                {historyContent.cards.type} {c.TipoDoacao}
+              <p className="text-base text-gray-800">
+                Tipo de Doação: {c.TipoDoacao}
               </p>
-              <p className="text-sm text-primary/80">
-                {historyContent.cards.amount}
-                {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
+              <p className="text-base text-gray-800">
+                Quantidade: {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="mb-15 grid grid-cols-1 md:grid-cols-3 gap-4.5 rounded-sm p-2.5">
+        <div className="mx-4 mb-15 grid grid-cols-1 md:grid-cols-3 gap-4.5 rounded-sm p-2.5">
           {contributions.map((c) => (
             <div
               key={c.uuid}
-              className="p-3 rounded-xl bg-background hover:bg-secondary/10 hover:text-secondary border border-secondary/40 shadow-sm transition-shadow duration-300 cursor-pointer"
+              className="p-3 rounded-xl hover:bg-secondary/5 hover:text-secondary border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
               onClick={() => onSelect?.(c)}
             >
-              <p className="font-semibold text-lg mb-2">{c.NomeTime}</p>
-              <p className="text-sm text-primary/90">
-                {historyContent.cards.date}
-                {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
+              <p className="font-semibold text-lg ">{c.NomeTime}</p>
+              <p className="text-base text-gray-950">
+                Data: {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
               </p>
-              <p className="text-sm text-primary/90">
-                {historyContent.cards.source} {c.Fonte}
+              <p className="text-base text-gray-950">
+                Fonte da doação: {c.Fonte}
               </p>
-              <p className="text-sm text-primary/90">
-                {historyContent.cards.studentRa} {c.RaUsuario}
+              <p className="text-base text-gray-950">
+                Ra do Aluno: {c.RaUsuario}
               </p>
-              <p className="text-sm text-primary/80">
-                {historyContent.cards.type} {c.TipoDoacao}
+              <p className="text-base text-gray-800">
+                Tipo de Doação: {c.TipoDoacao}
               </p>
-              <p className="text-sm text-primary/80">
-                {historyContent.cards.amount}
-                {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
+              <p className="text-base text-gray-800">
+                Quantidade: {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
               </p>
             </div>
           ))}

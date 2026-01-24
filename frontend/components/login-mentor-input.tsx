@@ -1,5 +1,4 @@
 import React from "react";
-import { authContent, images } from "@/lib/content";
 
 type Props = {
   EmailMentor: string;
@@ -21,7 +20,7 @@ const MentorInputs: React.FC<Props> = ({
       <div className="flex flex-col gap-3 items-center">
         <input
           type="text"
-          placeholder={authContent.inputs.email.placeholder}
+          placeholder="Email"
           value={EmailMentor}
           className="w-[80%] bg-[white] border border-gray-300 rounded-lg text-black placeholder-gray-700 px-3 py-1.5 text-base focus:outline-none"
           onChange={(e) => setEmailMentor(e.target.value)}
@@ -32,22 +31,16 @@ const MentorInputs: React.FC<Props> = ({
           value={SenhaMentor}
           onChange={(e) => setSenhaMentor(e.target.value)}
           className="w-[80%] bg-[white] border border-gray-300 rounded-lg text-black placeholder-gray-700 px-3 py-1.5 text-base focus:outline-none"
-          placeholder={authContent.inputs.password.placeholder}
+          placeholder="Senha"
         />
         <button
           onClick={() => setMostrarSenha(!mostrarSenha)}
           className="hidden rounded-lg"
         >
           {mostrarSenha ? (
-            <img
-              src={images.auth.eyeClosed.src}
-              alt={authContent.inputs.passwordToggleAlt.hide}
-            />
+            <img src="../assets/EyeClosed.png" />
           ) : (
-            <img
-              src={images.auth.eyeOpen.src}
-              alt={authContent.inputs.passwordToggleAlt.show}
-            />
+            <img src="../assets/EyeOpen.png" />
           )}
         </button>
       </div>

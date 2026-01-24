@@ -14,8 +14,6 @@ import formatBRL from "./formatBRL";
 import { v4 as uuidv4 } from "uuid";
 import { Contribution } from "./contribution-table/columns";
 import Loading from "./loading";
-import { commonContent, historyContent } from "@/lib/content";
-import { getMockContributionsByRa } from "@/lib/mock-data";
 
 interface RenderContributionProps {
   raUsuario?: number;
@@ -31,6 +29,8 @@ type ContributionAdmin = Contribution & {
     Pontuacao?: number | string;
   }[];
 };
+
+const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function RenderContributionCard({
   raUsuario,
@@ -51,6 +51,7 @@ export default function RenderContributionCard({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     let active = true;
 
     async function fetchContributions() {
@@ -58,9 +59,16 @@ export default function RenderContributionCard({
         setLoading(true);
         setError(null);
 
-        const raw = RaUsuario
-          ? await getMockContributionsByRa(RaUsuario)
-          : [];
+        const res = await fetch(
+          `${backend_url}/api/contributions/${RaUsuario}`,
+          {
+            cache: "no-store",
+            signal: controller.signal,
+          }
+        );
+
+        if (!res.ok) throw new Error("Erro ao buscar contribuições");
+        const raw = await res.json();
         if (!active) return;
 
         const data: ContributionAdmin[] = Array.isArray(raw)
@@ -163,7 +171,10 @@ export default function RenderContributionCard({
           : [];
         setContributions(data);
       } catch (err: any) {
-        setError(err?.message ?? commonContent.errors.unexpected);
+        if (err?.name === "AbortError") {
+          return;
+        }
+        setError(err?.message ?? "Erro inesperado");
       } finally {
         if (active) setLoading(false);
       }
@@ -173,21 +184,22 @@ export default function RenderContributionCard({
 
     return () => {
       active = false;
-      
+      controller.abort();
     };
   }, [RaUsuario, refreshKey]);
 
   if (contributions.length === 0) {
     return (
-      <div className="col-start-2 border rounded-xl border-secondary/40 bg-background shadow-sm w-auto max-w-100 mx-auto">
+      <div className="col-start-2 border rounded-xl border-gray-200 shadow-xl w-auto max-w-100 mx-auto">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <HandHeart size={44} strokeWidth={1.2} />
             </EmptyMedia>
-            <EmptyTitle>{historyContent.emptyStates.noneYetTitle}</EmptyTitle>
+            <EmptyTitle>Nenhuma contribuição por enquanto!</EmptyTitle>
             <EmptyDescription>
-              {historyContent.emptyStates.noneYetDescription}
+              Seu grupo ainda não arrecadou nenhuma doação. Quando o aluno líder
+              adicionar ao Arkana, ela aparecerá aqui!
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
@@ -196,7 +208,7 @@ export default function RenderContributionCard({
   }
 
   return (
-    <div className="mb-15 grid grid-cols-1 md:grid-cols-3 gap-4.5 rounded-sm p-2.5">
+    <div className="mx-4 mb-15 grid grid-cols-1 md:grid-cols-3 gap-4.5 rounded-sm p-2.5">
       {loading && (
         <div className="w-screen h-full text-center text-gray-600">
           <Loading />
@@ -208,23 +220,21 @@ export default function RenderContributionCard({
         contributions.map((c) => (
           <div
             key={c.uuid}
-            className="p-3 rounded-xl bg-background hover:bg-secondary/10 hover:text-secondary border border-secondary/40 shadow-sm transition-shadow duration-300 cursor-pointer"
+            className="p-3 rounded-xl hover:bg-secondary/5 hover:text-secondary border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
             onClick={() => onSelect?.(c)}
           >
-            <p className="font-semibold text-lg mb-2">{c.Fonte}</p>
-            <p className="text-sm text-primary/90">
-              {historyContent.cards.date}
-              {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
+            <p className="font-semibold text-lg ">{c.Fonte}</p>
+            <p className="text-base text-gray-950">
+              Data: {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
             </p>
-            <p className="text-sm text-primary/80">
-              {historyContent.cards.type} {c.TipoDoacao}
+            <p className="text-base text-gray-800">
+              Tipo de Doação: {c.TipoDoacao}
             </p>
-            <p className="text-sm text-primary/80">
-              {historyContent.cards.amount}
-              {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
+            <p className="text-base text-gray-800">
+              Quantidade: {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
             </p>
-            <p className="text-sm text-primary/80">
-              {historyContent.cards.expenses} {formatBRL(c.Gastos)}
+            <p className="text-base text-gray-800">
+              Gastos: {formatBRL(c.Gastos)}
             </p>
           </div>
         ))}

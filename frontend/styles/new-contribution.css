@@ -1,24 +1,31 @@
+/* IMPORTANTE: priorize Tailwind para layout; este CSS é apenas para complementos visuais */
 
+/* Container genérico */
 .container {
   display: block;
   width: 100%;
 }
 
+
+/* Header */
 header {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  color: var(--foreground);
+  color: rgb(242, 238, 238);
 }
 :root {
-  --primary: #254128; 
-  --secondary: #cd6184; 
+  --primary: #254128; /* forest green */
+  --secondary: #cd6184; /* pink accent */
   --terciary: #fad8db;
-  --muted: #fffefb; 
-  --background: #fffefb; 
-  --foreground: #242424; 
+  --muted: #fffefb; /* beige neutral */
+  --background: #fffefb; /* blush base background */
+  --foreground: #242424; /* dark text for contrast */
 }
+/* ===========================
+   Inputs / Botões
+   =========================== */
 
 input[type="file"]::file-selector-button {
   background: #207960;
@@ -30,34 +37,42 @@ input[type="file"]::file-selector-button {
   cursor: pointer;
 }
 
+
+/* ===========================
+   Menu lateral / Mobile
+   =========================== */
+
 .open-menu {
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-weight: 800;
   cursor: pointer;
-  color: black;
+  color: #207960;
   position: fixed;
   left: 1.2rem;
   top: 1.2rem;
 }
 
-.is-hidden {
-  display: none;
+/* ⚠️ ALTERAÇÃO IMPORTANTE:
+   Não usar `.hidden` global para não conflitar com Tailwind.
+   Renomeado para `.is-hidden`. Atualize seu HTML onde usava o .hidden customizado.
+*/
+.is-hidden {         /* ALTERAÇÃO */
+  display: none;     /* ALTERAÇÃO */
 }
 
 .side-menu {
   position: fixed;
   top: 0;
-  left: -270px;
+  left: -270px; /* começa escondido fora da tela */
   width: 270px;
   height: 100vh;
-  background: var(--background);
-  border: 1px solid rgba(36, 36, 36, 0.12);
-  box-shadow: 0 8px 24px rgba(36, 36, 36, 0.12);
-  color: var(--foreground);
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: rgb(0, 0, 0);
   padding: 1rem;
-  text-align: left;
   transition: left 0.3s ease;
   z-index: 1000;
 }
@@ -66,55 +81,80 @@ input[type="file"]::file-selector-button {
   left: 0;
 }
 
+/* botão de fechar */
 .close-menu {
   background: none;
   border: none;
-  color: var(--foreground);
+  color: rgb(0, 0, 0);
   font-size: 1.5rem;
   cursor: pointer;
   margin-bottom: 1rem;
-  text-align: left;
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
 }
 
+/* botoes do side menu e do nav mobile 
+.donation-menu-button {
+  margin: 5px;
+  padding: 8px;
+  width: 95%;
+  color: #000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.donation-menu-button:hover {
+  color: #1d7a66;
+  border: 1px solid #1d7a66;
+}
+*/
+/* menu do mobile, fica escondido se for desktop */
 .mobile-nav {
   display: none;
 }
 
+/* ===========================
+   Responsividade
+   =========================== */
+
+/* Em celulares pequenos: inputs em 1 coluna */
 @media (min-width: 200px) and (max-width: 490px) {
   .donation-details {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 12px; /* opcional */
   }
 }
 
+/* A partir de tablets: inputs em 2 colunas */
 @media (min-width: 491px) {
   .donation-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 16px; /* opcional */
   }
 }
 
+/* Regras para mobile até 670px */
 @media (max-width: 670px) {
   .side-menu,
   .open-menu {
     display: none;
-  } 
+  } /* Aqui esconde o menu lateral */
+
 
   .mobile-nav {
-    display: flex;              
+    display: flex;              /* ALTERAÇÃO: simplificado (não precisa repetir display) */
     position: fixed;
     bottom: 0;
     left: 0;
     padding: 7px;
     width: 100%;
-    background: var(--background);
-    color: var(--foreground);
-    box-shadow: 0 -6px 16px rgba(36, 36, 36, 0.12);
+    background: #f5f5f5;
+    color: white;
+    box-shadow: 0 -2px 8px rgba(24, 23, 23, 0.2);
     z-index: 1000;
     margin: auto;
     flex-grow: 1;
@@ -126,3 +166,14 @@ input[type="file"]::file-selector-button {
   }
 }
 
+/* ===========================
+   (OPCIONAL) Alternativa se você NÃO puder renomear .hidden
+   Escopar o .hidden somente ao side-menu:
+   Descomente abaixo e REMOVA a classe .is-hidden acima.
+   Obs: mantenha as classes Tailwind nos cards (hidden md:block / md:flex).
+=========================== */
+/*
+.side-menu .hidden {
+  display: none;
+}
+*/

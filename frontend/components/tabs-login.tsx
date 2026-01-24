@@ -5,8 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CustomInputs from "./login-user-inputs";
 import MentorInputs from "./login-mentor-input";
 import { useRouter } from "next/navigation";
-import { authContent } from "@/lib/content";
-import { loginAdminMock, loginMentorMock, loginUserMock } from "@/lib/mock-data";
 
 export default function TabsLogin() {
   const router = useRouter();
@@ -14,53 +12,127 @@ export default function TabsLogin() {
   const [IdTime] = React.useState("");
   const [EmailMentor, setEmailMentor] = React.useState("");
   const [SenhaMentor, setSenhaMentor] = React.useState("");
-  const [RaUsuario, setRaUsuario] = React.useState(
-    authContent.defaults.studentMentorRa
-  );
-  const [SenhaUsuario, setSenhaUsuario] = React.useState(
-    authContent.defaults.studentMentorPassword
-  );
+  const [RaUsuario, setRaUsuario] = React.useState("");
+  const [SenhaUsuario, setSenhaUsuario] = React.useState("");
 
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  // Login Student
   const handleSubmitAluno = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!backendUrl) {
+      console.error("NEXT_PUBLIC_BACKEND_URL não está configurada");
+      alert("Erro de configuração. Entre em contato com o suporte.");
+      return;
+    }
+
+    const apiUrl = `${backendUrl}/api/user/login`;
+
     try {
-      const user = await loginUserMock(parseInt(RaUsuario), SenhaUsuario);
-      if (!user) {
-        alert(`${authContent.errors.errorPrefix} ${authContent.errors.loginUser}`);
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          RaUsuario: parseInt(RaUsuario),
+          SenhaUsuario,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res
+          .json()
+          .catch(() => ({ error: "Erro desconhecido" }));
+        alert("Erro: " + (err.error || `Status ${res.status}`));
         return;
       }
+
+      const userId = await res.json();
       router.push(`/user/${RaUsuario}/new-contribution`);
     } catch (error) {
-      alert(authContent.errors.loginUser);
+      alert("Erro ao logar usuário");
     }
   };
 
+  // Login Mentor
   const handleSubmitMentor = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!backendUrl) {
+      console.error("NEXT_PUBLIC_BACKEND_URL não está configurada");
+      alert("Erro de configuração. Entre em contato com o suporte.");
+      return;
+    }
+
+    const apiUrl = `${backendUrl}/api/loginMentor`;
+
     try {
-      const mentor = await loginMentorMock(EmailMentor, SenhaMentor);
-      if (!mentor) {
-        alert(`${authContent.errors.errorPrefix} ${authContent.errors.loginMentor}`);
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          EmailMentor: EmailMentor,
+          SenhaMentor: SenhaMentor,
+          isAdmin: false,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res
+          .json()
+          .catch(() => ({ error: "Erro desconhecido" }));
+        console.error("Erro da API:", err);
+        alert("Erro: " + (err.error || `Status ${res.status}`));
         return;
       }
+
+      const { mentor } = await res.json();
       setIdMentor(mentor.IdMentor);
       router.push(`/mentor/${mentor.IdMentor}/mentor-history`);
     } catch (error) {
-      console.error(authContent.errors.loginMentor, error);
+      console.error("Erro ao logar mentor:", error);
     }
   };
 
+  //login admin
   const handleSubmitAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!backendUrl) {
+      console.error("NEXT_PUBLIC_BACKEND_URL não está configurada");
+      alert("Erro de configuração. Entre em contato com o suporte.");
+      return;
+    }
+
+    const apiUrl = `${backendUrl}/api/loginAdmin`;
+
     try {
-      const admin = await loginAdminMock(EmailMentor, SenhaMentor);
-      if (!admin) {
-        alert(`${authContent.errors.errorPrefix} ${authContent.errors.loginMentor}`);
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          EmailMentor: EmailMentor,
+          SenhaMentor: SenhaMentor,
+          isAdmin: true,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res
+          .json()
+          .catch(() => ({ error: "Erro desconhecido" }));
+        console.error("Erro da API:", err);
+        alert("Erro: " + (err.error || `Status ${res.status}`));
         return;
       }
+
+      const { admin } = await res.json();
       setIdMentor(admin.IdMentor);
       router.push(`/admin/${admin.IdMentor}/admin-history`);
     } catch (error) {
@@ -72,19 +144,19 @@ export default function TabsLogin() {
     <Tabs defaultValue="Aluno" className="md:w-[700px] h-full mb-1">
       <TabsList className="flex gap-1">
         <TabsTrigger value="Aluno" className="hover:cursor-pointer">
-          {authContent.tabs.labels.studentMentor}
+          Aluno-Mentor
         </TabsTrigger>
         <TabsTrigger value="Mentor" className="hover:cursor-pointer">
-          {authContent.tabs.labels.mentor}
+          Mentor
         </TabsTrigger>
-        <TabsTrigger value="Admin">{authContent.tabs.labels.admin}</TabsTrigger>
+        <TabsTrigger value="Admin"> Admin</TabsTrigger>
       </TabsList>
 
       <TabsContent value="Aluno">
         <section className="border border-gray-300 h-full rounded-lg mb-2 flex flex-col items-center justify-center md:w-[365px] px-6 py-8">
-          <p className="text-sm text-center max-w-45 text-gray-600 mb-4">
-            {authContent.tabs.studentMentorHint}
-          </p>
+          <h2 className="text-secondary text-center font-bold text-xl md:text-xl my-4">
+            Login de Alunos-Mentores
+          </h2>
           <form
             onSubmit={handleSubmitAluno}
             className="flex flex-col gap-4 w-full"
@@ -99,7 +171,7 @@ export default function TabsLogin() {
               type="submit"
               className="border-transparent bg-secondary hover:text-white! text-white text-base py-2 px-6 w-[90px] md:w-28 self-center hover:bg-secondary/80 rounded-lg"
             >
-              {authContent.tabs.submit}
+              Entrar
             </button>
           </form>
         </section>
@@ -108,7 +180,7 @@ export default function TabsLogin() {
       <TabsContent value="Mentor">
         <section className="border border-gray-300 h-full rounded-lg mb-2 flex flex-col items-center justify-center md:w-[365px] px-6 py-8">
           <h2 className="text-secondary text-center font-bold text-xl md:text-xl my-4">
-            {authContent.tabs.headers.mentor}
+            Login Mentores
           </h2>
           <form
             onSubmit={handleSubmitMentor}
@@ -124,7 +196,7 @@ export default function TabsLogin() {
               type="submit"
               className="border-transparent bg-secondary hover:text-white! text-white text-base py-2 px-6 w-[90px] md:w-28 self-center hover:bg-secondary/80 rounded-lg"
             >
-              {authContent.tabs.submit}
+              Entrar
             </button>
           </form>
         </section>
@@ -132,7 +204,7 @@ export default function TabsLogin() {
       <TabsContent value="Admin">
         <section className="border border-gray-300 h-full rounded-lg mb-2 flex flex-col items-center justify-center md:w-[365px] px-6 py-8">
           <h2 className="text-secondary text-center font-bold text-xl md:text-xl my-4">
-            {authContent.tabs.headers.admin}
+            Login Administradores
           </h2>
           <form
             onSubmit={handleSubmitAdmin}
@@ -148,7 +220,7 @@ export default function TabsLogin() {
               type="submit"
               className="border-transparent bg-secondary hover:text-white! text-white text-base py-2 px-6 w-[90px] md:w-28 self-center hover:bg-secondary/80 rounded-lg"
             >
-              {authContent.tabs.submit}
+              Entrar
             </button>
           </form>
         </section>

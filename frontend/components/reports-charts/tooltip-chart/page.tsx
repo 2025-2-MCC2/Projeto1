@@ -17,18 +17,16 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { v4 as uuidv4 } from "uuid";
-import { commonContent, reportsContent } from "@/lib/content";
-import { getMockContributions } from "@/lib/mock-data";
 
-export const description = reportsContent.charts.biggestContributions.description;
+export const description = "Gráfico de contribuições financeiras e alimentares";
 
 const chartConfig = {
   running: {
-    label: reportsContent.charts.biggestContributions.legend.financial,
+    label: "Financeiras",
     color: "var(--chart-1)",
   },
   swimming: {
-    label: reportsContent.charts.biggestContributions.legend.food,
+    label: "Alimentícias",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
@@ -39,6 +37,8 @@ export function BiggestContributionsChart() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     let active = true;
 
     async function fetchContributions() {
@@ -46,7 +46,13 @@ export function BiggestContributionsChart() {
         setLoading(true);
         setError(null);
 
-        const raw = await getMockContributions();
+        const res = await fetch(`${backend_url}/api/contributions`, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error("Erro ao buscar contribuições");
+
+        const raw = await res.json();
         if (!active) return;
 
         const data: Contribution[] = Array.isArray(raw)
@@ -129,7 +135,9 @@ export function BiggestContributionsChart() {
 
         setContributions(data);
       } catch (err: any) {
-        setError(err?.message ?? commonContent.errors.unexpected);
+        if (err?.name !== "AbortError") {
+          setError(err?.message ?? "Erro inesperado");
+        }
       } finally {
         if (active) setLoading(false);
       }
@@ -139,7 +147,7 @@ export function BiggestContributionsChart() {
 
     return () => {
       active = false;
-      
+      controller.abort();
     };
   }, []);
 
@@ -169,12 +177,10 @@ export function BiggestContributionsChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.biggestContributions.title}</CardTitle>
+          <CardTitle>Período de maiores contribuições</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">
-            {reportsContent.charts.biggestContributions.loading}
-          </p>
+          <p className="text-muted-foreground">Carregando...</p>
         </CardContent>
       </Card>
     );
@@ -184,12 +190,10 @@ export function BiggestContributionsChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.biggestContributions.title}</CardTitle>
+          <CardTitle>Período de maiores contribuições</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-destructive">
-            {reportsContent.charts.biggestContributions.errorPrefix} {error}
-          </p>
+          <p className="text-destructive">Erro: {error}</p>
         </CardContent>
       </Card>
     );
@@ -199,12 +203,10 @@ export function BiggestContributionsChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.biggestContributions.title}</CardTitle>
+          <CardTitle>Período de maiores contribuições</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">
-            {reportsContent.charts.biggestContributions.empty}
-          </p>
+          <p className="text-muted-foreground">Nenhum dado disponível</p>
         </CardContent>
       </Card>
     );
@@ -213,9 +215,9 @@ export function BiggestContributionsChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{reportsContent.charts.biggestContributions.title}</CardTitle>
+        <CardTitle>Período de maiores contribuições</CardTitle>
         <CardDescription>
-          {reportsContent.charts.biggestContributions.groupedByDay}
+          Agrupado por dia, considerando doações financeiras e alimentares
         </CardDescription>
       </CardHeader>
       <CardContent>

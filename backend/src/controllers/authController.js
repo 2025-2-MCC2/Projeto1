@@ -11,7 +11,7 @@ const sanitizeUser = (u) => ({
   TelefoneUsuario: u.TelefoneUsuario,
 });
 const authController = {
-  
+  //POST /api/register
   createUser: async (req, res) => {
     const {
       RaUsuario,
@@ -74,6 +74,7 @@ const authController = {
     }
   },
 
+  //POST /api/register/login
   loginUser: async (req, res) => {
     const { RaUsuario, SenhaUsuario } = req.body;
 
@@ -110,6 +111,8 @@ const authController = {
     }
   },
 
+  // Reset de senha
+  //PUT /api/resetPassword
   resetPassword: async (req, res) => {
     const { rausuario, newPassword } = req.body;
     if (!rausuario || !newPassword) {
@@ -130,6 +133,7 @@ const authController = {
     }
   },
 
+  //POST /api/logOutUser
   logOutUser: async (req, res) => {
     try {
       const { jti } = req.usuario;

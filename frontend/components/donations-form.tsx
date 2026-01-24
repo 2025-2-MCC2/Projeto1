@@ -2,7 +2,8 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Image, { StaticImageData } from "next/image";
-import { donationsContent, images } from "@/lib/content";
+import uploadStatic from "@/assets/icons/upload-static.png";
+import uploadGif from "@/assets/icons/upload-anim.gif";
 
 type Img = StaticImageData | string;
 
@@ -46,6 +47,7 @@ export default function DonationsForm({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const timerRef = useRef<number | null>(null);
 
+  // Estados locais para os inputs
   const [metaInput, setMetaInput] = useState<string>("");
   const [gastosInput, setGastosInput] = useState<string>("");
   const [quantidadeInput, setQuantidadeInput] = useState<string>("");
@@ -53,12 +55,14 @@ export default function DonationsForm({
   const normalize = (s: string) => s.replace(",", ".").trim();
   const toNumberOrNaN = (s: string) => Number(normalize(s));
 
+  // Sincroniza valores numéricos com inputs de texto
   useEffect(() => {
     setMetaInput(meta ? String(meta) : "");
     setGastosInput(gastos ? String(gastos) : "");
     setQuantidadeInput(quantidade ? String(quantidade) : "");
   }, [meta, gastos, quantidade]);
 
+  // Animação de botão
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -97,6 +101,7 @@ export default function DonationsForm({
     fileInputRef.current?.click();
   };
 
+  // Limpa timer ao desmontar
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -124,12 +129,12 @@ export default function DonationsForm({
     const okSize = file.size <= 5 * 1024 * 1024;
 
     if (!okType) {
-      alert(donationsContent.errors.invalidFileType);
+      alert("Formato inválido. Use PNG, JPEG ou PDF.");
       stopGif();
       return;
     }
     if (!okSize) {
-      alert(donationsContent.errors.invalidFileSize);
+      alert("Arquivo muito grande (máx. 5MB).");
       stopGif();
       return;
     }
@@ -159,56 +164,46 @@ export default function DonationsForm({
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="rounded-xl">
-        <label className="block mb-1">
-          {donationsContent.financialForm.eventLabel}
-        </label>
+        <label className="block mb-1">Nome do Evento / Doador</label>
         <input
           type="text"
-          placeholder={donationsContent.financialForm.eventPlaceholder}
+          placeholder="Ex: Instituto Alma"
           value={fonte}
           onChange={(e) => setFonte(e.currentTarget.value)}
           className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5"
         />
 
-        <label className="block mb-1 mt-3">
-          {donationsContent.financialForm.goalLabel}
-        </label>
+        <label className="block mb-1 mt-3">Meta (R$)</label>
         <input
           type="text"
           inputMode="decimal"
-          placeholder={donationsContent.financialForm.goalPlaceholder}
+          placeholder="Ex: R$100"
           value={metaInput}
           onChange={(e) => handleMetaChange(e.currentTarget.value)}
           className="w-full bg-white border border-gray-300 rounded px-3 py-1.5"
         />
 
-        <label className="block mb-1 mt-3">
-          {donationsContent.financialForm.expensesLabel}
-        </label>
+        <label className="block mb-1 mt-3">Gastos (R$)</label>
         <input
           type="number"
           step="0.01"
-          placeholder={donationsContent.financialForm.expensesPlaceholder}
+          placeholder="Ex: R$100"
           value={gastosInput}
           onChange={(e) => handleGastosChange(e.currentTarget.value)}
           className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5"
         />
 
-        <label className="block mb-1 mt-3">
-          {donationsContent.financialForm.amountLabel}
-        </label>
+        <label className="block mb-1 mt-3">Valor Arrecadado</label>
         <input
           type="number"
           step="0.01"
-          placeholder={donationsContent.financialForm.amountPlaceholder}
+          placeholder="Ex: R$100"
           value={quantidadeInput}
           onChange={(e) => handleQuantidadeChange(e.currentTarget.value)}
           className="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5"
         />
 
-        <label className="block mb-1 mt-8">
-          {donationsContent.financialForm.receiptLabel}
-        </label>
+        <label className="block mb-1 mt-8">Comprovante (PNG/JPEG/PDF)</label>
         <input
           ref={fileInputRef}
           type="file"
@@ -229,15 +224,11 @@ export default function DonationsForm({
             }
             className="inline-flex items-center justify-center h-14 w-18 rounded-lg bg-white transition"
             disabled={loading}
-            aria-label={donationsContent.financialForm.receiptButtonAria}
+            aria-label="Selecionar comprovante"
           >
             <Image
-              src={
-                picking
-                  ? (images.upload.animated as Img)
-                  : (images.upload.static as Img)
-              }
-              alt={donationsContent.financialForm.receiptAlt}
+              src={picking ? (uploadGif as Img) : (uploadStatic as Img)}
+              alt="Selecionar comprovante"
               width={35}
               height={35}
               className="pointer-events-none select-none"
@@ -248,8 +239,8 @@ export default function DonationsForm({
 
           <span className="ml-3 text-sm text-gray-700">
             {comprovante
-              ? `${comprovante.name}`
-              : donationsContent.financialForm.receiptEmpty}
+              ? `Selecionado: ${comprovante.name}`
+              : "Nenhum arquivo escolhido"}
           </span>
         </div>
       </div>

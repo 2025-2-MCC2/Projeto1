@@ -17,8 +17,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { commonContent, reportsContent } from "@/lib/content";
-import { getMockContributions, getMockContributionsByRa } from "@/lib/mock-data";
 
 interface FoodDonationsChartProps {
   RaUsuario?: number;
@@ -57,8 +55,8 @@ const generateColor = (index: number): string => {
     "#cd6184",
     "#195b41",
     "#a7b96e",
-    "#e3d4c3",
-    "#f2b9c7",
+    "#fffefb",
+    "#fad8db",
   ];
   return colors[index % colors.length];
 };
@@ -116,12 +114,14 @@ const processAlimentos = (
     .sort((a, b) => b.quantidade - a.quantidade);
 };
 
+const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const chartConfig = {
   quantidade: {
-    label: reportsContent.charts.foodDonations.config.totalQuantity,
+    label: "Quantidade Total",
   },
   value: {
-    label: reportsContent.charts.foodDonations.config.donations,
+    label: "Doações",
   },
 } satisfies ChartConfig;
 
@@ -136,16 +136,27 @@ export function FoodDonationsChart({ RaUsuario }: FoodDonationsChartProps) {
         setLoading(true);
         setError(null);
 
-        const rawData = RaUsuario
-          ? await getMockContributionsByRa(RaUsuario)
-          : await getMockContributions();
+        const endpoint = RaUsuario
+          ? `${backend_url}/api/contributions/${RaUsuario}`
+          : `${backend_url}/api/contributions`;
+
+        const response = await fetch(endpoint, {
+          cache: "no-store",
+          signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro ao buscar contribuições: ${response.status}`);
+        }
+
+        const rawData = await response.json();
         const data = Array.isArray(rawData) ? rawData : [];
 
         setContributions(data);
       } catch (err: any) {
         if (err?.name !== "AbortError") {
-          console.error(`${commonContent.errors.fetchContributions}:`, err);
-          setError(err?.message ?? commonContent.errors.unexpectedLoad);
+          console.error("Erro ao buscar contribuições:", err);
+          setError(err?.message ?? "Erro inesperado ao carregar dados");
         }
       } finally {
         setLoading(false);
@@ -187,10 +198,10 @@ export function FoodDonationsChart({ RaUsuario }: FoodDonationsChartProps) {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle className="flex items-center gap-2">
-          {reportsContent.charts.foodDonations.title}
+          Doações Alimentícias
         </CardTitle>
         <CardDescription>
-          {reportsContent.charts.foodDonations.description}
+          Alimentos mais doados durante o período dessa edição
         </CardDescription>
       </CardHeader>
 
@@ -199,9 +210,7 @@ export function FoodDonationsChart({ RaUsuario }: FoodDonationsChartProps) {
           <div className="flex items-center justify-center h-[300px]">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">
-                {reportsContent.charts.foodDonations.loading}
-              </p>
+              <p className="text-muted-foreground">Carregando dados...</p>
             </div>
           </div>
         ) : error ? (
@@ -212,7 +221,7 @@ export function FoodDonationsChart({ RaUsuario }: FoodDonationsChartProps) {
                 onClick={() => fetchContributions(new AbortController().signal)}
                 className="text-sm text-primary hover:underline"
               >
-                {reportsContent.charts.foodDonations.retry}
+                Tentar novamente
               </button>
             </div>
           </div>
@@ -220,11 +229,9 @@ export function FoodDonationsChart({ RaUsuario }: FoodDonationsChartProps) {
           <div className="flex items-center justify-center h-[300px]">
             <div className="text-center text-muted-foreground">
               <Package className="h-16 w-16 mx-auto mb-4 opacity-20" />
-              <p className="font-medium">
-                {reportsContent.charts.foodDonations.noDataTitle}
-              </p>
+              <p className="font-medium">Nenhum alimento doado ainda</p>
               <p className="text-sm mt-2">
-                {reportsContent.charts.foodDonations.noDataDescription}
+                As doações aparecerão aqui quando forem registradas
               </p>
             </div>
           </div>
@@ -243,12 +250,9 @@ export function FoodDonationsChart({ RaUsuario }: FoodDonationsChartProps) {
                         <span className="font-semibold">
                           {props.payload.name}
                         </span>
+                        <span className="text-sm">Doações: {value}</span>
                         <span className="text-sm">
-                          {reportsContent.charts.foodDonations.tooltip.donations}{" "}
-                          {value}
-                        </span>
-                        <span className="text-sm">
-                          {reportsContent.charts.foodDonations.tooltip.quantity}{" "}
+                          Quantidade:{" "}
                           {Intl.NumberFormat("pt-BR").format(
                             props.payload.quantidade
                           )}

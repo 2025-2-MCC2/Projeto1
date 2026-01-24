@@ -1,5 +1,4 @@
 import React from "react";
-import { commonContent } from "@/lib/content";
 
 interface Props {
   onClick: () => void;
@@ -14,7 +13,7 @@ const CloseButton: React.FC<Props> = ({ isActive, onClick, className }) => {
         className ?? ""
       }`}
       onClick={onClick}
-      aria-label={commonContent.closeModalAria}
+      aria-label="Fechar modal"
       aria-hidden={!isActive}
       tabIndex={isActive ? 0 : -1}
     >
