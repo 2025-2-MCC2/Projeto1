@@ -9,6 +9,7 @@ import { fetchData } from "@/hooks/fetch-user-profile";
 import RecordsModal from "@/components/records-modal";
 import SwitchViewButton from "@/components/toggle-button";
 import RenderContributionTable from "@/components/table-contribution";
+import { historyContent } from "@/lib/content";
 
 export default function TeamHistory() {
   const params = useParams();
@@ -49,7 +50,7 @@ export default function TeamHistory() {
               menuOpen ? "md:pl-[270px]" : "ml-0"
             }`}
           >
-            Histórico de contribuições
+            {historyContent.pages.title}
           </h1>
         </header>
       </div>
@@ -81,10 +82,15 @@ export default function TeamHistory() {
           )}
           <div className="flex flex-col gap-2 mx-3 text-center">
             <h3 className="text-2xl uppercase font-semibold text-primary ">
-              {team?.NomeTime ? team?.NomeTime : "Nome do time aparecerá aqui"}
+              {team?.NomeTime
+                ? team?.NomeTime
+                : historyContent.placeholders.teamName}
             </h3>
             <h4 className="mb-3 text-xl text-primary/80">
-              Turma {user?.TurmaUsuario ? user?.TurmaUsuario : "X"}
+              {historyContent.labels.classPrefix}{" "}
+              {user?.TurmaUsuario
+                ? user?.TurmaUsuario
+                : historyContent.placeholders.classFallback}
             </h4>
             <div className="self-end">
               <SwitchViewButton

@@ -2,11 +2,16 @@
 
 import React, { SetStateAction, useEffect } from "react";
 import { useParams } from "next/navigation";
-import Arkana from "@/assets/Arkana.png";
 import MenuMobile from "@/components/menu-mobile";
 import MenuDesktop from "@/components/menu-desktop";
 import { fetchData } from "@/hooks/fetch-user-profile";
 import { Contribution } from "@/components/contribution-table/columns";
+import { commonContent, images, profilesContent } from "@/lib/content";
+import {
+  getMockContributionsByRa,
+  getMockMentor,
+  createMentorMock,
+} from "@/lib/mock-data";
 
 export default function UserProfile() {
   const params = useParams();
@@ -20,7 +25,6 @@ export default function UserProfile() {
   const [user, setUser] = React.useState<any>(null);
   const [team, setTeam] = React.useState<any>(null);
 
-  const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
   useEffect(() => {
     const fetchTeamData = async () => {
       const data = await fetchData(RaUsuario);
@@ -31,17 +35,7 @@ export default function UserProfile() {
 
     const fetchContributions = async () => {
       try {
-        const res = await fetch(
-          `${backend_url}/api/contributions/${RaUsuario}`
-        );
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          console.warn("Erro ao buscar contribuições:", errorData.error);
-          return;
-        }
-
-        const contributions = await res.json();
+        const contributions = await getMockContributionsByRa(RaUsuario);
         setContributions(contributions);
       } catch (err) {
         console.error(err);
@@ -54,9 +48,8 @@ export default function UserProfile() {
     const fetchEmailMentor = async () => {
       if (!team?.IdMentor) return;
       try {
-        const res = await fetch(`${backend_url}/api/mentor/${team.IdMentor}`);
-        const emailM = await res.json();
-        if (res.ok) setEmailMentor(emailM.EmailMentor);
+        const mentor = await getMockMentor(team.IdMentor);
+        if (mentor) setEmailMentor(mentor.EmailMentor);
       } catch (err) {
         console.error(err);
       }
@@ -67,38 +60,24 @@ export default function UserProfile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailMentor?.trim()) {
-      alert("Por favor, insira um email válido.");
+      alert(profilesContent.user.invalidEmail);
       return;
     }
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(
-        `${backend_url}/api/createMentor/${RaUsuario}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            EmailMentor: emailMentor,
-            RaUsuario: RaUsuario,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Erro ao salvar o mentor no banco de dados.");
-      }
-      const MentorData = await response.json();
+      const MentorData = await createMentorMock({
+        EmailMentor: emailMentor,
+        RaUsuario: RaUsuario,
+      });
       setTeam((prevTeam: any) => ({
         ...prevTeam,
         IdMentor: MentorData.IdMentor,
       }));
-      alert("Mentor adicionado com sucesso!");
+      alert(profilesContent.user.addMentorSuccess);
     } catch (error) {
       console.error(error);
-      alert("Ocorreu um erro ao salvar o mentor.");
+      alert(profilesContent.user.addMentorError);
     } finally {
       setIsSubmitting(false);
     }
@@ -136,13 +115,20 @@ export default function UserProfile() {
         <section className="w-[90%] md:max-w-[1300px] md:mt-0 grid grid-cols-1 md:grid-cols-2 h-150  my-5 mb-10 gap-2">
           <div className="flex flex-col gap-3 p-5 border rounded-xl border-gray-200 shadow-xl">
             <h3 className="text-3xl pt-5 uppercase font-semibold text-primary">
-              {team?.NomeTime ? team?.NomeTime : "Nome do time aparecerá aqui"}
+              {team?.NomeTime
+                ? team?.NomeTime
+                : profilesContent.user.teamNameFallback}
             </h3>
             <h4 className="mb-3 text-xl text-black">
-              Turma {user?.TurmaUsuario ? user?.TurmaUsuario : "X"}
+              {profilesContent.user.classPrefix}{" "}
+              {user?.TurmaUsuario
+                ? user?.TurmaUsuario
+                : profilesContent.user.classFallback}
             </h4>
 
-            <p className="font-semibold">Email Mentor</p>
+            <p className="font-semibold">
+              {profilesContent.user.emailMentorLabel}
+            </p>
             <div className="block min-h-9 border rounded-md border-gray-400 px-2 w-full text-black placeholder-gray-400 pt-1 text-base focus:outline-none overflow-hidden">
               {team?.IdMentor ? (
                 <p className="break-words break-all">{emailMentor}</p>
@@ -152,7 +138,7 @@ export default function UserProfile() {
                     type="text"
                     onChange={(e) => setEmailMentor(e.target.value)}
                     value={emailMentor || ""}
-                    placeholder="Adicione aqui o Mentor de seu time!"
+                    placeholder={profilesContent.user.emailMentorPlaceholder}
                     className="w-[85%] h-full focus:outline-none"
                   />
                   <button
@@ -161,21 +147,25 @@ export default function UserProfile() {
                   >
                     <img
                       className="text-primary w-6 opacity-60 rotate-180 hover:opacity-70"
-                      src="https://img.icons8.com/glyph-neue/64/circled-left-2.png"
-                      alt="circled-left-2"
+                      src={images.external.backIcon}
+                      alt={profilesContent.user.emailMentorSubmitAlt}
                     />
                   </button>
                 </form>
               )}
             </div>
 
-            <p className="font-semibold">Aluno-Mentor</p>
+            <p className="font-semibold">
+              {profilesContent.user.studentMentorLabel}
+            </p>
             <p className="block w-full min-h-9 border rounded-md border-gray-400 px-2 text-black placeholder-gray-400 py-1 text-base focus:outline-none overflow-hidden break-words break-all">
               {user?.RaUsuario
                 ? user?.NomeUsuario
-                : "Nome do Usuario aparecerá aqui"}
+                : profilesContent.user.studentMentorFallback}
             </p>
-            <p className="font-semibold"> Integrantes do grupo </p>
+            <p className="font-semibold">
+              {profilesContent.user.membersLabel}
+            </p>
             <div className="border border-gray-400 rounded-md h-full py-1 px-2 max-w-50">
               {team?.RaAlunos?.length > 0
                 ? team.RaAlunos.map((RA: number, index: number) => (
@@ -183,7 +173,7 @@ export default function UserProfile() {
                       {RA}
                     </p>
                   ))
-                : "RAs dos alunos aparecerão aqui"}
+                : profilesContent.user.membersFallback}
             </div>
           </div>
 
@@ -192,13 +182,14 @@ export default function UserProfile() {
                 flex flex-col items-center justify-center text-center gap-4 overflow-hidden min-h-[280px] md:min-h-[360px]"
           >
             <p className="text-white font-extrabold text-3xl md:text-4xl leading-tight break-words">
-              Arkana +<br />
-              Lideranças Empáticas
+              {profilesContent.user.heroTitle.split("\n")[0]}
+              <br />
+              {profilesContent.user.heroTitle.split("\n")[1]}
             </p>
 
             <img
-              src={Arkana.src}
-              alt="logo lideranças empáticas"
+              src={images.arkanaLogo.src}
+              alt={profilesContent.user.heroTitle.replace("\n", " ")}
               className="max-w-full h-auto w-[290px] md:w-[400px] object-contain"
             />
           </div>

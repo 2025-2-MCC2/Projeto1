@@ -5,17 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useParams } from "next/navigation";
 
-import homeDefault from "@/assets/icons/home.png";
-import homeActive from "@/assets/icons/home-active.png";
-import homePressed from "@/assets/icons/home-pressed.png";
-
-import addDefault from "@/assets/icons/add.png";
-import addActive from "@/assets/icons/add-active.png";
-import addPressed from "@/assets/icons/add-pressed.png";
-
-import historyDefault from "@/assets/icons/history.png";
-import historyActive from "@/assets/icons/history-active.png";
-import historyPressed from "@/assets/icons/history-pressed.png";
+import { images, navigationContent } from "@/lib/content";
 
 export default function MenuMobile() {
   const pathname = usePathname();
@@ -51,12 +41,10 @@ export default function MenuMobile() {
   // ---------- Ícones ----------
   const icons = useMemo(
     () => ({
-      home: { default: homeDefault, active: homeActive, pressed: homePressed },
-      add: { default: addDefault, active: addActive, pressed: addPressed },
+      home: images.menu.home,
+      add: images.menu.add,
       history: {
-        default: historyDefault,
-        active: historyActive,
-        pressed: historyPressed,
+        ...images.menu.history,
       },
     }),
     []
@@ -93,7 +81,7 @@ export default function MenuMobile() {
   return (
     <nav
       role="navigation"
-      aria-label="Menu mobile"
+      aria-label={navigationContent.menu.mobile.ariaLabel}
       className="md:hidden fixed inset-x-0 bottom-0 z-50"
     >
       <style jsx global>{`
@@ -126,7 +114,7 @@ export default function MenuMobile() {
           {/* Aba 1: Home */}
           <Link
             href={homeHref}
-            aria-label="Início"
+            aria-label={navigationContent.menu.mobile.tabs.home.ariaLabel}
             className={`${basePill} ${
               isActive(homeHref) ? activePill : neutralPill
             } ${pressed.home ? "animate-pop" : ""}`}
@@ -135,7 +123,7 @@ export default function MenuMobile() {
           >
             <Image
               src={getIconSrc(icons.home, isActive(homeHref), !!pressed.home)}
-              alt="Início"
+              alt={navigationContent.menu.mobile.tabs.home.alt}
               width={24}
               height={24}
               className="pointer-events-none select-none"
@@ -147,7 +135,7 @@ export default function MenuMobile() {
           {/* Aba 2: Cadastrar */}
           <Link
             href={createHref}
-            aria-label="Cadastrar"
+            aria-label={navigationContent.menu.mobile.tabs.create.ariaLabel}
             onClick={onCreateClick}
             className={`${basePill} ${
               isActive(createHref) ? activePill : neutralPill
@@ -157,7 +145,7 @@ export default function MenuMobile() {
           >
             <Image
               src={getIconSrc(icons.add, isActive(createHref), !!pressed.add)}
-              alt="Cadastrar"
+              alt={navigationContent.menu.mobile.tabs.create.alt}
               width={24}
               height={24}
               className="pointer-events-none select-none"
@@ -169,7 +157,7 @@ export default function MenuMobile() {
           {/* Aba 3: Histórico */}
           <Link
             href={historyHref}
-            aria-label="Histórico"
+            aria-label={navigationContent.menu.mobile.tabs.history.ariaLabel}
             className={`${basePill} ${
               isActive(historyHref) ? activePill : neutralPill
             } ${pressed.history ? "animate-pop" : ""}`}
@@ -182,7 +170,7 @@ export default function MenuMobile() {
                 isActive(historyHref),
                 !!pressed.history
               )}
-              alt="Histórico"
+              alt={navigationContent.menu.mobile.tabs.history.alt}
               width={24}
               height={24}
               className="pointer-events-none select-none"

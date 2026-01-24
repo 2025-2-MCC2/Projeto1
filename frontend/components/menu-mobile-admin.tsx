@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import { navigationContent } from "@/lib/content";
 
 export default function MenuMobileAdmin() {
   const pathname = usePathname();
@@ -47,7 +48,7 @@ export default function MenuMobileAdmin() {
         pb-[calc(env(safe-area-inset-bottom,0px)+10px)] pt-3
       "
       role="navigation"
-      aria-label="Menu mobile"
+      aria-label={navigationContent.menu.mobile.ariaLabel}
     >
       <div className="mx-auto max-w-lg px-4">
         <div
@@ -60,7 +61,7 @@ export default function MenuMobileAdmin() {
         >
           <Link
             href={`/admin/${IdMentor}/admin-profile`}
-            aria-label="Início"
+            aria-label={navigationContent.menu.admin.mobile.homeAriaLabel}
             className={`${basePill} ${
               isActive(profileHref) ? activePill : neutralPill
             }`}
@@ -82,7 +83,7 @@ export default function MenuMobileAdmin() {
           </Link>
           <Link
             href={`/admin/${IdMentor}/admin-history`}
-            aria-label="Histórico"
+            aria-label={navigationContent.menu.admin.mobile.historyAriaLabel}
             className={`${basePill} ${
               isActive(historyHref) ? activePill : neutralPill
             }`}

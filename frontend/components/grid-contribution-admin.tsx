@@ -12,6 +12,8 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { Contribution } from "./contribution-table-admin/columns";
 import Loading from "./loading";
+import { commonContent, historyContent } from "@/lib/content";
+import { getMockContributions } from "@/lib/mock-data";
 
 interface RenderContributionProps {
   onSelect?: (contribution: Contribution) => void;
@@ -38,21 +40,13 @@ export default function RenderContributionCardAdmin({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     let active = true;
 
     async function fetchContributions() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`${backend_url}/api/contributions`, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!res.ok) throw new Error("Erro ao buscar contribuições");
-        const raw = await res.json();
+        const raw = await getMockContributions();
         if (!active) return;
 
         const data: ContributionAdmin[] = Array.isArray(raw)
@@ -155,10 +149,7 @@ export default function RenderContributionCardAdmin({
           : [];
         setContributions(data);
       } catch (err: any) {
-        if (err?.name === "AbortError") {
-          return;
-        }
-        setError(err?.message ?? "Erro inesperado");
+        setError(err?.message ?? commonContent.errors.unexpected);
       } finally {
         if (active) setLoading(false);
       }
@@ -168,7 +159,7 @@ export default function RenderContributionCardAdmin({
 
     return () => {
       active = false;
-      controller.abort();
+      // no-op for mock data
     };
   }, [refreshKey]);
 
@@ -180,10 +171,9 @@ export default function RenderContributionCardAdmin({
             <EmptyMedia variant="icon">
               <HandHeart size={44} strokeWidth={1.2} />
             </EmptyMedia>
-            <EmptyTitle>Nenhuma contribuição por enquanto!</EmptyTitle>
+            <EmptyTitle>{historyContent.emptyStates.noneYetTitle}</EmptyTitle>
             <EmptyDescription>
-              Nessa edição, nenhum grupo arrecadou doações. Quando os alunos
-              líderes adicionarem ao Arkana, aparecerá aqui!
+              {historyContent.emptyStates.adminNoneYetDescription}
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
@@ -209,19 +199,21 @@ export default function RenderContributionCardAdmin({
             >
               <p className="font-semibold text-lg ">{c.NomeTime}</p>
               <p className="text-base text-gray-950">
-                Data: {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
+                {historyContent.cards.date}{" "}
+                {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
               </p>
               <p className="text-base text-gray-950">
-                Fonte da doação: {c.Fonte}
+                {historyContent.cards.source} {c.Fonte}
               </p>
               <p className="text-base text-gray-950">
-                Ra do Aluno: {c.RaUsuario}
+                {historyContent.cards.studentRa} {c.RaUsuario}
               </p>
               <p className="text-base text-gray-800">
-                Tipo de Doação: {c.TipoDoacao}
+                {historyContent.cards.type} {c.TipoDoacao}
               </p>
               <p className="text-base text-gray-800">
-                Quantidade: {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
+                {historyContent.cards.amount}{" "}
+                {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
               </p>
             </div>
           ))}
@@ -236,19 +228,21 @@ export default function RenderContributionCardAdmin({
             >
               <p className="font-semibold text-lg ">{c.NomeTime}</p>
               <p className="text-base text-gray-950">
-                Data: {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
+                {historyContent.cards.date}{" "}
+                {new Date(c.DataContribuicao).toLocaleDateString("pt-BR")}
               </p>
               <p className="text-base text-gray-950">
-                Fonte da doação: {c.Fonte}
+                {historyContent.cards.source} {c.Fonte}
               </p>
               <p className="text-base text-gray-950">
-                Ra do Aluno: {c.RaUsuario}
+                {historyContent.cards.studentRa} {c.RaUsuario}
               </p>
               <p className="text-base text-gray-800">
-                Tipo de Doação: {c.TipoDoacao}
+                {historyContent.cards.type} {c.TipoDoacao}
               </p>
               <p className="text-base text-gray-800">
-                Quantidade: {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
+                {historyContent.cards.amount}{" "}
+                {Intl.NumberFormat("pt-BR").format(c.Quantidade)}
               </p>
             </div>
           ))}

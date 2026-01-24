@@ -24,6 +24,7 @@ import * as React from "react";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import type { Contribution } from "@/components/contribution-table/columns";
+import { tablesContent } from "@/lib/content";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,7 +61,7 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Procurar nome de um grupo..."
+          placeholder={tablesContent.filters.byTeam}
           value={
             (table.getColumn("NomeTime")?.getFilterValue() as string) ?? ""
           }
@@ -114,7 +115,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Não há contribuições.
+                  {tablesContent.empty.noContributions}
                 </TableCell>
               </TableRow>
             )}
@@ -129,7 +130,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Página anterior
+          {tablesContent.pagination.previous}
         </Button>
 
         <Button
@@ -138,7 +139,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Próxima página
+          {tablesContent.pagination.next}
         </Button>
       </div>
     </div>

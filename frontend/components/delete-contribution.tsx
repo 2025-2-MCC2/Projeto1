@@ -13,14 +13,14 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { historyContent } from "@/lib/content";
+import { deleteContributionMock } from "@/lib/mock-data";
 
 type DeleteContributionProps = {
   IdContribuicao: number;
   TipoDoacao: string;
   onDeleted?: () => void;
 };
-const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 export default function DeleteContribution({
   IdContribuicao,
   TipoDoacao,
@@ -37,24 +37,12 @@ export default function DeleteContribution({
       setLoading(true);
       setError(null);
 
-      const res = await fetch(
-        `${backend_url}/api/contribution/${TipoDoacao}/${IdContribuicao}`,
-        { method: "DELETE" }
-      );
-
-      if (!res.ok) {
-        let msg = `Erro ao deletar contribuição! (status ${res.status})`;
-        try {
-          const data = await res.json();
-          if (data?.message) msg = data.message;
-        } catch {}
-        throw new Error(msg);
-      }
+      await deleteContributionMock({ TipoDoacao, IdContribuicao });
 
       setOpen(false);
       onDeleted?.();
     } catch (e: any) {
-      setError(e?.message ?? "Erro desconhecido ao deletar");
+      setError(e?.message ?? historyContent.deleteDialog.errorFallback);
       console.error(e);
     } finally {
       setLoading(false);
@@ -90,16 +78,15 @@ export default function DeleteContribution({
               <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
               <path d="M10 11v6M14 11v6" />
             </svg>
-            Deletar contribuição
+            {historyContent.deleteDialog.trigger}
           </button>
         </AlertDialogTrigger>
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+            <AlertDialogTitle>{historyContent.deleteDialog.title}</AlertDialogTitle>
             <AlertDialogDescription>
-              Essa ação não pode ser desfeita. Isso excluirá a contribuição
-              permanentemente.
+              {historyContent.deleteDialog.description}
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -107,14 +94,18 @@ export default function DeleteContribution({
           {error && <p className="ml-3 text-sm text-red-600"> {error} </p>}
 
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={loading}>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel disabled={loading}>
+              {historyContent.deleteDialog.cancel}
+            </AlertDialogCancel>
 
             <AlertDialogAction
               onClick={handleConfirm}
               disabled={loading}
               className="bg-[#b41333] text-white hover:bg-[#d54646] focus:ring-0 cursor-pointer"
             >
-              {loading ? "Excluindo..." : "Deletar"}
+              {loading
+                ? historyContent.deleteDialog.deleting
+                : historyContent.deleteDialog.confirm}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

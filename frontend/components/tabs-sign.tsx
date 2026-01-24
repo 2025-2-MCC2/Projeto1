@@ -2,6 +2,8 @@
 
 import React from "react";
 import DropdownTurmas from "./dropdown-turmas";
+import { authContent, images } from "@/lib/content";
+import { registerUserMock } from "@/lib/mock-data";
 
 interface Props {
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,59 +22,25 @@ export default function SigninTabs({ setIsLogged, setRaUsuario }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-    if (!backendUrl) {
-      console.error("NEXT_PUBLIC_BACKEND_URL não está configurada");
-      alert("Erro de configuração. Entre em contato com o suporte.");
-      return;
-    }
-
-    const apiUrl = backendUrl.endsWith("/")
-      ? `${backendUrl}api/register`
-      : `${backendUrl}/api/register`;
-
-    console.log("Tentando conectar em:", apiUrl);
-
     try {
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          RaUsuario: Number(raAlunoMentor),
-          NomeUsuario: nomeAlunoMentor,
-          EmailUsuario: emailAlunoMentor,
-          SenhaUsuario: senhaAlunoMentor,
-          TelefoneUsuario: telefoneAlunoMentor,
-          TurmaUsuario: turma,
-        }),
+      const newUser = await registerUserMock({
+        RaUsuario: Number(raAlunoMentor),
+        NomeUsuario: nomeAlunoMentor,
+        EmailUsuario: emailAlunoMentor,
+        SenhaUsuario: senhaAlunoMentor,
+        TelefoneUsuario: telefoneAlunoMentor,
+        TurmaUsuario: turma,
       });
-
-      if (!res.ok) {
-        const err = await res
-          .json()
-          .catch(() => ({ error: "Erro desconhecido" }));
-        console.error("Erro da API:", err);
-        alert("Erro: " + (err.error || `Status ${res.status}`));
-        return;
-      }
-
-      const newUser = await res.json();
-      console.log("Usuário cadastrado:", newUser);
 
       setRaUsuario(Number(raAlunoMentor)); // State used on the sign team route
       setIsLogged(true); // Go to sign team page
     } catch (error) {
-      console.error("Erro ao cadastrar usuário:", error);
+      console.error(authContent.errors.registerUser, error);
 
       if (error instanceof TypeError && error.message === "Failed to fetch") {
-        alert(
-          "Erro de conexão. Verifique se o backend está rodando e se a URL está correta."
-        );
+        alert(authContent.errors.connection);
       } else {
-        alert("Erro ao cadastrar usuário: " + error);
+        alert(`${authContent.errors.registerUser}: ${error}`);
       }
     }
   };
@@ -80,61 +48,61 @@ export default function SigninTabs({ setIsLogged, setRaUsuario }: Props) {
     <div className="mb-1 mt-1 mr-4 ml-4">
       <form onSubmit={handleSubmit}>
         <div className="text-base">
-          Nome completo
+          {authContent.signup.labels.fullName}
           <input
             id="nome"
             name="nome"
             type="text"
             value={nomeAlunoMentor}
             onChange={(e) => setNomeAlunoMentor(e.target.value)}
-            placeholder="Insira seu nome completo"
+            placeholder={authContent.signup.placeholders.fullName}
             className="block w-full bg-[white] border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-2 text-base focus:outline-none"
           />
         </div>
 
         <div className="text-base">
-          Email Institucional
+          {authContent.signup.labels.email}
           <input
             id="email"
             name="email"
             type="email"
             value={emailAlunoMentor}
             onChange={(e) => setEmailAlunoMentor(e.target.value)}
-            placeholder="Insira o email institucional"
+            placeholder={authContent.signup.placeholders.email}
             className="block w-full bg-[white] border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-2 text-base focus:outline-none"
           />
         </div>
 
         <div className="text-base">
-          R.A do Aluno-mentor
+          {authContent.signup.labels.ra}
           <input
             id="ra"
             name="ra"
             type="text"
             value={raAlunoMentor}
             onChange={(e) => setRaAlunoMentor(e.target.value)}
-            placeholder="Insira seu R.A"
+            placeholder={authContent.signup.placeholders.ra}
             className="block w-full bg-[white] border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-2 text-base focus:outline-none"
           />
         </div>
 
         <div className="text-base">
           <div className="flex flex-col space-y-2">
-            Selecione sua turma
+            {authContent.signup.labels.classGroup}
             <DropdownTurmas turma={turma} setTurma={setTurma} />
-            Número de Celular
+            {authContent.signup.labels.phone}
             <input
               id="telefone"
               name="telefone"
               type="string"
               value={telefoneAlunoMentor}
               onChange={(e) => setTelefoneAlunoMentor(e.target.value)}
-              placeholder="Insira seu Número"
+              placeholder={authContent.signup.placeholders.phone}
               className="block w-full bg-[white] border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-2 text-base focus:outline-none"
             />
           </div>
 
-          <p className="mb-0">Crie uma senha</p>
+          <p className="mb-0">{authContent.signup.labels.createPassword}</p>
           <div className="text-base flex">
             <input
               id="senha"
@@ -142,7 +110,7 @@ export default function SigninTabs({ setIsLogged, setRaUsuario }: Props) {
               type={mostrarSenha ? "text" : "password"}
               value={senhaAlunoMentor}
               onChange={(e) => setSenhaAlunoMentor(e.target.value)}
-              placeholder="Insira a senha"
+              placeholder={authContent.signup.placeholders.password}
               className="block w-[75%] mr-2 bg-[white] border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-2 text-base focus:outline-none"
             />
             <button
@@ -150,16 +118,22 @@ export default function SigninTabs({ setIsLogged, setRaUsuario }: Props) {
               className="hidden rounded-lg"
             >
               {mostrarSenha ? (
-                <img src="../assets/EyeClosed.png" />
+                <img
+                  src={images.auth.eyeClosed.src}
+                  alt={authContent.inputs.passwordToggleAlt.hide}
+                />
               ) : (
-                <img src="../assets/EyeOpen.png" />
+                <img
+                  src={images.auth.eyeOpen.src}
+                  alt={authContent.inputs.passwordToggleAlt.show}
+                />
               )}
             </button>
             <button
               type="submit"
               className="border-transparent bg-secondary hover:text-white! text-white text-base py-2 px-6 w-[90px] md:w-28 flex justify-content items-center hover:bg-secondary/80 rounded-lg"
             >
-              Próxima
+              {authContent.signup.nextButton}
             </button>
           </div>
         </div>

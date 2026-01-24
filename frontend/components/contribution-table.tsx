@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { tablesContent } from "@/lib/content";
 
 // interface Contribution {
 //   IdContribuicao: number;
@@ -33,13 +34,15 @@ export default function RenderContribution() {
 
   return (
     <Table>
-      <TableCaption>Lista de contribuições</TableCaption>
+      <TableCaption>{tablesContent.simpleTable.caption}</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Fonte</TableHead>
-          <TableHead>Tipo de Doação</TableHead>
-          <TableHead>Quantidade</TableHead>
-          <TableHead className="text-right">Data</TableHead>
+          <TableHead>{tablesContent.simpleTable.headers.source}</TableHead>
+          <TableHead>{tablesContent.simpleTable.headers.type}</TableHead>
+          <TableHead>{tablesContent.simpleTable.headers.amount}</TableHead>
+          <TableHead className="text-right">
+            {tablesContent.simpleTable.headers.date}
+          </TableHead>
         </TableRow>
       </TableHeader>
 
@@ -59,7 +62,9 @@ export default function RenderContribution() {
 
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={2}>Total</TableCell>
+          <TableCell colSpan={2}>
+            {tablesContent.simpleTable.headers.total}
+          </TableCell>
           <TableCell colSpan={2} className="text-right">
             {contributions.reduce((sum, c) => sum + c.Quantidade, 0)}
           </TableCell>

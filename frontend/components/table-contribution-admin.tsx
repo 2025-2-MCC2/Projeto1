@@ -18,6 +18,8 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { commonContent, historyContent } from "@/lib/content";
+import { getMockContributions } from "@/lib/mock-data";
 
 interface RenderContributionProps {
   onSelect?: (contribution: Contribution) => void;
@@ -50,21 +52,13 @@ export default function RenderContributionTableAdmin({
   );
 
   useEffect(() => {
-    const controller = new AbortController();
     let active = true;
-    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     async function fetchContributions() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`${backend_url}/api/contributions`, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!res.ok) throw new Error("Erro ao buscar contribuições");
-        const raw = await res.json();
+        const raw = await getMockContributions();
         if (!active) return;
 
         const data: ContributionAdmin[] = Array.isArray(raw)
@@ -167,10 +161,7 @@ export default function RenderContributionTableAdmin({
           : [];
         setContributions(data);
       } catch (err: any) {
-        if (err?.name === "AbortError") {
-          return;
-        }
-        setError(err?.message ?? "Erro inesperado");
+        setError(err?.message ?? commonContent.errors.unexpected);
       } finally {
         if (active) setLoading(false);
       }
@@ -178,7 +169,7 @@ export default function RenderContributionTableAdmin({
     fetchContributions();
     return () => {
       active = false;
-      controller.abort();
+      // no-op for mock data
     };
   }, [refreshKey]);
 
@@ -186,7 +177,7 @@ export default function RenderContributionTableAdmin({
     return (
       <div className="p-4">
         <div className="animate-pulse text-sm text-muted-foreground">
-          Carregando contribuições…
+          {historyContent.emptyStates.loadingContributions}
         </div>
       </div>
     );
@@ -200,10 +191,9 @@ export default function RenderContributionTableAdmin({
             <EmptyMedia variant="icon">
               <HandHeart size={44} strokeWidth={1.2} />
             </EmptyMedia>
-            <EmptyTitle>Nenhuma contribuição por enquanto!</EmptyTitle>
+            <EmptyTitle>{historyContent.emptyStates.noneYetTitle}</EmptyTitle>
             <EmptyDescription>
-              Nessa edição, nenhum grupo arrecadou doações. Quando os alunos
-              líderes adicionarem ao Arkana, aparecerá aqui!
+              {historyContent.emptyStates.adminNoneYetDescription}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent />

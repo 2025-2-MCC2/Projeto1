@@ -7,15 +7,7 @@ import MenuDesktopAdmin from "@/components/menu-desktop-admin";
 import MenuMobileAdmin from "@/components/menu-mobile-admin";
 import RenderContributionTableAdmin from "@/components/table-contribution-admin";
 import RenderContributionCardAdmin from "@/components/grid-contribution-admin";
-
-{
-  /** 
- * 
- corrigir modal admin - tirar Gastos, aumentar fonte da data 
- adicionar filtro de pesquisar por ediçao
- adicionar filtro de edições
-  */
-}
+import { historyContent } from "@/lib/content";
 
 export default function AdminPageVision() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -43,7 +35,7 @@ export default function AdminPageVision() {
               menuOpen ? "md:pl-[270px]" : "ml-0"
             }`}
           >
-            Histórico de contribuições
+            {historyContent.pages.title}
           </h1>
         </header>
       </div>
@@ -67,7 +59,7 @@ export default function AdminPageVision() {
           )}
           <div className="flex flex-col gap-2 mx-3 text-center">
             <h3 className="text-2xl uppercase font-semibold text-primary ">
-              Histórico de contribuições de todos os grupos
+              {historyContent.pages.adminTitle}
             </h3>
             <div className="self-end">
               <SwitchViewButton
