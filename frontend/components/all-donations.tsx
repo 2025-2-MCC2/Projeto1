@@ -28,7 +28,6 @@ export default function AllDonations({
         Fonte: String(nomeEvento),
       });
       alert(donationsContent.allDonations.createSuccess);
-      //setMetaEnvento(0);
     } catch (error) {
       console.error("Erro ao enviar contribuição:", error);
       alert(donationsContent.allDonations.connectionError);

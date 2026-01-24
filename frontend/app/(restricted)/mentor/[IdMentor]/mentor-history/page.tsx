@@ -60,7 +60,7 @@ export default function MentorVision() {
 
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, [IdMentor]);
 
@@ -93,7 +93,7 @@ export default function MentorVision() {
     fetchUser();
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, [team?.RaUsuario]);
 

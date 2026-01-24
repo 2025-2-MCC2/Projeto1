@@ -9,7 +9,7 @@ const sanitizeMentor = (u) => ({
   SenhaMentor: u.SenhaMentor,
 });
 const mentorController = {
-  //GET /api/mentors
+  
   allMentors: async (_, res) => {
     const { IdMentor, EmailMentor, IsAdmin, SenhaMentor } = req.params;
     try {
@@ -29,7 +29,6 @@ const mentorController = {
     }
   },
 
-  //GET /api/mentor/id/:IdMentor
   mentorById: async (req, res) => {
     const { IdMentor } = req.params;
     try {
@@ -87,7 +86,6 @@ const mentorController = {
     }
   },
 
-  //POST /api/createMentor/:RaUsuario
   createMentor: async (req, res) => {
     const { EmailMentor, RaUsuario } = req.body;
 
@@ -117,13 +115,11 @@ const mentorController = {
         },
       });
 
-      //busca o time onde o usuario está alocado pelo time
       const timeUsuario = await prisma.time_Usuario.findFirst({
         where: { RaUsuario: Number(RaUsuario) },
         include: { time: true },
       });
 
-      // atualiza a tabela do time com o mentor
       const updatedTime = await prisma.time.update({
         where: { IdTime: timeUsuario.IdTime },
         data: {
@@ -141,7 +137,6 @@ const mentorController = {
     }
   },
 
-  //LOGIN /api/register/login
   loginMentor: async (req, res) => {
     const { EmailMentor, SenhaMentor } = req.body;
     if (!EmailMentor || !SenhaMentor) {
@@ -179,7 +174,6 @@ const mentorController = {
     }
   },
 
-  //POST /api/createAdmin
   createAdmin: async (req, res) => {
     const { EmailMentor, SenhaMentor } = req.body;
 
@@ -204,7 +198,6 @@ const mentorController = {
     }
   },
 
-  //LOGIN /api/register/login
   loginAdmin: async (req, res) => {
     const { EmailMentor, SenhaMentor } = req.body;
 
@@ -233,7 +226,7 @@ const mentorController = {
         .json({ error: "Erro ao fazer login.", details: err.message });
     }
   },
-  //DELETE /api/deleteMentor/:EmailMentor
+  
   deleteMentor: async (req, res) => {
     const { EmailMentor } = req.params;
 
@@ -244,7 +237,7 @@ const mentorController = {
       res.json({ message: "Mentor deletado com sucesso!", mentor });
     } catch (err) {
       if (err.code == P2025) {
-        // quando o prisma não encontra algo ele dá o erro P2025
+        
         res.status(404).json({ error: "Mentor não encontrado." });
       } else {
         res

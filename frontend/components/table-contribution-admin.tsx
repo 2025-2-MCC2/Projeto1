@@ -169,7 +169,7 @@ export default function RenderContributionTableAdmin({
     fetchContributions();
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, [refreshKey]);
 

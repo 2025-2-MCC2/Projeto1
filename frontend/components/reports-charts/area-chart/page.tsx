@@ -77,7 +77,7 @@ export function FinanContribuitionsChart() {
 
     fetchContributions();
     return () => {
-      // no-op for mock data
+      
     };
   }, []);
 

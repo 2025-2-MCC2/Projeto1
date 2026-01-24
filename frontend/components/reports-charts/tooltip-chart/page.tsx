@@ -139,7 +139,7 @@ export function BiggestContributionsChart() {
 
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, []);
 

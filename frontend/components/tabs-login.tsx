@@ -21,7 +21,6 @@ export default function TabsLogin() {
     authContent.defaults.studentMentorPassword
   );
 
-  // Login Student
   const handleSubmitAluno = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -37,7 +36,6 @@ export default function TabsLogin() {
     }
   };
 
-  // Login Mentor
   const handleSubmitMentor = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,7 +52,6 @@ export default function TabsLogin() {
     }
   };
 
-  //login admin
   const handleSubmitAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
 

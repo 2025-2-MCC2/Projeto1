@@ -183,7 +183,7 @@ export default function RenderContributionTable({
     fetchContributions();
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, [RaUsuario, refreshKey]);
 

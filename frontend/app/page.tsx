@@ -144,7 +144,7 @@ export default function PublicDashboard() {
 
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, [contributions.length]);
 
@@ -185,7 +185,6 @@ export default function PublicDashboard() {
               ))}
             </div>
 
-            {/* Dashboard */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <Card className="hover:border-secondary/50 bg-transparent border border-secondary/40">
                 <CardContent className="px-6">
@@ -277,6 +276,7 @@ export default function PublicDashboard() {
           </div>
         </div>
       </main>
+
       {/* Footer */}
       <Footer />
     </div>

@@ -1,13 +1,9 @@
-/* IMPORTANTE: priorize Tailwind para layout; este CSS é apenas para complementos visuais */
 
-/* Container genérico */
 .container {
   display: block;
   width: 100%;
 }
 
-
-/* Header */
 header {
   display: flex;
   justify-content: center;
@@ -16,16 +12,13 @@ header {
   color: var(--foreground);
 }
 :root {
-  --primary: #254128; /* forest green */
-  --secondary: #cd6184; /* pink accent */
+  --primary: #254128; 
+  --secondary: #cd6184; 
   --terciary: #fad8db;
-  --muted: #fffefb; /* beige neutral */
-  --background: #fffefb; /* blush base background */
-  --foreground: #242424; /* dark text for contrast */
+  --muted: #fffefb; 
+  --background: #fffefb; 
+  --foreground: #242424; 
 }
-/* ===========================
-   Inputs / Botões
-   =========================== */
 
 input[type="file"]::file-selector-button {
   background: #207960;
@@ -36,11 +29,6 @@ input[type="file"]::file-selector-button {
   margin-right: 10px;
   cursor: pointer;
 }
-
-
-/* ===========================
-   Menu lateral / Mobile
-   =========================== */
 
 .open-menu {
   background: none;
@@ -103,7 +91,6 @@ input[type="file"]::file-selector-button {
   }
 }
 
-/* A partir de tablets: inputs em 2 colunas */
 @media (min-width: 491px) {
   .donation-details {
     display: grid;
@@ -112,16 +99,14 @@ input[type="file"]::file-selector-button {
   }
 }
 
-/* Regras para mobile até 670px */
 @media (max-width: 670px) {
   .side-menu,
   .open-menu {
     display: none;
-  } /* Aqui esconde o menu lateral */
-
+  } 
 
   .mobile-nav {
-    display: flex;              /* ALTERAÇÃO: simplificado (não precisa repetir display) */
+    display: flex;              
     position: fixed;
     bottom: 0;
     left: 0;
@@ -141,14 +126,3 @@ input[type="file"]::file-selector-button {
   }
 }
 
-/* ===========================
-   (OPCIONAL) Alternativa se você NÃO puder renomear .hidden
-   Escopar o .hidden somente ao side-menu:
-   Descomente abaixo e REMOVA a classe .is-hidden acima.
-   Obs: mantenha as classes Tailwind nos cards (hidden md:block / md:flex).
-=========================== */
-/*
-.side-menu .hidden {
-  display: none;
-}
-*/

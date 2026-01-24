@@ -11,7 +11,6 @@ import { FoodDonationsChart } from "@/components/reports-charts/pie-chart-label/
 import { FinanContribuitionsChart } from "@/components/reports-charts/area-chart/page";
 import { TeamsRankingChart } from "@/components/reports-charts/bar-label-costum/page";
 
-// Generate editions automatically
 function generateEditions(startEdition = 7, startYear = 2025) {
   const editions = [];
   const currentDate = new Date();
@@ -35,7 +34,7 @@ function generateEditions(startEdition = 7, startYear = 2025) {
 
 export default function PublicReports() {
   const [edition, setEdition] = useState<number>(() => {
-    // auto-select the current edition
+    
     const now = new Date();
     const startEdition = 7;
     const startYear = 2025;
@@ -61,8 +60,7 @@ export default function PublicReports() {
 
       <div className="mx-auto mt-5 grid grid-cols-1 md:grid-cols-3">
         <div className="order-2 md:order-1 w-full h-full md:col-span-2">
-          {/* Edition Selector */}
-          {/*
+          {/* Edition Selector
           <div className="flex justify-center mb-6">
             <select
               title="Filtrar por edição"

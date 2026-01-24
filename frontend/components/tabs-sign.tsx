@@ -32,8 +32,8 @@ export default function SigninTabs({ setIsLogged, setRaUsuario }: Props) {
         TurmaUsuario: turma,
       });
 
-      setRaUsuario(Number(raAlunoMentor)); // State used on the sign team route
-      setIsLogged(true); // Go to sign team page
+      setRaUsuario(Number(raAlunoMentor)); 
+      setIsLogged(true); 
     } catch (error) {
       console.error(authContent.errors.registerUser, error);
 

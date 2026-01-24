@@ -140,7 +140,6 @@ export default function FoodDonations({
     setComprovante(file);
     e.target.value = "";
 
-    // Para o GIF depois de 1s
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = window.setTimeout(() => stopGif(), 1000);
   };

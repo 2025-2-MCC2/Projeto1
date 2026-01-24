@@ -126,7 +126,7 @@ export function TeamsRankingChart() {
     fetchTeamContrib();
     return () => {
       active = false;
-      // no-op for mock data
+      
     };
   }, []);
 

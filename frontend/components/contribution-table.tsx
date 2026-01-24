@@ -14,21 +14,6 @@ import {
 } from "@/components/ui/table";
 import { tablesContent } from "@/lib/content";
 
-// interface Contribution {
-//   IdContribuicao: number;
-//   RaUsuario: number;
-//   TipoDoacao: string;
-//   Quantidade: number;
-//   Meta?: number;
-//   Gastos?: number;
-//   Fonte?: string;
-//   comprovante?: {
-//     IdComprovante: number;
-//     Imagem: string;
-//   };
-//   DataContribuicao: string;
-// }
-
 export default function RenderContribution() {
   const [contributions, setContributions] = useState<Contribution[]>([]);
 

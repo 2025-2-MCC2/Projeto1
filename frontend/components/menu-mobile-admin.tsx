@@ -21,21 +21,11 @@ export default function MenuMobileAdmin() {
     }
   }, [params]);
 
-  // const onCreateClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-  //   if (isActive(createHref)) {
-  //     e.preventDefault();
-  //     router.refresh();
-  //   }
-  // };
-
-  // Estilos base dos "pills"
   const basePill =
     "relative flex items-center px-4 justify-center h-12 rounded-[40px] border border-secondary/40 bg-background shadow-sm transition-all duration-300 ease-out will-change-transform will-change-auto";
 
-  // Neutral (não selecionado)
   const neutralPill = "text-primary hover:bg-secondary/20 active:scale-95";
 
-  // Selecionado: ícone rosa + halo/anel verde claro + leve scale
   const activePill =
     "bg-primary text-white border-primary ring-2 ring-secondary/40 ring-offset-2 ring-offset-background animate-selected-pop";
 
