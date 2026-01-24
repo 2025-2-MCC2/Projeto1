@@ -56,7 +56,7 @@ export default function AdminProfile() {
   };
 
   return (
-    <div className="w-screen h-screen overflow-x-clip ">
+    <div className="w-screen h-screen overflow-x-clip bg-background">
       <div className="">
         <header>
           <button
@@ -66,17 +66,12 @@ export default function AdminProfile() {
             } absolute justify-between left-0 top-0`}
             onClick={() => setMenuOpen(true)}
           >
-            {" "}
-            ☰{" "}
+            ☰
           </button>
         </header>
       </div>
 
-      <div
-        className={`${
-          menuOpen ? "ml-[270px]" : ""
-        } w-full h-full flex justify-center md:items-center transition-all duration-300 ease-in-out`}
-      >
+      <div className="w-full h-full md:pt-10 flex justify-center transition-all duration-300 ease-in-out">
         <MenuDesktopAdmin
           menuOpen={menuOpen}
           setMenuOpen={(arg: SetStateAction<boolean>) => setMenuOpen(arg)}
@@ -85,7 +80,7 @@ export default function AdminProfile() {
         <MenuMobileAdmin />
 
         <section className="max-w-[90%] md:max-w-[1300px] md:mt-0 grid grid-cols-1 md:grid-cols-2  h-150 my-5 mb-10 gap-2">
-          <div className="flex flex-col gap-2 p-5 border border-gray-200 shadow-xl bg-white rounded-xl">
+          <div className="flex flex-col gap-2 p-5 border border-secondary/40 shadow-sm bg-transparent rounded-xl">
             <h1 className="text-3xl pt-8 text-primary mb-5 font-semibold">
               {profilesContent.admin.profileTitle}
             </h1>
@@ -129,7 +124,7 @@ export default function AdminProfile() {
             </div>
           </div>
           <div
-            className="bg-primary rounded-xl border border-gray-200 shadow-xl p-10
+            className="bg-primary rounded-xl border border-secondary/40 shadow-sm p-10
                 flex flex-col items-center justify-center text-center gap-4 overflow-hidden min-h-[280px] md:min-h-[360px]"
           >
             <p className="text-white font-extrabold text-3xl md:text-4xl leading-tight break-words">

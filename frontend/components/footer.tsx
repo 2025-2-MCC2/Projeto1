@@ -11,35 +11,9 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="py-5 md:pt-20 bg-secondary/20 text-black px-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
-          <div className="flex flex-col gap-2 items-left">
-            <p className="font-bold">
-              {navigationContent.footer.creatorsTitle}
-            </p>
-            {navigationContent.footer.creators.map((creator) => (
-              <Link
-                key={creator.url}
-                className="hover:opacity-50"
-                href={creator.url}
-              >
-                <p>{creator.name}</p>
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-2 items-left">
-            <p className="font-bold">{navigationContent.footer.navTitle}</p>
-            {pages.map((item) => (
-              <Link key={item.id} href={item.url} className="hover:opacity-50">
-                {item.text}
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-2 items-left">
-            <p className="font-bold">{navigationContent.footer.socialTitle}</p>
-            <div className="flex gap-4">
+      <footer className="py-8 bg-secondary/20 text-black">
+        <div className="text-center text-xs opacity-70">
+          <div className="flex gap-4 w-full justify-center pb-5">
               {socialLinks.map((link) => (
                 <Link
                   key={link.id}
@@ -57,9 +31,6 @@ const Footer = () => {
                 </Link>
               ))}
             </div>
-          </div>
-        </div>
-        <div className="mt-10 text-center text-xs opacity-70">
           <Link href={navigationContent.footer.repoUrl}>
             {navigationContent.footer.copyright}
           </Link>

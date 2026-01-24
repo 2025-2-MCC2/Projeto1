@@ -41,7 +41,7 @@ export default function MentorVision() {
         setLoadingTeam(true);
         setErrorTeam(null);
 
-        const mentorData = await getMockMentorTeam(IdMentor);
+        const mentorData = await getMockMentorTeam(IdMentor!);
         const oneTeam: TeamData | null = Array.isArray(mentorData)
           ? mentorData[0] ?? null
           : (mentorData as TeamData | null);
@@ -78,7 +78,7 @@ export default function MentorVision() {
         setLoadingUser(true);
         setErrorUser(null);
 
-        const userData = await getMockUser(raUsuario);
+        const userData = await getMockUser(raUsuario!);
         if (!active) return;
 
         setUser(userData);
@@ -103,19 +103,14 @@ export default function MentorVision() {
       : undefined;
 
   return (
-    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-[#f4f3f1]/60">
+    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-background">
       <div className="flex flex-col left-0 top-0">
         <div className="absolute left-0 top-0">
           <BackHome />
         </div>
-        <header className="py-4 mt-6 relative flex justify-center items-center">
-          <h1 className="text-4xl font-semibold text-[#cc3983] text-center">
-            {historyContent.pages.title}
-          </h1>
-        </header>
       </div>
 
-      <div className="w-full flex justify-center pt-4 transition-all duration-300 ease-in-out">
+      <div className="w-full flex justify-center md:pt-10 transition-all duration-300 ease-in-out">
         <main className="w-full self-center max-w-[1300px] p-1.5 md:mt-0">
           {selectedContribution && (
             <RecordsMentor

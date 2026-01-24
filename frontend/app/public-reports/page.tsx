@@ -79,7 +79,6 @@ export default function PublicReports() {
           </div>
           */}
 
-          {/* Table / Loading / Error */}
           {loading && (
             <div className="w-screen h-full text-center text-gray-600">
               <Loading />

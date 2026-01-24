@@ -32,7 +32,7 @@ export default function TeamHistory() {
   }, [RaUsuario]);
 
   return (
-    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-[#f4f3f1]/60">
+    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-background">
       <div className="flex flex-col left-0 top-0">
         <header className="py-4 mt-6 relative flex justify-center items-center">
           <button
@@ -42,24 +42,12 @@ export default function TeamHistory() {
             }`}
             onClick={() => setMenuOpen(true)}
           >
-            {" "}
-            ☰{" "}
+            ☰
           </button>
-          <h1
-            className={`text-4xl font-semibold text-[#cc3983] text-center transition-all duration-300 ease-in-out ${
-              menuOpen ? "md:pl-[270px]" : "ml-0"
-            }`}
-          >
-            {historyContent.pages.title}
-          </h1>
         </header>
       </div>
 
-      <div
-        className={`w-full flex justify-center pt-4 transition-all duration-300 ease-in-out ${
-          menuOpen ? "md:pl-[270px]" : "ml-0"
-        }`}
-      >
+      <div className="w-full flex justify-center md:pt-10 transition-all duration-300 ease-in-out">
         <MenuDesktop
           menuOpen={menuOpen}
           setMenuOpen={(arg: SetStateAction<boolean>) => setMenuOpen(arg)}
@@ -80,13 +68,13 @@ export default function TeamHistory() {
               }}
             />
           )}
-          <div className="flex flex-col gap-2 mx-3 text-center">
-            <h3 className="text-2xl uppercase font-semibold text-primary ">
+          <div className="flex flex-col mx-3 text-center">
+            <h3 className="text-2xl uppercase font-semibold text-black">
               {team?.NomeTime
                 ? team?.NomeTime
                 : historyContent.placeholders.teamName}
             </h3>
-            <h4 className="mb-3 text-xl text-primary/80">
+            <h4 className="mb-3 text-xl text-black/80">
               {historyContent.labels.classPrefix}{" "}
               {user?.TurmaUsuario
                 ? user?.TurmaUsuario

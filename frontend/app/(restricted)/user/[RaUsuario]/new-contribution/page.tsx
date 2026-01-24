@@ -157,7 +157,7 @@ export default function Donations() {
   };
 
   return (
-    <div className="container w-full">
+    <div className="pt-10 w-full bg-background">
       <header className="w-full">
         <button
           className={`open-menu ${menuOpen ? "hidden" : "menu-icon"}`}
@@ -166,19 +166,13 @@ export default function Donations() {
           ☰
         </button>
 
-        <div className="sticky top-0 left-0 right-0 z-10 md:static bg-white/80 supports-[backdrop-filter]:bg-white/60">
-          <div className="mx-auto text-4xl px-14 py-5">
-            <h1 className="text-primary tracking-tight text-center">
-              {donationsContent.newContribution.title}
-            </h1>
-          </div>
-
+        <div className="sticky top-0 left-0 right-0 z-10 md:static bg-background/80 supports-[backdrop-filter]:bg-background/60">
           <div className="md:hidden w-full flex justify-center">
-            <div className="inline-grid grid-cols-2 w-full max-w-xs rounded-full border border-gray bg-white p-1 shadow-sm">
+            <div className="inline-grid grid-cols-2 w-fit rounded-full border border-secondary/40 bg-background p-1 shadow-sm">
               <button
                 type="button"
                 onClick={() => setActiveTab("finance")}
-                className={`rounded-full py-3 text-sm font-medium ${
+                className={`rounded-full p-3 text-sm font-medium ${
                   activeTab === "finance"
                     ? "bg-primary text-white"
                     : "text-black"
@@ -189,7 +183,7 @@ export default function Donations() {
               <button
                 type="button"
                 onClick={() => setActiveTab("food")}
-                className={`rounded-full py-3 text-sm font-medium ${
+                className={`rounded-full p-3 text-sm font-medium ${
                   activeTab === "food" ? "bg-primary text-white" : "text-black"
                 }`}
               >
@@ -200,123 +194,119 @@ export default function Donations() {
         </div>
       </header>
 
-      <div className="page-container">
+      <div className="w-full flex flex-col items-center md:pt-10 pb-20">
         <MenuDesktop menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <MenuMobile />
 
-        <main className="flex justify-center items-stretch min-h-screen w-full px-9 mt-10">
-          <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-x-1">
-            <div
-              className={`${
-                activeTab === "finance" ? "block" : "hidden"
-              } md:block bg-secondary/20 border border-gray-100 p-6 rounded-xl shadow-md w-full h-[600px]`}
-            >
-              <h2 className="text-2xl font-semibold mb-4">
-                {donationsContent.newContribution.sections.finance}
-              </h2>
+        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+          <div
+            className={`${
+              activeTab === "finance" ? "block" : "hidden"
+            } md:block bg-transparent border border-secondary/40 p-6 rounded-xl shadow-sm w-full`}
+          >
+            <h2 className="text-2xl font-semibold mb-4">
+              {donationsContent.newContribution.sections.finance}
+            </h2>
 
-              <DonationsForm
-                fonte={financialData.fonte}
-                setFonte={(v) =>
-                  setFinancialData({ ...financialData, fonte: v })
-                }
-                meta={financialData.meta}
-                setMeta={(v) =>
-                  setFinancialData({ ...financialData, meta: Number(v) })
-                }
-                gastos={financialData.gastos}
-                setGastos={(v) =>
-                  setFinancialData({ ...financialData, gastos: Number(v) })
-                }
-                quantidade={financialData.quantidade}
-                setQuantidade={(v) =>
-                  setFinancialData({ ...financialData, quantidade: Number(v) })
-                }
-                comprovante={financialData.comprovante}
-                setComprovante={(v) =>
-                  setFinancialData({ ...financialData, comprovante: v })
-                }
-                tipoDoacao={"Financeira"}
-                setTipoDoacao={() => {}}
-                RaUsuario={0}
-                setRaUsuario={function (value: SetStateAction<number>): void {
-                  throw new Error("Function not implemented.");
-                }}
-              />
+            <DonationsForm
+              fonte={financialData.fonte}
+              setFonte={(v) => setFinancialData({ ...financialData, fonte: v })}
+              meta={financialData.meta}
+              setMeta={(v) =>
+                setFinancialData({ ...financialData, meta: Number(v) })
+              }
+              gastos={financialData.gastos}
+              setGastos={(v) =>
+                setFinancialData({ ...financialData, gastos: Number(v) })
+              }
+              quantidade={financialData.quantidade}
+              setQuantidade={(v) =>
+                setFinancialData({ ...financialData, quantidade: Number(v) })
+              }
+              comprovante={financialData.comprovante}
+              setComprovante={(v) =>
+                setFinancialData({ ...financialData, comprovante: v })
+              }
+              tipoDoacao={"Financeira"}
+              setTipoDoacao={() => {}}
+              RaUsuario={0}
+              setRaUsuario={function (value: SetStateAction<number>): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
 
-              <div className="mt-13 flex justify-end">
-                <button
-                  type="button"
-                  onClick={handleFinancialSubmit}
-                  disabled={loading}
-                  className="w-fit px-4 py-2 rounded-[8px] bg-primary text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading
-                    ? donationsContent.newContribution.actions.submitting
-                    : donationsContent.newContribution.actions.submit}
-                </button>
-              </div>
-            </div>
-
-            <div
-              className={`${
-                activeTab === "food" ? "block" : "hidden"
-              } md:flex md:flex-col bg-secondary/20 border border-gray-100 p-6 rounded-xl shadow-md w-full h-[600px] overflow-y-scroll`}
-            >
-              <h2 className="text-2xl font-semibold mb-3">
-                {donationsContent.newContribution.sections.food}
-              </h2>
-
-              <div className="min-h-0 flex-1 overflow-y-auto rounded-lg">
-                <FoodDonations
-                  fonte={foodData.fonte}
-                  setFonte={(v) => setFoodData({ ...foodData, fonte: v })}
-                  meta={foodData.meta}
-                  setMeta={(v) => setFoodData({ ...foodData, meta: Number(v) })}
-                  gastos={foodData.gastos}
-                  setGastos={(v) =>
-                    setFoodData({ ...foodData, gastos: Number(v) })
-                  }
-                  quantidade={foodData.quantidade}
-                  setQuantidade={(v) =>
-                    setFoodData({ ...foodData, quantidade: Number(v) })
-                  }
-                  pesoUnidade={foodData.pesoUnidade}
-                  setPesoUnidade={(v) =>
-                    setFoodData({ ...foodData, pesoUnidade: Number(v) })
-                  }
-                  idAlimento={foodData.idAlimento}
-                  setIdAlimento={(v) =>
-                    setFoodData({ ...foodData, idAlimento: Number(v) })
-                  }
-                  comprovante={foodData.comprovante}
-                  setComprovante={(v) =>
-                    setFoodData({ ...foodData, comprovante: v })
-                  }
-                  onTotaisChange={(totais) => setTotaisPontos(totais.pontos)}
-                />
-              </div>
-
-              <div className="mt-4 flex flex-none items-center gap-3 justify-end">
-                <div className="bg-secondary/50 text-sm rounded-lg py-2 px-16 whitespace-nowrap w-[300px] overflow-hidden text-ellipsis">
-                  {donationsContent.newContribution.pointsLabel}:{" "}
-                  <span>{totaisPontos.toLocaleString("pt-BR")}</span>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleFoodSubmit}
-                  disabled={loading}
-                  className="w-fit px-4 py-2 rounded-lg bg-primary text-white hover:bg-[#195b41] disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading
-                    ? donationsContent.newContribution.actions.submitting
-                    : donationsContent.newContribution.actions.submit}
-                </button>
-              </div>
+            <div className="mt-10 flex justify-end">
+              <button
+                type="button"
+                onClick={handleFinancialSubmit}
+                disabled={loading}
+                className="w-fit px-4 py-2 rounded-[8px] bg-primary text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading
+                  ? donationsContent.newContribution.actions.submitting
+                  : donationsContent.newContribution.actions.submit}
+              </button>
             </div>
           </div>
-        </main>
+
+          <div
+            className={`${
+              activeTab === "food" ? "block" : "hidden"
+            } md:flex md:flex-col bg-transparent border border-secondary/40 p-6 rounded-xl shadow-sm w-full`}
+          >
+            <h2 className="text-2xl font-semibold mb-3">
+              {donationsContent.newContribution.sections.food}
+            </h2>
+
+            <div className="min-h-0 flex-1 rounded-lg">
+              <FoodDonations
+                fonte={foodData.fonte}
+                setFonte={(v) => setFoodData({ ...foodData, fonte: v })}
+                meta={foodData.meta}
+                setMeta={(v) => setFoodData({ ...foodData, meta: Number(v) })}
+                gastos={foodData.gastos}
+                setGastos={(v) =>
+                  setFoodData({ ...foodData, gastos: Number(v) })
+                }
+                quantidade={foodData.quantidade}
+                setQuantidade={(v) =>
+                  setFoodData({ ...foodData, quantidade: Number(v) })
+                }
+                pesoUnidade={foodData.pesoUnidade}
+                setPesoUnidade={(v) =>
+                  setFoodData({ ...foodData, pesoUnidade: Number(v) })
+                }
+                idAlimento={foodData.idAlimento}
+                setIdAlimento={(v) =>
+                  setFoodData({ ...foodData, idAlimento: Number(v) })
+                }
+                comprovante={foodData.comprovante}
+                setComprovante={(v) =>
+                  setFoodData({ ...foodData, comprovante: v })
+                }
+                onTotaisChange={(totais) => setTotaisPontos(totais.pontos)}
+              />
+            </div>
+
+            <div className="mt-4 flex flex-none items-center gap-3 justify-end">
+              <div className="bg-secondary/20 border border-secondary/40 text-sm rounded-lg py-2 px-16 whitespace-nowrap w-[300px] overflow-hidden text-ellipsis">
+                {donationsContent.newContribution.pointsLabel}:{" "}
+                <span>{totaisPontos.toLocaleString("pt-BR")}</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleFoodSubmit}
+                disabled={loading}
+                className="w-fit px-4 py-2 rounded-lg bg-primary text-white hover:bg-[#195b41] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading
+                  ? donationsContent.newContribution.actions.submitting
+                  : donationsContent.newContribution.actions.submit}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

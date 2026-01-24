@@ -42,19 +42,19 @@ export default function MenuDesktopAdmin({
       </button>
       <nav>
         <Link href="/">
-          <button className="p-2 m-2 rounded-xl bg-[#f4f3f1]/80 hover:bg-[#cc3983]/20 border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer hover:!text-black text-base w-55">
+          <button className="p-2 m-2 text-left rounded-xl bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
             {navigationContent.menu.desktop.backToDashboard}
           </button>
         </Link>
 
         <Link href={`/admin/${IdMentor}/admin-profile`}>
-          <button className="p-2 m-2 rounded-xl bg-[#f4f3f1]/80 hover:bg-[#cc3983]/20 border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer hover:!text-black text-base w-55">
+          <button className="p-2 m-2 text-left rounded-xl bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
             {navigationContent.menu.admin.profile}
           </button>
         </Link>
 
         <Link href={`/admin/${IdMentor}/admin-history`}>
-          <button className="p-2 m-2 rounded-xl bg-[#f4f3f1]/80 hover:bg-[#cc3983]/20 border border-gray-200 shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer hover:!text-black text-base w-55">
+          <button className="p-2 m-2 text-left rounded-xl bg-background hover:bg-secondary/20 border border-secondary/40 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer text-primary text-base w-55">
             {navigationContent.menu.admin.history}
           </button>
         </Link>

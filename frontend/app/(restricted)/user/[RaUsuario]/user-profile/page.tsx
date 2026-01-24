@@ -11,6 +11,7 @@ import {
   getMockContributionsByRa,
   getMockMentor,
   createMentorMock,
+  type MockContribution,
 } from "@/lib/mock-data";
 
 export default function UserProfile() {
@@ -19,7 +20,9 @@ export default function UserProfile() {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-  const [contributions, setContributions] = React.useState<Contribution[]>([]);
+  const [contributions, setContributions] = React.useState<MockContribution[]>(
+    [],
+  );
   const [emailMentor, setEmailMentor] = React.useState<string>();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
@@ -84,27 +87,22 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="w-screen h-screen overflow-x-clip">
+    <div className="w-screen h-screen overflow-x-clip bg-background">
       <div className="absolute justify-between left-0 top-0">
         <header>
           <button
             type="button"
-            className={`open-menu hover:text-primay/60 ${
+            className={`open-menu hover:text-primary/60 ${
               menuOpen ? "menu-icon hidden" : "menu-icon"
             }`}
             onClick={() => setMenuOpen(true)}
           >
-            {" "}
-            ☰{" "}
+            ☰
           </button>
         </header>
       </div>
 
-      <div
-        className={`${
-          menuOpen ? "ml-[270px]" : ""
-        } w-full h-full flex justify-center md:items-center transition-all duration-300 ease-in-out`}
-      >
+      <div className="w-full h-full md:pt-10 flex justify-center transition-all duration-300 ease-in-out">
         <MenuDesktop
           menuOpen={menuOpen}
           setMenuOpen={(arg: SetStateAction<boolean>) => setMenuOpen(arg)}
@@ -112,86 +110,79 @@ export default function UserProfile() {
 
         <MenuMobile />
 
-        <section className="w-[90%] md:max-w-[1300px] md:mt-0 grid grid-cols-1 md:grid-cols-2 h-150  my-5 mb-10 gap-2">
-          <div className="flex flex-col gap-3 p-5 border rounded-xl border-gray-200 shadow-xl">
-            <h3 className="text-3xl pt-5 uppercase font-semibold text-primary">
-              {team?.NomeTime
-                ? team?.NomeTime
-                : profilesContent.user.teamNameFallback}
+        <section className="w-full md:max-w-[1300px] md:mt-0 flex flex-col h-150 my-5 mb-10 p-6 gap-2">
+          <div className="flex flex-col mx-3 text-center">
+            <h3 className="text-2xl uppercase font-semibold text-black">
+              {team?.NomeTime ? team?.NomeTime : profilesContent.user.heroTitle}
             </h3>
-            <h4 className="mb-3 text-xl text-black">
+            <h4 className="mb-3 text-xl text-black/80">
               {profilesContent.user.classPrefix}{" "}
               {user?.TurmaUsuario
                 ? user?.TurmaUsuario
-                : profilesContent.user.classFallback}
+                : profilesContent.user.classPrefix}
             </h4>
-
-            <p className="font-semibold">
-              {profilesContent.user.emailMentorLabel}
-            </p>
-            <div className="block min-h-9 border rounded-md border-gray-400 px-2 w-full text-black placeholder-gray-400 pt-1 text-base focus:outline-none overflow-hidden">
-              {team?.IdMentor ? (
-                <p className="break-words break-all">{emailMentor}</p>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex justify-between">
-                  <input
-                    type="text"
-                    onChange={(e) => setEmailMentor(e.target.value)}
-                    value={emailMentor || ""}
-                    placeholder={profilesContent.user.emailMentorPlaceholder}
-                    className="w-[85%] h-full focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="underline text-blue-700 h-full"
-                  >
-                    <img
-                      className="text-primary w-6 opacity-60 rotate-180 hover:opacity-70"
-                      src={images.external.backIcon}
-                      alt={profilesContent.user.emailMentorSubmitAlt}
-                    />
-                  </button>
-                </form>
-              )}
-            </div>
-
-            <p className="font-semibold">
-              {profilesContent.user.studentMentorLabel}
-            </p>
-            <p className="block w-full min-h-9 border rounded-md border-gray-400 px-2 text-black placeholder-gray-400 py-1 text-base focus:outline-none overflow-hidden break-words break-all">
-              {user?.RaUsuario
-                ? user?.NomeUsuario
-                : profilesContent.user.studentMentorFallback}
-            </p>
-            <p className="font-semibold">
-              {profilesContent.user.membersLabel}
-            </p>
-            <div className="border border-gray-400 rounded-md h-full py-1 px-2 max-w-50">
-              {team?.RaAlunos?.length > 0
-                ? team.RaAlunos.map((RA: number, index: number) => (
-                    <p key={index} className=" mb-1 font-medium">
-                      {RA}
-                    </p>
-                  ))
-                : profilesContent.user.membersFallback}
-            </div>
           </div>
 
-          <div
-            className="bg-secondary/40 rounded-xl border border-gray-200 shadow-xl p-10
-                flex flex-col items-center justify-center text-center gap-4 overflow-hidden min-h-[280px] md:min-h-[360px]"
-          >
-            <p className="text-white font-extrabold text-3xl md:text-4xl leading-tight break-words">
-              {profilesContent.user.heroTitle.split("\n")[0]}
-              <br />
-              {profilesContent.user.heroTitle.split("\n")[1]}
-            </p>
+          <div className="flex flex-col gap-3 p-5 border rounded-xl border-secondary/40 bg-background shadow-sm">
+            <div>
+              <p className="font-semibold text-primary/90 mb-1">
+                {profilesContent.user.emailMentorLabel}
+              </p>
+              <div className="block min-h-9 bg-background w-full text-primary placeholder-primary/60 text-base focus:outline-none overflow-hidden">
+                {team?.IdMentor ? (
+                  <p className="break-words break-all">{emailMentor}</p>
+                ) : (
+                  <form
+                    onSubmit={handleSubmit}
+                    className="flex justify-between"
+                  >
+                    <input
+                      type="text"
+                      onChange={(e) => setEmailMentor(e.target.value)}
+                      value={emailMentor || ""}
+                      placeholder={profilesContent.user.emailMentorPlaceholder}
+                      className="w-[85%] h-full bg-transparent text-primary placeholder-primary/60 focus:outline-none underline underline-offset-2"
+                    />
+                    <button
+                      type="submit"
+                      className="underline text-primary/80 hover:text-primary h-full"
+                    >
+                      <img
+                        className="text-primary w-6 opacity-60 rotate-180 hover:opacity-70"
+                        src={images.external.backIcon}
+                        alt={profilesContent.user.emailMentorSubmitAlt}
+                      />
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
 
-            <img
-              src={images.arkanaLogo.src}
-              alt={profilesContent.user.heroTitle.replace("\n", " ")}
-              className="max-w-full h-auto w-[290px] md:w-[400px] object-contain"
-            />
+            <div>
+              <p className="font-semibold text-primary/90 mb-1">
+                {profilesContent.user.studentMentorLabel}
+              </p>
+              <p className="block w-full min-h-9 bg-background text-primary placeholder-primary/60 text-base focus:outline-none overflow-hidden break-words break-all">
+                {user?.RaUsuario
+                  ? user?.NomeUsuario
+                  : profilesContent.user.studentMentorFallback}
+              </p>
+            </div>
+
+            <div>
+              <p className="font-semibold text-primary/90 mb-1">
+                {profilesContent.user.membersLabel}
+              </p>
+              <div className="text-primary">
+                {team?.RaAlunos?.length > 0
+                  ? team.RaAlunos.map((RA: number, index: number) => (
+                      <p key={index} className="mb-1">
+                        {RA}
+                      </p>
+                    ))
+                  : profilesContent.user.membersFallback}
+              </div>
+            </div>
           </div>
         </section>
       </div>

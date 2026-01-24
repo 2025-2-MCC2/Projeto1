@@ -164,7 +164,6 @@ export default function PublicDashboard() {
           </div>
 
           <div className="max-w-7xl mx-auto">
-            {/* Cards de Estatísticas */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               {overallMetrics.map((metric, index) => (
                 <Card
@@ -232,7 +231,6 @@ export default function PublicDashboard() {
                             {item.Fonte ?? dashboardContent.stats.unknownSource}
                           </p>
                           <span className="text-secondary">
-                            {" "}
                             {item.Quantidade * item.PesoUnidade} kg
                           </span>
                         </div>
