@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { navigationContent } from "@/lib/content";
 
 export default function MenuMobileAdmin() {
   const pathname = usePathname();
@@ -21,13 +20,24 @@ export default function MenuMobileAdmin() {
     }
   }, [params]);
 
+  // const onCreateClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  //   if (isActive(createHref)) {
+  //     e.preventDefault();
+  //     router.refresh();
+  //   }
+  // };
+
+  // Estilos base dos "pills"
   const basePill =
-    "relative flex items-center px-4 justify-center h-12 rounded-[40px] border border-secondary/40 bg-background shadow-sm transition-all duration-300 ease-out will-change-transform will-change-auto";
+    "relative flex items-center px-4 justify-center h-12 rounded-[40px] border-transparent transition-all duration-300 ease-out will-change-transform will-change-auto";
 
-  const neutralPill = "text-primary hover:bg-secondary/20 active:scale-95";
+  // Neutral (não selecionado)
+  const neutralPill =
+    "bg-[#A6B895] text-white hover:bg-[#F2D1D4] active:scale-95";
 
+  // Selecionado: ícone rosa + halo/anel verde claro + leve scale
   const activePill =
-    "bg-primary text-white border-primary ring-2 ring-secondary/40 ring-offset-2 ring-offset-background animate-selected-pop";
+    "bg-[#70805A] text-white ring-2 ring-[#6B7E5D] ring-offset-2 ring-offset-white animate-selected-pop";
 
   return (
     <nav
@@ -37,15 +47,20 @@ export default function MenuMobileAdmin() {
         pb-[calc(env(safe-area-inset-bottom,0px)+10px)] pt-3
       "
       role="navigation"
-      aria-label={navigationContent.menu.mobile.ariaLabel}
+      aria-label="Menu mobile"
     >
       <div className="mx-auto max-w-lg px-4">
         <div
-          className="grid grid-cols-2 gap-2 p-2"
+          className="
+            grid grid-cols-2 gap-2
+            p-2 
+            bg-[#A6B895]
+            rounded-[30px]   
+          "
         >
           <Link
             href={`/admin/${IdMentor}/admin-profile`}
-            aria-label={navigationContent.menu.admin.mobile.homeAriaLabel}
+            aria-label="Início"
             className={`${basePill} ${
               isActive(profileHref) ? activePill : neutralPill
             }`}
@@ -67,7 +82,7 @@ export default function MenuMobileAdmin() {
           </Link>
           <Link
             href={`/admin/${IdMentor}/admin-history`}
-            aria-label={navigationContent.menu.admin.mobile.historyAriaLabel}
+            aria-label="Histórico"
             className={`${basePill} ${
               isActive(historyHref) ? activePill : neutralPill
             }`}

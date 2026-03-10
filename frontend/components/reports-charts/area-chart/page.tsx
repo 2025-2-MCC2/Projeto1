@@ -19,15 +19,13 @@ import {
 } from "@/components/ui/chart";
 import { Contribution } from "@/components/contribution-table-admin/columns";
 import { v4 as uuidv4 } from "uuid";
-import { commonContent, reportsContent } from "@/lib/content";
-import { getMockContributions } from "@/lib/mock-data";
 
 export const description =
-  reportsContent.charts.financialTimeline.description;
+  "Gráfico de arrecadações financeiras ao longo do tempo";
 
 const chartConfig = {
   desktop: {
-    label: reportsContent.charts.financialTimeline.legend,
+    label: "Financeira",
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
@@ -38,12 +36,21 @@ export function FinanContribuitionsChart() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
     async function fetchContributions() {
       try {
         setLoading(true);
         setError(null);
 
-        const raw = await getMockContributions();
+        const res = await fetch(`${backend_url}/api/contributions`, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error("Erro ao buscar contribuições");
+
+        const raw = await res.json();
 
         const data: Contribution[] = Array.isArray(raw)
           ? raw.map((r: any) => ({
@@ -69,16 +76,16 @@ export function FinanContribuitionsChart() {
 
         setContributions(data);
       } catch (err: any) {
-        setError(err?.message ?? commonContent.errors.unexpected);
+        if (err?.name !== "AbortError") {
+          setError(err?.message ?? "Erro inesperado");
+        }
       } finally {
         setLoading(false);
       }
     }
 
     fetchContributions();
-    return () => {
-      
-    };
+    return () => controller.abort();
   }, []);
 
   const chartData =
@@ -105,12 +112,10 @@ export function FinanContribuitionsChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.financialTimeline.title}</CardTitle>
+          <CardTitle>Arrecadação financeira</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">
-            {reportsContent.charts.financialTimeline.loading}
-          </p>
+          <p className="text-muted-foreground">Carregando...</p>
         </CardContent>
       </Card>
     );
@@ -120,12 +125,10 @@ export function FinanContribuitionsChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.financialTimeline.title}</CardTitle>
+          <CardTitle>Arrecadação financeira</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-destructive">
-            {reportsContent.charts.financialTimeline.errorPrefix} {error}
-          </p>
+          <p className="text-destructive">Erro: {error}</p>
         </CardContent>
       </Card>
     );
@@ -135,15 +138,11 @@ export function FinanContribuitionsChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.financialTimeline.title}</CardTitle>
-          <CardDescription>
-            {reportsContent.charts.financialTimeline.emptyTitle}
-          </CardDescription>
+          <CardTitle>Arrecadação financeira</CardTitle>
+          <CardDescription>Nenhum dado disponível</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">
-            {reportsContent.charts.financialTimeline.emptyDescription}
-          </p>
+          <p className="text-muted-foreground">Sem arrecadações registradas</p>
         </CardContent>
       </Card>
     );
@@ -152,9 +151,9 @@ export function FinanContribuitionsChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{reportsContent.charts.financialTimeline.title}</CardTitle>
+        <CardTitle>Arrecadação financeira</CardTitle>
         <CardDescription>
-          {reportsContent.charts.financialTimeline.subtitle}
+          Período de arrecadações financeiras durante o semestre
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -180,7 +179,7 @@ export function FinanContribuitionsChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="text-muted-foreground leading-none">
-          {reportsContent.charts.financialTimeline.footer}
+          Agosto 2025 - Atualmente
         </div>
       </CardFooter>
     </Card>

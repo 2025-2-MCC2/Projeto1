@@ -24,8 +24,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { commonContent, reportsContent } from "@/lib/content";
-import { getMockContributions } from "@/lib/mock-data";
 
 interface Contribuicao {
   IdContribuicaoAlimenticia?: number;
@@ -53,7 +51,7 @@ interface Team {
 
 const chartConfig = {
   pontos: {
-    label: reportsContent.charts.teamsRanking.legend,
+    label: "Contribuições",
     color: "hsl(var(--chart-1))",
   },
   label: {
@@ -67,6 +65,8 @@ export function TeamsRankingChart() {
   const [teams, setTeams] = useState<Team[]>([]);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     let active = true;
 
     async function fetchTeamContrib() {
@@ -74,7 +74,14 @@ export function TeamsRankingChart() {
         setLoading(true);
         setError(null);
 
-        const contribRaw = await getMockContributions();
+        const res = await fetch(`${backend_url}/api/contributions`, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!res.ok) throw new Error("Erro ao buscar contribuições");
+
+        const contribRaw = await res.json();
         if (!active) return;
 
         const contribPorTime = new Map<number, Contribuicao[]>();
@@ -117,7 +124,8 @@ export function TeamsRankingChart() {
           : [];
         setTeams(data);
       } catch (err: any) {
-        setError(err?.message ?? commonContent.errors.unexpected);
+        if (err?.name === "AbortError") return;
+        setError(err?.message ?? "Erro inesperado");
       } finally {
         if (active) setLoading(false);
       }
@@ -126,7 +134,7 @@ export function TeamsRankingChart() {
     fetchTeamContrib();
     return () => {
       active = false;
-      
+      controller.abort();
     };
   }, []);
 
@@ -154,12 +162,10 @@ export function TeamsRankingChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.teamsRanking.title}</CardTitle>
+          <CardTitle>Ranking de Times</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">
-            {reportsContent.charts.teamsRanking.loading}
-          </p>
+          <p className="text-muted-foreground">Carregando...</p>
         </CardContent>
       </Card>
     );
@@ -169,12 +175,10 @@ export function TeamsRankingChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.teamsRanking.title}</CardTitle>
+          <CardTitle>Ranking de Times</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-destructive">
-            {reportsContent.charts.teamsRanking.errorPrefix} {error}
-          </p>
+          <p className="text-destructive">Erro: {error}</p>
         </CardContent>
       </Card>
     );
@@ -184,12 +188,10 @@ export function TeamsRankingChart() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{reportsContent.charts.teamsRanking.title}</CardTitle>
+          <CardTitle>Ranking de Times</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">
-            {reportsContent.charts.teamsRanking.empty}
-          </p>
+          <p className="text-muted-foreground">Nenhum time encontrado</p>
         </CardContent>
       </Card>
     );
@@ -198,10 +200,9 @@ export function TeamsRankingChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{reportsContent.charts.teamsRanking.title}</CardTitle>
+        <CardTitle>Ranking de Times</CardTitle>
         <CardDescription>
-          {reportsContent.charts.teamsRanking.subtitlePrefix} {chartData.length}{" "}
-          {reportsContent.charts.teamsRanking.subtitleSuffix}
+          Top {chartData.length} times com mais contribuições na edição atual
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -248,7 +249,7 @@ export function TeamsRankingChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="text-muted-foreground leading-none">
-          {reportsContent.charts.teamsRanking.footer}
+          Mostrando os times com maior número de contribuições cadastradas
         </div>
       </CardFooter>
     </Card>

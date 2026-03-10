@@ -1,7 +1,7 @@
 import { prisma } from "../../prisma/lib/prisma.js";
 
 const usersController = {
-
+  //GET /api/users
   allUsers: async (_, res) => {
     try {
       const usuario = await prisma.usuario.findMany();
@@ -14,6 +14,7 @@ const usersController = {
     }
   },
 
+  //GET /api/user/:RaUsuario
   userByRA: async (req, res) => {
     const { RaUsuario } = req.params;
 
@@ -61,6 +62,7 @@ const usersController = {
     }
   },
 
+  //DELETE /api/deleteUser/:RaUsuario
   deleteUser: async (req, res) => {
     const { RaUsuario } = req.params;
 

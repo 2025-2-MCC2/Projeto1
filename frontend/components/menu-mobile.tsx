@@ -5,8 +5,17 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useParams } from "next/navigation";
 
-import { images, navigationContent } from "@/lib/content";
-import { cn } from "@/lib/utils";
+import homeDefault from "@/assets/icons/home.png";
+import homeActive from "@/assets/icons/home-active.png";
+import homePressed from "@/assets/icons/home-pressed.png";
+
+import addDefault from "@/assets/icons/add.png";
+import addActive from "@/assets/icons/add-active.png";
+import addPressed from "@/assets/icons/add-pressed.png";
+
+import historyDefault from "@/assets/icons/history.png";
+import historyActive from "@/assets/icons/history-active.png";
+import historyPressed from "@/assets/icons/history-pressed.png";
 
 export default function MenuMobile() {
   const pathname = usePathname();
@@ -35,23 +44,27 @@ export default function MenuMobile() {
     }
   };
 
+  // ---------- Estilos base ----------
   const basePill =
-    "relative flex items-center justify-center h-14 w-14 rounded-full bg-background border border-secondary/40 shadow-sm transition-all duration-300 ease-out";
-  const neutralPill = "text-primary hover:bg-secondary/20";
-  const activePill =
-    "bg-primary text-white border-primary ring-2 ring-secondary/40 ring-offset-2 ring-offset-background shadow-sm";
+    "relative flex items-center justify-center h-10 w-16 rounded-[10px] transition-all duration-300 ease-out";
+  const neutralPill = "bg-transparent hover:bg-primary/20";
+  const activePill = "bg-[#3B5D3D] text-white border border-[#3B5D3D]";
 
+  // ---------- Ícones ----------
   const icons = useMemo(
     () => ({
-      home: images.menu.home,
-      add: images.menu.add,
+      home: { default: homeDefault, active: homeActive, pressed: homePressed },
+      add: { default: addDefault, active: addActive, pressed: addPressed },
       history: {
-        ...images.menu.history,
+        default: historyDefault,
+        active: historyActive,
+        pressed: historyPressed,
       },
     }),
     []
   );
 
+  // ---------- Efeito "pop" ----------
   const [pressed, setPressed] = useState<{ [key: string]: boolean }>({});
   const timersRef = useRef<{ [key: string]: number }>({});
 
@@ -82,8 +95,8 @@ export default function MenuMobile() {
   return (
     <nav
       role="navigation"
-      aria-label={navigationContent.menu.mobile.ariaLabel}
-      className="md:hidden fixed inset-x-0 bottom-2 z-50"
+      aria-label="Menu mobile"
+      className="md:hidden fixed inset-x-0 bottom-0 z-50"
     >
       <style jsx global>{`
         @keyframes pop {
@@ -110,11 +123,12 @@ export default function MenuMobile() {
         }
       `}</style>
 
-      <div className="mx-auto w-[300px] px-4 sm:px-6 my-4 rounded-2xl">
-        <div className="flex items-center justify-center gap-8 sm:gap-12 py-2">
+      <div className="mx-auto w-[300px] px-4 sm:px-6 rounded-2xl">
+        <div className="flex items-center justify-center gap-8 sm:gap-12 py-2 bg-primary rounded-[30px]">
+          {/* Aba 1: Home */}
           <Link
             href={homeHref}
-            aria-label={navigationContent.menu.mobile.tabs.home.ariaLabel}
+            aria-label="Início"
             className={`${basePill} ${
               isActive(homeHref) ? activePill : neutralPill
             } ${pressed.home ? "animate-pop" : ""}`}
@@ -123,21 +137,19 @@ export default function MenuMobile() {
           >
             <Image
               src={getIconSrc(icons.home, isActive(homeHref), !!pressed.home)}
-              alt={navigationContent.menu.mobile.tabs.home.alt}
+              alt="Início"
               width={24}
               height={24}
-              className={cn(
-                "pointer-events-none select-none",
-                isActive(homeHref) ? "brightness-0 invert" : "brightness-0"
-              )}
+              className="pointer-events-none select-none"
               draggable={false}
               priority
             />
           </Link>
 
+          {/* Aba 2: Cadastrar */}
           <Link
             href={createHref}
-            aria-label={navigationContent.menu.mobile.tabs.create.ariaLabel}
+            aria-label="Cadastrar"
             onClick={onCreateClick}
             className={`${basePill} ${
               isActive(createHref) ? activePill : neutralPill
@@ -147,21 +159,19 @@ export default function MenuMobile() {
           >
             <Image
               src={getIconSrc(icons.add, isActive(createHref), !!pressed.add)}
-              alt={navigationContent.menu.mobile.tabs.create.alt}
+              alt="Cadastrar"
               width={24}
               height={24}
-              className={cn(
-                "pointer-events-none select-none",
-                isActive(createHref) ? "brightness-0 invert" : "brightness-0"
-              )}
+              className="pointer-events-none select-none"
               draggable={false}
               priority
             />
           </Link>
 
+          {/* Aba 3: Histórico */}
           <Link
             href={historyHref}
-            aria-label={navigationContent.menu.mobile.tabs.history.ariaLabel}
+            aria-label="Histórico"
             className={`${basePill} ${
               isActive(historyHref) ? activePill : neutralPill
             } ${pressed.history ? "animate-pop" : ""}`}
@@ -174,13 +184,10 @@ export default function MenuMobile() {
                 isActive(historyHref),
                 !!pressed.history
               )}
-              alt={navigationContent.menu.mobile.tabs.history.alt}
+              alt="Histórico"
               width={24}
               height={24}
-              className={cn(
-                "pointer-events-none select-none",
-                isActive(historyHref) ? "brightness-0 invert" : "brightness-0"
-              )}
+              className="pointer-events-none select-none"
               draggable={false}
               priority
             />

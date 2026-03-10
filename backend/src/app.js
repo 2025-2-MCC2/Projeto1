@@ -11,6 +11,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+/* ------------------------- 🔹 MIDDLEWARES ------------------------- */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,14 +29,18 @@ app.use((req, res, next) => {
   next();
 });
 
+/* ------------------------- 🔹 ARQUIVOS ESTÁTICOS ------------------------- */
+// ✅ Servir corretamente a pasta uploads (garante compatibilidade no build)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+/* ------------------------- 🔹 ROTAS ------------------------- */
 app.get("/health", (_, res) => {
   res.json({ ok: true, server: "up" });
 });
 
 app.use("/api", routes);
 
+/* ------------------------- 🔹 ERROS DE UPLOAD ------------------------- */
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
@@ -51,6 +56,7 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+/* ------------------------- 🔹 404 HANDLER ------------------------- */
 app.use((req, res) => {
   res.status(404).json({ error: "Rota não encontrada" });
 });

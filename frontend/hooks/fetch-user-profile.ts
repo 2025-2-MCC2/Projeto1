@@ -19,29 +19,39 @@ interface User {
   TurmaUsuario: string;
 }
 
-import { commonContent } from "@/lib/content";
-import { getMockUser, getMockUserTeam } from "@/lib/mock-data";
+const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function fetchData(
   RaUsuario: number
 ): Promise<{ team: Team; user: User } | undefined> {
   try {
-    const team = await getMockUserTeam(RaUsuario);
-    const user = await getMockUser(RaUsuario);
+    const res = await fetch(`${backend_url}/api/${RaUsuario}/userTeam`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-    if (!team) {
-      alert(`${commonContent.errors.fetchContributions}: time não encontrado`);
+    const userRes = await fetch(`${backend_url}/api/user/${RaUsuario}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      alert("Erro ao buscar time: " + errText);
       return;
     }
 
-    if (!user) {
-      alert(`${commonContent.errors.fetchContributions}: usuário não encontrado`);
+    if (!userRes.ok) {
+      const errText = await userRes.text();
+      alert("Erro ao buscar usuario" + errText);
       return;
     }
+    const team = await res.json();
+    const user = await userRes.json();
 
     return { team, user };
   } catch (error) {
     console.error(error);
-    alert(commonContent.errors.unexpected);
+    alert("Erro ao buscar time.");
   }
 }

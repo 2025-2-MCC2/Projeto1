@@ -24,7 +24,6 @@ import * as React from "react";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import type { Contribution } from "@/components/contribution-table/columns";
-import { tablesContent } from "@/lib/content";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -61,17 +60,17 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder={tablesContent.filters.byTeam}
+          placeholder="Procurar nome de um grupo..."
           value={
             (table.getColumn("NomeTime")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
             table.getColumn("NomeTime")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm border border-secondary/40 bg-background"
+          className="max-w-sm border border-gray-300"
         />
       </div>
-      <div className="overflow-hidden rounded-md border border-secondary/40 bg-background shadow-sm">
+      <div className="overflow-hidden rounded-md border border-gray-200 shadow-xl">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -115,7 +114,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {tablesContent.empty.noContributions}
+                  Não há contribuições.
                 </TableCell>
               </TableRow>
             )}
@@ -130,7 +129,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          {tablesContent.pagination.previous}
+          Página anterior
         </Button>
 
         <Button
@@ -139,7 +138,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          {tablesContent.pagination.next}
+          Próxima página
         </Button>
       </div>
     </div>

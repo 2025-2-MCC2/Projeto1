@@ -12,22 +12,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { tablesContent } from "@/lib/content";
+
+// interface Contribution {
+//   IdContribuicao: number;
+//   RaUsuario: number;
+//   TipoDoacao: string;
+//   Quantidade: number;
+//   Meta?: number;
+//   Gastos?: number;
+//   Fonte?: string;
+//   comprovante?: {
+//     IdComprovante: number;
+//     Imagem: string;
+//   };
+//   DataContribuicao: string;
+// }
 
 export default function RenderContribution() {
   const [contributions, setContributions] = useState<Contribution[]>([]);
 
   return (
     <Table>
-      <TableCaption>{tablesContent.simpleTable.caption}</TableCaption>
+      <TableCaption>Lista de contribuições</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>{tablesContent.simpleTable.headers.source}</TableHead>
-          <TableHead>{tablesContent.simpleTable.headers.type}</TableHead>
-          <TableHead>{tablesContent.simpleTable.headers.amount}</TableHead>
-          <TableHead className="text-right">
-            {tablesContent.simpleTable.headers.date}
-          </TableHead>
+          <TableHead>Fonte</TableHead>
+          <TableHead>Tipo de Doação</TableHead>
+          <TableHead>Quantidade</TableHead>
+          <TableHead className="text-right">Data</TableHead>
         </TableRow>
       </TableHeader>
 
@@ -47,9 +59,7 @@ export default function RenderContribution() {
 
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={2}>
-            {tablesContent.simpleTable.headers.total}
-          </TableCell>
+          <TableCell colSpan={2}>Total</TableCell>
           <TableCell colSpan={2} className="text-right">
             {contributions.reduce((sum, c) => sum + c.Quantidade, 0)}
           </TableCell>
