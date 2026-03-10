@@ -23,9 +23,11 @@ export default function MenuMobile() {
   const params = useParams();
   const [RaUsuario, setRaUsuario] = useState<number | null>(null);
 
-  const homeHref = `/user/${RaUsuario}/user-profile`;
-  const createHref = `/user/${RaUsuario}/new-contribution`;
-  const historyHref = `/user/${RaUsuario}/team-history`;
+  const raSegment = RaUsuario ?? "";
+  const baseHref = "/user/" + raSegment;
+  const homeHref = baseHref + "/user-profile";
+  const createHref = baseHref + "/new-contribution";
+  const historyHref = baseHref + "/team-history";
 
   const isActive = (href: string) => pathname?.startsWith(href);
 
