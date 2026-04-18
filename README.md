@@ -46,13 +46,17 @@ This project was developed for the [Lideranças Empáticas Project](https://lide
    npm install
    ```
 
-2. **Database Setup:**
+2. **Workspace Setup:**
    * Locate the SQL script in `/entregas/entrega-1/banco-de-dados/`.
    * Import it into your MySQL Workbench.
    * Configure your `.env` file in the `/backend` folder with your credentials:
      ```env
-     DATABASE_URL="mysql://user:password@localhost:3306/arkana"
-     JWT_SECRET="your_secret"
+     NEXT_PUBLIC_BACKEND_URL=
+     FRONTEND_URL=
+     ```
+   * Configure your `.env` file in the `/frontend` folder with your credentials:
+     ```env
+     NEXT_PUBLIC_BACKEND_URL=
      ```
 
 3. **Run Development Servers:**
