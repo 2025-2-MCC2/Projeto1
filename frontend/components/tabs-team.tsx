@@ -1,7 +1,8 @@
+// Tab switcher for team-related views so the page can alternate between grouped datasets.
 "use client";
 
-import React, { useEffect } from "react";
-import BackHome from "@/components/back-home";
+import React from "react";
+import BackHome from "@/components/buttons/back";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -21,6 +22,7 @@ export default function TeamTabs({ raUsuario }: Props) {
   const [RaAluno9, setRaAluno9] = React.useState("");
   const [RaAluno10, setRaAluno10] = React.useState("");
 
+  // Creates the team from the onboarding form and redirects the new leader to the first contribution screen.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -45,7 +47,6 @@ export default function TeamTabs({ raUsuario }: Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // Dados da tabela Time
           NomeTime: NomeTime,
           RaUsuario: Number(raUsuario),
           RaAluno2: Number(RaAluno2) || 0,
@@ -77,7 +78,7 @@ export default function TeamTabs({ raUsuario }: Props) {
 
       if (error instanceof TypeError && error.message === "Failed to fetch") {
         alert(
-          "Erro de conexão. Verifique se o backend está rodando e se a URL está correta."
+          "Erro de conexão. Verifique se o backend está rodando e se a URL está correta.",
         );
       } else {
         alert("Erro ao cadastrar time: " + error);

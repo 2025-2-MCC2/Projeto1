@@ -1,17 +1,17 @@
+// Public reports page that focuses on the read-only donation dashboards and charts.
 "use client";
 
 import React, { useState } from "react";
-import BackHome from "@/components/back-home";
-import RecordsMentor from "@/components/records-mentor";
-import RenderContributionCard from "@/components/grid-contribution-admin";
+import BackHome from "@/components/buttons/back";
+import RecordsMentor from "@/components/administrator/records-mentor";
+import RenderContributionCard from "@/components/administrator/contributions-grid";
 import Loading from "@/components/loading";
 
 import { BiggestContributionsChart } from "@/components/reports-charts/tooltip-chart/page";
-import { FoodDonationsChart } from "@/components/reports-charts/pie-chart-label/page";
 import { FinanContribuitionsChart } from "@/components/reports-charts/area-chart/page";
 import { TeamsRankingChart } from "@/components/reports-charts/bar-label-costum/page";
 
-// Generate editions automatically
+// Derives the semester edition labels from the base edition/year so the report selector stays current without manual updates.
 function generateEditions(startEdition = 7, startYear = 2025) {
   const editions = [];
   const currentDate = new Date();
@@ -35,7 +35,7 @@ function generateEditions(startEdition = 7, startYear = 2025) {
 
 export default function PublicReports() {
   const [edition, setEdition] = useState<number>(() => {
-    // auto-select the current edition
+    // Starts the reports view on the edition that matches the current semester.
     const now = new Date();
     const startEdition = 7;
     const startYear = 2025;
@@ -51,6 +51,7 @@ export default function PublicReports() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Prepares the available edition labels for the report filters and future navigation work.
   const editions = generateEditions();
 
   return (
@@ -61,25 +62,6 @@ export default function PublicReports() {
 
       <div className="mx-auto mt-5 grid grid-cols-1 md:grid-cols-3">
         <div className="w-full h-full md:col-span-2">
-          {/* Edition Selector */}
-          {/*
-          <div className="flex justify-center mb-6">
-            <select
-              title="Filtrar por edição"
-              value={edition}
-              onChange={(e) => setEdition(Number(e.target.value))}
-              className="border border-gray-300 rounded-lg px-4 py-2 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary"
-            >
-              {editions.map((ed) => (
-                <option key={ed.value} value={ed.value}>
-                  {ed.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          */}
-
-          {/* Table / Loading / Error */}
           {loading && (
             <div className="w-screen h-full text-center text-gray-600">
               <Loading />
@@ -115,7 +97,6 @@ export default function PublicReports() {
 
         <div className="w-full h-full flex flex-col gap-6">
           <BiggestContributionsChart />
-          <FoodDonationsChart />
           <FinanContribuitionsChart />
           <TeamsRankingChart />
         </div>

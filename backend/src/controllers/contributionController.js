@@ -1,8 +1,10 @@
+// Contribution controller. Aggregates financial and food donations into the API shape consumed by the frontend.
 import { prisma } from "../../prisma/lib/prisma.js";
 import { v4 as uuidv4 } from "uuid";
 
 const contributionController = {
-  //GET /api/contributions
+  // GET /api/contributions
+  // Lists every contribution, merges the two donation tables, and reshapes them into the unified API contract used by the frontend.
   allContributions: async (_, res) => {
     try {
       const financeContribs = await prisma.contribuicao_Financeira.findMany({
@@ -51,6 +53,7 @@ const contributionController = {
         },
       });
 
+      // Normalizes both Prisma result sets into a single list so the frontend can render one contribution model.
       const allContribs = [
         ...financeContribs.map((contrib) => ({
           IdContribuicao: contrib.IdContribuicaoFinanceira,
@@ -67,7 +70,7 @@ const contributionController = {
                 Imagem: contrib.comprovante.Imagem,
               }
             : null,
-          alimentos: [], // Financeira não tem alimentos
+          alimentos: [],
           PesoUnidade: 0,
           uuid: contrib.uuid,
           NomeTime:
@@ -105,7 +108,7 @@ const contributionController = {
       ];
 
       allContribs.sort(
-        (a, b) => new Date(b.DataContribuicao) - new Date(a.DataContribuicao)
+        (a, b) => new Date(b.DataContribuicao) - new Date(a.DataContribuicao),
       );
 
       res.json(allContribs);
@@ -117,7 +120,8 @@ const contributionController = {
     }
   },
 
-  //GET /api/contributions/:RaUsuario
+  // GET /api/contributions/:RaUsuario
+  // Returns only the contributions owned by one participant while keeping the same normalized response shape.
   getContributionsByRa: async (req, res) => {
     try {
       const { RaUsuario } = req.params;
@@ -162,7 +166,7 @@ const contributionController = {
                 Imagem: contrib.comprovante.Imagem,
               }
             : null,
-          alimentos: [], // Financeira não tem alimentos
+          alimentos: [],
           PesoUnidade: 0,
           uuid: contrib.uuid,
         })),
@@ -202,7 +206,7 @@ const contributionController = {
       }
 
       allContribs.sort(
-        (a, b) => new Date(b.DataContribuicao) - new Date(a.DataContribuicao)
+        (a, b) => new Date(b.DataContribuicao) - new Date(a.DataContribuicao),
       );
       res.json(allContribs);
     } catch (err) {
@@ -214,7 +218,8 @@ const contributionController = {
     }
   },
 
-  //GET /api/contributions/edition/:editionNumber
+  // GET /api/contributions/edition/:editionNumber
+  // Converts the edition number into a semester date range and filters both contribution tables by that window.
   getContributionsByEdition: async (req, res) => {
     try {
       const { editionNumber } = req.params;
@@ -230,7 +235,7 @@ const contributionController = {
         31,
         23,
         59,
-        59
+        59,
       );
 
       const financeContribs = await prisma.contribuicao_Financeira.findMany({
@@ -266,7 +271,7 @@ const contributionController = {
       }
 
       allContribs.sort(
-        (a, b) => new Date(b.DataContribuicao) - new Date(a.DataContribuicao)
+        (a, b) => new Date(b.DataContribuicao) - new Date(a.DataContribuicao),
       );
 
       res.json(allContribs);
@@ -279,7 +284,8 @@ const contributionController = {
     }
   },
 
-  //POST /api/createContribution
+  // POST /api/createContribution
+  // Creates either a financial or food contribution based on the incoming donation type and keeps the insert transactional.
   createContribution: async (req, res) => {
     const {
       RaUsuario,
@@ -310,6 +316,7 @@ const contributionController = {
           });
         }
 
+        // The financial branch writes one row and returns the created record for the optional receipt upload step.
         const resultado = await prisma.$transaction(async (tx) => {
           let comprovanteId = null;
           if (Imagem) {
@@ -368,6 +375,7 @@ const contributionController = {
           });
         }
 
+        // The food branch stores the contribution plus its food relation inside the same transaction.
         const resultado = await prisma.$transaction(async (tx) => {
           let comprovanteId = null;
           if (Imagem) {
@@ -432,7 +440,8 @@ const contributionController = {
     }
   },
 
-  //DELETE /api/:TipoDoacao/:IdContribuicao
+  // DELETE /api/:TipoDoacao/:IdContribuicao
+  // Deletes the requested contribution by type so the UI can use one endpoint for both donation categories.
   deleteContribution: async (req, res) => {
     const { TipoDoacao, IdContribuicao } = req.params;
 

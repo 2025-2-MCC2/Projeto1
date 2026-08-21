@@ -1,9 +1,10 @@
+// Login page for mentor users. Composes the authentication form with the registration flow layout.
 "use client";
 
 import React from "react";
 import Link from "next/link";
 import TabsLogin from "@/components/tabs-login";
-import BackHome from "@/components/back-home";
+import BackHome from "@/components/buttons/back";
 
 export default function Login() {
   return (

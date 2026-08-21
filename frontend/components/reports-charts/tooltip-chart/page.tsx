@@ -1,8 +1,9 @@
+// Tooltip chart configuration used to present richer point details in the reporting UI.
 "use client";
 
 import { useEffect, useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
-import { Contribution } from "@/components/contribution-table-admin/columns";
+import { Contribution } from "@/components/administrator/contributions-table/columns";
 import {
   Card,
   CardContent,
@@ -17,6 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { v4 as uuidv4 } from "uuid";
+import { getMockContributions, isMockMode } from "@/lib/mock-db";
 
 export const description = "Gráfico de contribuições financeiras e alimentares";
 
@@ -36,23 +38,27 @@ export function BiggestContributionsChart() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Loads the full contribution feed once and normalizes it into the chart input model used by the report cards.
   useEffect(() => {
     const controller = new AbortController();
     const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     let active = true;
 
+    // Converts the backend payload into the unified contribution format before any chart aggregation happens.
     async function fetchContributions() {
       try {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(`${backend_url}/api/contributions`, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-        if (!res.ok) throw new Error("Erro ao buscar contribuições");
-
-        const raw = await res.json();
+        const raw = isMockMode()
+          ? getMockContributions()
+          : await fetch(`${backend_url}/api/contributions`, {
+              cache: "no-store",
+              signal: controller.signal,
+            }).then((res) => {
+              if (!res.ok) throw new Error("Erro ao buscar contribuições");
+              return res.json();
+            });
         if (!active) return;
 
         const data: Contribution[] = Array.isArray(raw)
@@ -60,13 +66,11 @@ export function BiggestContributionsChart() {
               const IdContribuicao = Number(
                 r.IdContribuicao ??
                   r.IdContribuicaoFinanceira ??
-                  r.IdContribuicaoAlimenticia
+                  r.IdContribuicaoAlimenticia,
               );
 
               const idComp =
-                r?.comprovante?.IdComprovante ??
-                r?.IdComprovante ??
-                null;
+                r?.comprovante?.IdComprovante ?? r?.IdComprovante ?? null;
 
               const rawImg =
                 r?.Comprovante ??
@@ -81,6 +85,7 @@ export function BiggestContributionsChart() {
                 | { IdComprovante: number; Imagem: string }
                 | undefined;
 
+              // Resolves receipt paths into displayable URLs so chart tooltips can still access receipt metadata consistently.
               if (rawImg && String(rawImg).trim() !== "") {
                 const s = String(rawImg).trim();
                 const isAbsolute = /^https?:\/\//i.test(s);
@@ -105,19 +110,19 @@ export function BiggestContributionsChart() {
                     ? Number(
                         String(r.Quantidade)
                           .replace(/\./g, "")
-                          .replace(",", ".")
+                          .replace(",", "."),
                       )
                     : 0,
                 Meta:
                   r.Meta != null
                     ? Number(
-                        String(r.Meta).replace(/\./g, "").replace(",", ".")
+                        String(r.Meta).replace(/\./g, "").replace(",", "."),
                       )
                     : undefined,
                 Gastos:
                   r.Gastos != null
                     ? Number(
-                        String(r.Gastos).replace(/\./g, "").replace(",", ".")
+                        String(r.Gastos).replace(/\./g, "").replace(",", "."),
                       )
                     : undefined,
                 Fonte: r.Fonte ?? "",
@@ -151,25 +156,30 @@ export function BiggestContributionsChart() {
     };
   }, []);
 
+  // Aggregates contributions by date and separates financial value from food weight for the comparative report.
   const chartData =
     contributions.length > 0
       ? Object.values(
           contributions.reduce(
             (acc: any, c: Contribution) => {
-              const date = new Date(c.DataContribuicao).toISOString().slice(0, 10);
+              const date = new Date(c.DataContribuicao)
+                .toISOString()
+                .slice(0, 10);
               if (!acc[date]) acc[date] = { date, running: 0, swimming: 0 };
 
               if (c.TipoDoacao === "Financeira") {
                 acc[date].running += c.Quantidade;
               } else if (c.TipoDoacao === "Alimenticia") {
-                acc[date].swimming +=
-                  c.Quantidade * (c.PesoUnidade ?? 1);
+                acc[date].swimming += c.Quantidade * (c.PesoUnidade ?? 1);
               }
 
               return acc;
             },
-            {} as Record<string, { date: string; running: number; swimming: number }>
-          )
+            {} as Record<
+              string,
+              { date: string; running: number; swimming: number }
+            >,
+          ),
         )
       : [];
 

@@ -1,3 +1,4 @@
+// Combined donations view that merges different contribution types into a single presentation layer.
 "use client";
 
 import React, { useState } from "react";
@@ -22,20 +23,18 @@ export default function AllDonations({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          //meta: Number(metaEvento),
           nomeEvento: String(nomeEvento),
         }),
       });
 
       if (!res.ok) {
-        const err = await res.json().catch(() => ({} as any));
+        const err = await res.json().catch(() => ({}) as any);
         alert(err?.error || "Erro ao cadastrar contribuição");
         return;
       }
 
       const data = await res.json();
       alert("Contribuição registrada com sucesso!");
-      //setMetaEnvento(0);
     } catch (error) {
       console.error("Erro ao enviar contribuição:", error);
       alert("Erro de conexão com o servidor.");

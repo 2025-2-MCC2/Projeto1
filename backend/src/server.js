@@ -1,8 +1,9 @@
+// Local server bootstrap used to start the Express app outside serverless environments.
 import express from "express";
 import cors from "cors";
 import routes from "./routes.js";
 
-const app = express(); 
+const app = express();
 const PORT = 3001;
 
 app.use(cors());
@@ -14,5 +15,5 @@ app.get("/health", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

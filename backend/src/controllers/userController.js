@@ -1,7 +1,9 @@
+// User controller. Returns student data and basic account management operations.
 import { prisma } from "../../prisma/lib/prisma.js";
 
 const usersController = {
-  //GET /api/users
+  // GET /api/users
+  // Lists every participant record for administrative inspection and debugging.
   allUsers: async (_, res) => {
     try {
       const usuario = await prisma.usuario.findMany();
@@ -14,7 +16,8 @@ const usersController = {
     }
   },
 
-  //GET /api/user/:RaUsuario
+  // GET /api/user/:RaUsuario
+  // Returns one participant together with their team and contribution relations for profile screens.
   userByRA: async (req, res) => {
     const { RaUsuario } = req.params;
 
@@ -62,7 +65,8 @@ const usersController = {
     }
   },
 
-  //DELETE /api/deleteUser/:RaUsuario
+  // DELETE /api/deleteUser/:RaUsuario
+  // Deletes the participant account identified by RA and returns the removed record.
   deleteUser: async (req, res) => {
     const { RaUsuario } = req.params;
 

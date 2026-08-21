@@ -1,3 +1,4 @@
+// Central API route table. Keeps endpoint wiring in one place so controllers stay focused on request handling.
 import { Router } from "express";
 import { pool } from "./db.js";
 import upload from "./configs/uploadconfig.js";
@@ -27,11 +28,11 @@ r.get("/contributions", contributionController.allContributions);
 r.get("/contributions/:RaUsuario", contributionController.getContributionsByRa);
 r.get(
   "/contributions/edition/:editionNumber",
-  contributionController.getContributionsByEdition
+  contributionController.getContributionsByEdition,
 );
 r.delete(
   "/contribution/:TipoDoacao/:IdContribuicao",
-  contributionController.deleteContribution
+  contributionController.deleteContribution,
 );
 
 /* ------------------------- MENTORES ------------------------- */
@@ -63,12 +64,12 @@ r.delete("/deleteUser/:RaUsuario", userController.deleteUser);
 r.post(
   "/comprovante/financeira/:IdContribuicaoFinanceira",
   upload.single("file"),
-  receiptController.addReceiptAtContribution
+  receiptController.addReceiptAtContribution,
 );
 r.post(
   "/comprovante/alimenticia/:IdContribuicaoAlimenticia",
   upload.single("file"),
-  receiptController.addFoodReceipt
+  receiptController.addFoodReceipt,
 );
 r.get("/comprovante/:RaUsuario", receiptController.receiptByRA);
 r.get("/comprovante/:IdComprovante ", receiptController.receiptById);

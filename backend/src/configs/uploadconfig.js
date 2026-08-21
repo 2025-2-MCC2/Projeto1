@@ -1,3 +1,4 @@
+// Upload pipeline configuration. Defines storage rules, file validation, and Cloudinary integration for receipts.
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
@@ -64,7 +65,7 @@ const fileFilter = (req, file, cb) => {
   if (!allowed.has(file.mimetype)) {
     return cb(
       new Error("Apenas arquivos PNG, JPG, JPEG, WEBP e PDF são permitidos"),
-      false
+      false,
     );
   }
   cb(null, true);

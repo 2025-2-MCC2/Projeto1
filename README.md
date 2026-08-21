@@ -1,137 +1,92 @@
-<h1 align="center">Fundação de Comércio Álvares Penteado</h1>
-
 <div align="center">
-<a href= "https://www.fecap.br/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhZPrRa89Kma0ZZogxm0pi-tCn_TLKeHGVxywp-LXAFGR3B1DPouAJYHgKZGV0XTEf4AE&usqp=CAU" alt="FECAP - Fundação de Comércio Álvares Penteado" border="0"></a>
+<h1>Arkana | Social Campaign Managment System</h1>
+<img height="240" alt="social-campaign-manager" src="https://github.com/user-attachments/assets/0afd9c5b-78a2-4789-b2d0-860bc5724729" />
 
-<h1>Nome do Projeto: Arkana 📑</h1>
-<p>Acesse o app: <a href="https://arkana-projeto1.vercel.app">https://arkana-projeto1.vercel.app</a></p>
+<p>Access the application: <a href="https://arkana-portfolio.vercel.app">https://arkana-portfolio.vercel.app</a></p>
+
+<p>Group: <a href="https://github.com/AnaliceCoimbra/">Analice Carneiro</a>, <a href="https://github.com/alicelobwp">Mariah Alice Pereira</a>, <a href="https://github.com/sofiahernandes">Sofia Hernandes</a>, <a href="https://github.com/viick04">Victória Azevedo</a> <br/>
+Advisors: <a href="https://br.linkedin.com/in/cristina-machado-corr%C3%AAa-leite-630309160">Cristina Leite</a>, <a href="https://www.linkedin.com/in/dolemes/">David Lemes</a>, <a href="https://br.linkedin.com/in/francisco-escobar">Francisco Escobar</a>, <a href="https://br.linkedin.com/in/katia-bossi">Katia Bossi</a>, <a href="https://br.linkedin.com/in/leonardo-fabris-lugoboni-a3369416">Leonardo Lugoboni</a></p>
 </div>
+
 <br/>
 
-## Integrantes do Grupo
-[Analice Coimbra Carneiro](https://github.com/AnaliceCoimbra/)  
-[Mariah Alice Pimentel Lôbo Pereira](https://github.com/alicelobwp)  
-[Sofia Botechia Hernandes](https://github.com/sofiahernandes)  
-[Victória Duarte Vieira Azevedo](https://github.com/viick04)  
+## Description
 
-## Professores Orientadores
-[Cristina Machado Correa Leite](https://www.linkedin.com/)  
-[David De Oliveira Lemes](https://www.linkedin.com/in/dolemes/)  
-[Francisco de Souza Escobar](https://www.linkedin.com/)  
-[Leonardo Fabris Lugoboni](https://www.linkedin.com/)  
-[Katia Milani Lara Bossi](https://www.linkedin.com/)  
+Arkana is a TypeScript-first full-stack web application developed for the **Lideranças Empáticas Project**, an initiative by **FECAP University Center** that combines social impact with entrepreneurial education through food and fundraising campaigns.
+The platform streamlines the management of every donation campaign edition by providing tools for team administration, activity tracking, goal monitoring, contribution management, receipt validation, and performance analytics.
+Designed prioritizing scalability and maintainability, the application leverages **Next.js**, **Express**, **Prisma**, **MySQL**, **JWT authentication**, **Cloudinary**, and a RESTful architecture, with deployment configured for **Vercel** and **Railway**.
+
 <br/>
 
-# Entregas
-- [Banner Apresentação](https://github.com/2025-2-MCC2/Projeto1/blob/main/entregas/Banner_FECAP_CCOMP2MA_Arkana.md)
-- [DERS - Documento Especificação de Requisitos](https://github.com/2025-2-MCC2/Projeto1/blob/main/entregas/DERS.md)
+## Folders structure
 
-| Disciplina | Entrega 1 | Entrega 2 |  
-| :-------: | :------: | :-------: |
-| web dev fullstack | - | [https://arkana-projeto1.vercel.app/](https://arkana-projeto1.vercel.app/) |   
-| calculo II | [/entregas/entrega-1/calculo-2/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/calculo-2) | [/entregas/entrega-2/calculo-2/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/calculo-2) |    
-| banco de dados | [/entregas/entrega-1/banco-de-dados/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/banco-de-dados) | [/entregas/entrega-2/banco-de-dados/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/banco-de-dados) |  
-| gestao empresarial | [/entregas/entrega-1/gestao-empresarial/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/gestao-empresarial) | [/entregas/entrega-2/gestao-empresarial/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/gestao-empresarial) |  
-| projeto interdisciplinar | [/entregas/entrega-1/proj-interdisciplinar/](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/proj-interdisciplinar) | [Projeto de Extensão](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-2/proj-interdisciplinar) |   
-<br/>
+```yaml
+backend/              # Express + Prisma backend application
+  ├─ package.json
+  ├─ .env.example
+  ├─ prisma/          # Prisma schema, migrations, and generated client
+  └─ src/
+     ├─ app.js        # Express application setup (CORS, middleware, static files, error handling)
+     ├─ db.js         # MySQL connection pool configuration
+     ├─ db-test.js    # Database connectivity test
+     ├─ routes.js     # API route definitions
+     ├─ server.js     # Application entry point
+     ├─ configs/      # Shared application configuration
+     ├─ controllers/  # Request handlers and business logic
+     ├─ middlewares/  # Custom Express middleware
+     ├─ services/     # Shared services and external integrations
+     └─ uploads/      # File upload configuration and utilities (Multer + Cloudinary)
 
-# Descrição
-## 🤝 Proposta Principal
-Desenvolvimento de uma Aplicação Web para o [Projeto Lideranças Empáticas](https://liderancasempaticas.com/), uma iniciativa do Centro Universitário FECAP que une impacto social e educação empreendedora através da arrecadação de alimentos e recursos financeiros. Essa aplicação objetiva gerenciar as edições deste projeto, incluindo controle de equipes, atividades, metas e resultados.
+frontend/             # Next.js 15 TypeScript frontend
+  ├─ package.json
+  ├─ .env.example
+  ├─ next.config.mjs
+  ├─ app/             # App Router pages, layouts, and routes
+  ├─ assets/          # Static assets (images, icons, fonts)
+  ├─ components/      # Reusable UI components
+  ├─ hooks/           # Custom React hooks
+  ├─ libs/            # Shared utilities and mock data for the demo
+  └─ styles/          # Global and component styles
 
-**Features:**  
-- Cadastro e gerenciamento de edições e participantes;
-- Observação de relatórios e sua filtragem por time, edição, etc.;
-- Criação de equipes por partes autorizadas;
-- Registro de atividades por equipe;
-- Geração de relatórios.
-<br/>
-
-## 🎨 Design Gráfico
-Procuramos desenvolver uma interface que traga a identidade visual do Projeto Lideranças Empáticas mas com o toque especial do grupo Arkana! Nossa interface preza o minimalismo sem perder a personalidade e a riqueza gráfica.
-<br/><br/>
-
-## 🎥 Trailer do Projeto
-<div align="center">
-    <a href="https://www.youtube.com/watch?v=OoxkFQGJF7c">
-    <img width="1000" alt="Screenshot Aplicação Arkana" src="https://github.com/user-attachments/assets/8257ef05-086a-4f79-a3fe-3158a136262e" />
-    </a>
-    Amostra do funcionamento da aplicação localmente com Postman (clique aqui ↑)
-</div>
-<br/><br/>
-
-
-## 🗂 Estrutura de Pastas
-```
-|-->backend
-    |-->prisma
-    |-->src
-       |-->controllers
-       |-->configs
-       |-->middlewares
-       |-->services
-       |-->uploads
-       |app.js
-       |db.js
-       |routes.js
-       |server.js
-|-->frontend
-    |-->app  
-    |-->components  
-    |-->hooks  
-    |-->lib  
-    |-->styles  
-|-->entregas
-    |-->entrega-1  
-       |-->calculo-2  
-       |-->banco-de-dados  
-       |-->gestao-empresarial
-       |-->proj-interdisciplinar
-    |-->entrega-2  
-       |-->calculo-2  
-       |-->banco-de-dados  
-       |-->gestao-empresarial
-       |-->proj-interdisciplinar
-|README.md  
-|LICENSE  
-```
-<br/>
-
-## 🚀 Instalação Local
-### Pré-requisitos
-- [Node.js](https://nodejs.org/)
-- [Yarn](https://classic.yarnpkg.com/lang/en/) ou `npm`
-<br/>
-
-1. Clone o Repositório e se direcione à pasta
-```
-git clone https://github.com/2025-2-MCC2/Projeto1.git  
-cd Projeto1
+DATABASE.md           # Database schema documentation
+README.md             # Project overview and setup guide
+LICENSE               # MIT License
+tailwind.config.js
+postcss.config.js
 ```
 
-2. Instale as Dependências
+<br/>
+
+## How to run it locally
+
+0. Pre-requisites: [Node.js](https://nodejs.org/) and [Yarn](https://classic.yarnpkg.com/lang/en/) ou `npm`
+
+1. Clone and enter repo
+
+```bash
+git clone https://github.com/sofiahernandes/social-campaign-manager.git
+cd social-campaign-manager
 ```
-npm install
-# ou
+
+2. Install dependencies (root then frontend/backend if needed)
+
+```bash
+npm install 
+# or
 yarn install
 ```
 
-3. Rode o banco de dados SQL (disponível no arquivo [/entregas/entrega-1/banco-de-dados/arkana-database.sql](https://github.com/2025-2-MCC2/Projeto1/tree/main/entregas/entrega-1/banco-de-dados) localmente no Workbench ou interface sa sua preferência. Popule o .env do /backend com as variáveis do seu ambiente.  
+3. Prepare the database (SQL available in the Markdown file [DATABASE.md](https://github.com/sofiahernandes/social-campaign-manager/blob/main/DATABASE.md) — run arkana-database.sql in your MySQL) 
 
-
-4. Entre nas pastas /frontend e /backend e rode o seguinte comando em cada uma delas  
-```
-npm run dev
-# ou
+4. Start development servers (run in both backend and frontend directories)
+```bash
+npm run dev 
+# or
 yarn run dev
 ```
 
 <br/>
 
-## 📋 Licença
-<a href="https://www.fecap.br/">FECAP - Fundação de Comércio Álvares Penteado</a> - <a href="https://github.com/2025-1-MCC1/Projeto7">Arkana</a> © 2025 by <a href="https://github.com/analicecoimbra">Analice Coimbra Carneiro</a>, <a href="https://github.com/alicelobwp">Mariah Alice Pimentel Lôbo Pereira</a>, <a href="https://github.com/sofiahernandes">Sofia Botechia Hernandes</a> and <a href="https://github.com/viick04">Victória Duarte Vieira Azevedo</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" height="20" width="20" style="margin-left: 0.2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" height="20" width="20" style="margin-left: 0.2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" height="20" width="20" style="margin-left: 0.2em;">
-<br/><br/>
+## License
 
-## 🎓 Referências
-[Creative Commons](https://creativecommons.org/share-your-work/)  
-[Template PI FECAP](https://github.com/fecaphub/Template_PI)  
+<a href="https://www.fecap.br">FECAP - Fundação de Comércio Álvares Penteado</a> - <a href="https://github.com/sofiahernandes/social-campaign-manager">Arkana (Social Campain Manager)</a> © 2025 by <a href="https://github.com/analicecoimbra">Analice Coimbra Carneiro</a>, <a href="https://github.com/alicelobwp">Mariah Alice Pimentel Lôbo Pereira</a>, <a href="https://github.com/sofiahernandes">Sofia Botechia Hernandes</a> and <a href="https://github.com/viick04">Victória Duarte Vieira Azevedo</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" height="20" width="20" style="margin-left: 0.2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" height="20" width="20" style="margin-left: 0.2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" height="20" width="20" style="margin-left: 0.2em;">

@@ -1,12 +1,28 @@
+// Restricted mentor history page. Shows the mentor-specific contribution history and summary views.
 "use client";
 
 import React, { SetStateAction, useEffect, useState } from "react";
-import BackHome from "@/components/back-home";
 import { useParams } from "next/navigation";
-import RecordsMentor from "@/components/records-mentor";
-import RenderContributionCard from "@/components/grid-contribution";
-import SwitchViewButton from "@/components/toggle-button";
-import RenderContributionTable from "@/components/table-contribution";
+
+import BackHome from "@/components/buttons/back";
+import SwitchViewButton from "@/components/buttons/toggle";
+import ContributionsGrid from "@/components/contributions/contributions-grid";
+import ContributionsTable from "@/components/contributions/contributions-table";
+import RecordsModal from "@/components/contributions/records-modal";
+import PageHeader from "@/components/layout/page-header";
+import PageShell from "@/components/layout/page-shell";
+import { ErrorPanel, LoadingPanel } from "@/components/layout/state-panel";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { getMockUser, getMockMentorTeam, isMockMode } from "@/lib/mock-db";
+
+const EMPTY_TITLE = "Nenhuma contribuição por enquanto!";
+const EMPTY_DESCRIPTION =
+  "Seu grupo ainda não arrecadou nenhuma doação. Quando o aluno líder adicionar ao Arkana, ela aparecerá aqui!";
 
 interface TeamData {
   IdTime: number;
@@ -28,6 +44,7 @@ export default function MentorVision() {
   const [loadingUser, setLoadingUser] = useState(false);
   const [errorUser, setErrorUser] = useState<string | null>(null);
 
+  // Resolves the mentor's team from the route param so the page can scope all later contribution queries correctly.
   useEffect(() => {
     if (!IdMentor) {
       console.warn("invalido", params);
@@ -37,10 +54,19 @@ export default function MentorVision() {
     const controller = new AbortController();
     let active = true;
 
+    // Fetches the single team supervised by the mentor and stores only the shape this screen needs.
     async function fetchMentorTeam() {
       try {
         setLoadingTeam(true);
         setErrorTeam(null);
+        if (isMockMode()) {
+          const mock =
+            getMockMentorTeam(2024001, IdMentor ?? 0) ||
+            getMockMentorTeam(2024002, IdMentor ?? 0);
+          if (!active) return;
+          setTeam(mock?.team ?? null);
+          return;
+        }
 
         const res = await fetch(`${backend_url}/api/mentor/${IdMentor}/team`, {
           cache: "no-store",
@@ -53,7 +79,7 @@ export default function MentorVision() {
         }
         const mentorData = await res.json();
         const oneTeam: TeamData | null = Array.isArray(mentorData)
-          ? mentorData[0] ?? null
+          ? (mentorData[0] ?? null)
           : (mentorData as TeamData | null);
 
         if (!active) return;
@@ -75,6 +101,7 @@ export default function MentorVision() {
     };
   }, [IdMentor]);
 
+  // Loads the participant profile only after the team lookup reveals which student leads that group.
   useEffect(() => {
     const ra = team?.RaUsuario;
     if (!backend_url) return;
@@ -86,12 +113,17 @@ export default function MentorVision() {
     const controller = new AbortController();
     let active = true;
 
+    // Fetches the user details used to render the class information above the contribution history.
     async function fetchUser() {
       try {
         setLoadingUser(true);
         setErrorUser(null);
+        if (isMockMode()) {
+          setUser(getMockUser(ra ?? 0));
+          return;
+        }
 
-        const res = await fetch(`${backend_url}/api/user/${raUsuario}`, {
+        const res = await fetch(`${backend_url}/api/user/${ra}`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -121,71 +153,90 @@ export default function MentorVision() {
       ? team.RaUsuario
       : undefined;
 
+  const openRecord = (contribution: any) => {
+    setSelectedContribution(contribution);
+    setIsOpen(true);
+  };
+
   return (
-    <div className="min-h-dvh w-full overflow-y-hidden overflow-x-hidden flex flex-col bg-[#f4f3f1]/60">
-      <div className="flex flex-col left-0 top-0">
-        <div className="absolute left-0 top-0">
-          <BackHome />
-        </div>
-        <header className="py-4 mt-6 relative flex justify-center items-center">
-          <h1 className="text-4xl font-semibold text-[#cc3983] text-center">
-            Histórico de contribuições
-          </h1>
-        </header>
+    <PageShell>
+      <div className="mb-4">
+        <BackHome />
       </div>
 
-      <div className="w-full flex justify-center pt-4 transition-all duration-300 ease-in-out">
-        <main className="w-full self-center max-w-[1300px] p-1.5 md:mt-0">
-          {selectedContribution && (
-            <RecordsMentor
-              data={selectedContribution}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
+      <PageHeader
+        title={
+          loadingTeam
+            ? "Carregando time…"
+            : team?.NomeTime || "Nenhum time encontrado"
+        }
+        description={
+          loadingUser
+            ? "Carregando turma…"
+            : `Turma ${user?.TurmaUsuario || "—"}. Contribuições do grupo que você acompanha.`
+        }
+        actions={
+          raUsuario !== undefined ? (
+            <SwitchViewButton
+              buttonSelected={buttonSelected}
+              setButtonSelected={(arg: SetStateAction<boolean>) =>
+                setButtonSelected(arg)
+              }
             />
-          )}
-          <div className="flex flex-col gap-2 mx-3 text-center">
-            <h3 className="text-2xl uppercase font-semibold text-primary">
-              {loadingTeam
-                ? "Carregando time…"
-                : team?.NomeTime || "Nenhum time encontrado"}
-            </h3>
+          ) : undefined
+        }
+      />
 
-            <h4 className="mb-3 text-xl text-primary text-center">
-              {loadingUser
-                ? "Carregando turma…"
-                : `Turma ${user?.TurmaUsuario || "—"}`}
-            </h4>
+      {selectedContribution && (
+        <RecordsModal
+          data={selectedContribution}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
 
-            <div className="self-end">
-              <SwitchViewButton
-                buttonSelected={buttonSelected}
-                setButtonSelected={(arg: SetStateAction<boolean>) =>
-                  setButtonSelected(arg)
-                }
-              />
-            </div>
-          </div>
-          <div className="mt-2">
-            {buttonSelected ? (
-              <RenderContributionTable
-                raUsuario={team?.RaUsuario ?? undefined}
-                onSelect={(contribution: any) => {
-                  setSelectedContribution(contribution);
-                  setIsOpen(true);
-                }}
-              />
-            ) : (
-              <RenderContributionCard
-                raUsuario={team?.RaUsuario ?? undefined}
-                onSelect={(contribution: any) => {
-                  setSelectedContribution(contribution);
-                  setIsOpen(true);
-                }}
-              />
-            )}
-          </div>
-        </main>
-      </div>
-    </div>
+      {(errorTeam || errorUser) && (
+        <ErrorPanel
+          title="Não foi possível carregar o time"
+          description={errorTeam ?? errorUser ?? undefined}
+        />
+      )}
+
+      {!errorTeam && loadingTeam && (
+        <LoadingPanel label="Carregando contribuições do time…" rows={3} />
+      )}
+
+      {/* Wait for the RA before querying. Previously this rendered immediately
+          and requested /api/contributions/undefined. */}
+      {!errorTeam && !loadingTeam && raUsuario === undefined && (
+        <Empty className="border border-dashed border-border">
+          <EmptyHeader>
+            <EmptyTitle>Nenhum time vinculado</EmptyTitle>
+            <EmptyDescription>
+              Você ainda não acompanha um grupo nesta edição. Assim que um time
+              informar seu email, o histórico aparecerá aqui.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      )}
+
+      {raUsuario !== undefined &&
+        (buttonSelected ? (
+          <ContributionsTable
+            scope={String(raUsuario)}
+            emptyTitle={EMPTY_TITLE}
+            emptyDescription={EMPTY_DESCRIPTION}
+            onSelect={openRecord}
+          />
+        ) : (
+          <ContributionsGrid
+            scope={String(raUsuario)}
+            variant="team"
+            emptyTitle={EMPTY_TITLE}
+            emptyDescription={EMPTY_DESCRIPTION}
+            onSelect={openRecord}
+          />
+        ))}
+    </PageShell>
   );
 }

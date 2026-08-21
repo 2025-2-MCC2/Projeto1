@@ -1,7 +1,8 @@
+// Modal used to inspect contribution records in more detail without leaving the current page.
 import placeholderComprovante from "@/assets/placeholderComprovante.jpg";
 import Modal from "../hooks/use-modal";
-import DeleteContribution from "@/components/delete-contribution";
-import formatBRL from "./formatBRL";
+import DeleteContribution from "@/components/delete-contribution-popup";
+import formatBRL from "../hooks/use-format-currency";
 
 interface ContributionData {
   RaUsuario: number;
@@ -18,7 +19,7 @@ interface ContributionData {
   DataContribuicao: string;
   alimentos?: {
     NomeAlimento: string;
-    Pontuacao: number ;
+    Pontuacao: number;
     Quantidade?: number;
   }[];
   PontuacaoAlimento?: number;
@@ -47,13 +48,13 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
 
   return (
     <Modal isActive={isOpen} onClose={toggleModal}>
-      <div className="overflow-y-scroll max-h-300  drop-shadow-2xl items-center relative bg-[#FFFDF5] rounded-2xl ">
-        <div className="flex max-w-[95vw] flex-col gap-5 z-10 px-10 py-8 w-90 text-left">
+      <div className="overflow-y-scroll max-h-300  drop-shadow-2xl items-center relative bg-white rounded-2xl ">
+        <div className="flex max-w-[95vw] flex-col gap-5 z-10 p-6 md:p-10 w-120 text-left">
           <div className="">
             <div>
               <h2 className="text-xl font-semibold">{data.Fonte}</h2>
               <div>
-                <p className="text-base text-gray-600 mt-3 mb-0">
+                <p className="text-base text-gray-600 mt-2 mb-0">
                   Data da Contribuição -{" "}
                   {new Date(data.DataContribuicao).toLocaleDateString()}{" "}
                 </p>
@@ -118,7 +119,13 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                         <p className="text-sm text-gray-600"> Pontuação</p>
                         {data.alimentos.map((a, i) => (
                           <li key={i} className="font-semibold">
-                            <p> {a.Pontuacao ? a.Pontuacao * data.Quantidade : 0} ponto(s) </p>
+                            <p>
+                              {" "}
+                              {a.Pontuacao
+                                ? a.Pontuacao * data.Quantidade
+                                : 0}{" "}
+                              ponto(s){" "}
+                            </p>
                           </li>
                         ))}
                       </div>
@@ -127,7 +134,7 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                     <p>Nenhum alimento registrado.</p>
                   ) : null}
 
-                  {data.comprovante?.Imagem ? (
+                  {data.comprovante?.Imagem && (
                     <div>
                       <p className="text-sm text-gray-600 mb-2">
                         Comprovante da doação
@@ -141,14 +148,6 @@ const RecordsModal: React.FC<RecordsModalProps> = ({
                         {" "}
                         Abrir comprovante
                       </a>
-                    </div>
-                  ) : (
-                    <div>
-                      <img
-                        src={placeholderComprovante.src}
-                        alt="Sem comprovantes anexados"
-                        className="rounded-md aspect-square max-h-[45px] object-contain border border-gray-200 mb-6"
-                      />
                     </div>
                   )}
                 </div>

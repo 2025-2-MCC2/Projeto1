@@ -1,10 +1,12 @@
+// Restricted administrator profile page. Centralizes admin-level account and dashboard information.
 "use client";
 
 import React, { SetStateAction, useEffect } from "react";
-import MenuMobileAdmin from "@/components/menu-mobile-admin";
-import MenuDesktopAdmin from "@/components/menu-desktop-admin";
+import MenuMobileAdmin from "@/components/administrator/menu-mobile";
+import MenuDesktopAdmin from "@/components/administrator/menu";
 import { useParams } from "next/navigation";
 import Arkana from "@/assets/Arkana.png";
+import { getMockMentor, isMockMode } from "@/lib/mock-db";
 
 export default function AdminProfile() {
   const params = useParams();
@@ -17,9 +19,16 @@ export default function AdminProfile() {
 
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+  // Loads the currently logged administrator email so the profile card reflects the active account.
   useEffect(() => {
+    // Fetches the admin record through the mentor endpoint because administrators share that backend model.
     const fetchAdminData = async () => {
       try {
+        if (isMockMode()) {
+          const data = getMockMentor(adminId);
+          setAdminLogado(data?.EmailMentor);
+          return;
+        }
         const response = await fetch(`${BACKEND_URL}/api/mentor/${adminId}`);
         if (!response.ok) throw new Error("Erro ao buscar dados do mentor");
         const data = await response.json();
@@ -33,6 +42,7 @@ export default function AdminProfile() {
     }
   }, [adminId]);
 
+  // Creates a second administrator account from this screen without leaving the current admin session.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newEmailMentor?.trim()) {
@@ -41,6 +51,10 @@ export default function AdminProfile() {
     }
 
     try {
+      if (isMockMode()) {
+        alert("Administrador cadastrado no ambiente de demonstração.");
+        return;
+      }
       const response = await fetch(`${BACKEND_URL}/api/createAdmin`, {
         method: "POST",
         headers: {
@@ -83,11 +97,7 @@ export default function AdminProfile() {
         </header>
       </div>
 
-      <div
-        className={`${
-          menuOpen ? "ml-[270px]" : ""
-        } w-full h-full flex justify-center md:items-center transition-all duration-300 ease-in-out`}
-      >
+      <div className="w-full h-full flex justify-center md:items-center transition-all duration-300 ease-in-out">
         <MenuDesktopAdmin
           menuOpen={menuOpen}
           setMenuOpen={(arg: SetStateAction<boolean>) => setMenuOpen(arg)}
@@ -96,7 +106,7 @@ export default function AdminProfile() {
         <MenuMobileAdmin />
 
         <section className="max-w-[90%] md:max-w-[1300px] md:mt-0 grid grid-cols-1 md:grid-cols-2  h-150 my-5 mb-10 gap-2">
-          <div className="flex flex-col gap-2 p-5 border border-gray-200 shadow-xl bg-white rounded-xl">
+          <div className="flex flex-col gap-2 p-5 border border-gray-200 shadow-md bg-white rounded-xl">
             <h1 className="text-3xl pt-8 text-primary mb-5 font-semibold">
               {" "}
               Perfil do Administrador
@@ -143,7 +153,7 @@ export default function AdminProfile() {
             </div>
           </div>
           <div
-            className="bg-primary rounded-xl border border-gray-200 shadow-xl p-10
+            className="bg-primary rounded-xl border border-gray-200 shadow-md p-10
                 flex flex-col items-center justify-center text-center gap-4 overflow-hidden min-h-[280px] md:min-h-[360px]"
           >
             <p className="text-white font-extrabold text-3xl md:text-4xl leading-tight break-words">
