@@ -25,7 +25,7 @@
 
   /* --- Surfaces ---------------------------------------------------------- */
   --background: #fffefb; /* warm cream — public, auth and marketing surfaces */
-  --surface: #f5f3ee; /* app ground — the authenticated task surfaces */
+  --surface: #fbfaf8; /* app ground — the authenticated task surfaces */
   --card: #ffffff;
   --card-foreground: #242424;
   --popover: #ffffff;
@@ -33,7 +33,7 @@
 
   /* --- Text -------------------------------------------------------------- */
   --foreground: #242424;
-  --muted: #f0ede6; /* warm muted fill: table headers, inert chips */
+  --muted: #f6f6f6; /* warm muted fill: table headers, inert chips */
   --muted-foreground: #57534c; /* 7.4:1 on --muted, 8.6:1 on --card */
 
   --accent: #f6ecee; /* hover wash derived from rose, not a gray */
@@ -68,13 +68,17 @@
   /* Tinted with the forest, not black: a neutral shadow turns cream grey. */
   --shadow-color: 37 41 32;
   --shadow-xs: 0 1px 2px 0 rgb(var(--shadow-color) / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(var(--shadow-color) / 0.07),
+  --shadow-sm:
+    0 1px 3px 0 rgb(var(--shadow-color) / 0.07),
     0 1px 2px -1px rgb(var(--shadow-color) / 0.07);
-  --shadow-md: 0 4px 10px -2px rgb(var(--shadow-color) / 0.09),
+  --shadow-md:
+    0 4px 10px -2px rgb(var(--shadow-color) / 0.09),
     0 2px 4px -2px rgb(var(--shadow-color) / 0.06);
-  --shadow-lg: 0 12px 24px -6px rgb(var(--shadow-color) / 0.12),
+  --shadow-lg:
+    0 12px 24px -6px rgb(var(--shadow-color) / 0.12),
     0 4px 8px -4px rgb(var(--shadow-color) / 0.07);
-  --shadow-xl: 0 24px 48px -12px rgb(var(--shadow-color) / 0.16),
+  --shadow-xl:
+    0 24px 48px -12px rgb(var(--shadow-color) / 0.16),
     0 8px 16px -8px rgb(var(--shadow-color) / 0.08);
 
   /* --- Motion ------------------------------------------------------------ */
@@ -177,7 +181,7 @@
      that don't: links, and any bare interactive element. */
   a:focus-visible,
   [tabindex]:not([data-slot]):focus-visible {
-    @apply rounded-sm outline-2 outline-offset-2 outline-ring;
+    @apply rounded-md outline-2 outline-offset-2 outline-ring;
   }
 
   ::selection {

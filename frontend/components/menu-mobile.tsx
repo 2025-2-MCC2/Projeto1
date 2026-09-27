@@ -129,7 +129,7 @@ export default function MenuMobile() {
       `}</style>
 
       <div className="mx-auto w-xs px-4 sm:px-6 rounded-2xl">
-        <div className="flex items-center justify-center gap-8 sm:gap-12 py-2 mb-6 bg-primary rounded-xl">
+        <div className="flex items-center justify-center gap-8 sm:gap-12 py-2 mb-6 bg-primary rounded-md">
           <Link
             href={homeHref}
             aria-label="Início"

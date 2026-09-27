@@ -22,7 +22,7 @@ export default function BottomNav({ role, id }: BottomNavProps) {
       aria-label="Navegação principal"
       className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] lg:hidden"
     >
-      <ul className="mx-auto flex max-w-md items-stretch gap-1 rounded-xl bg-primary p-1.5 shadow-lg">
+      <ul className="mx-auto flex max-w-md items-stretch gap-1 rounded-md bg-primary p-1.5 shadow-lg">
         {items.map(({ href, shortLabel, icon: Icon }) => {
           const active = isNavItemActive(pathname, href);
 

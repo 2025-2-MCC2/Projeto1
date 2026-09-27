@@ -41,7 +41,7 @@ export function LoadingPanel({
     >
       <span className="sr-only">{label}</span>
       <Skeleton className="h-9 w-56" />
-      <div className="space-y-3 rounded-lg border border-border bg-card p-4 shadow-sm">
+      <div className="space-y-3 rounded-md border border-border bg-card p-4 shadow-sm">
         {Array.from({ length: rows }, (_, index) => (
           <Skeleton key={index} className="h-12 w-full" />
         ))}
