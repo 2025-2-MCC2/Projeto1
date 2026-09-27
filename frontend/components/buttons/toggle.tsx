@@ -39,7 +39,7 @@ export default function SwitchViewButton({
             aria-pressed={active}
             title={label}
             className={cn(
-              "inline-flex h-8 items-center gap-1.5 rounded-sm px-2.5 text-sm font-medium",
+              "inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium",
               "transition-colors duration-[--duration-base] ease-[--ease-out]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               active

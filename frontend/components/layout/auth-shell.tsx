@@ -31,7 +31,7 @@ export default function AuthShell({
       <div className="flex min-h-[calc(100dvh-5rem)] items-center justify-center px-4 py-8 sm:px-6">
         <div
           className={cn(
-            "grid w-full max-w-4xl overflow-hidden rounded-xl border border-border bg-card shadow-md md:grid-cols-2",
+            "grid w-full max-w-4xl overflow-hidden rounded-md border border-border bg-card shadow-md md:grid-cols-2",
             className,
           )}
         >

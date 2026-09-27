@@ -21,7 +21,7 @@ const Hero = () => {
       />
 
       <div className="pointer-events-none flex h-full select-none flex-col items-center justify-center gap-2 px-6 text-center">
-        <h1 className="font-display text-4xl leading-[1.05] text-primary-foreground md:text-7xl">
+        <h1 className="font-display text-4xl text-primary-foreground md:text-7xl">
           LIDERANÇAS
           <br />
           EMPÁTICAS

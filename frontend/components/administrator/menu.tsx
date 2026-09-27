@@ -43,19 +43,19 @@ export default function MenuDesktopAdmin({
       </button>
       <nav>
         <Link href="/">
-          <button className="p-2 my-2 rounded-lg bg-gray-50 hover:bg-gray-150 border border-gray-200 shadow-md transition-colors duration-300 cursor-pointer text-base w-59">
+          <button className="p-2 my-2 rounded-md bg-gray-50 hover:bg-gray-150 border border-gray-200 shadow-md transition-colors duration-300 cursor-pointer text-base w-59">
             Voltar ao Dashboard
           </button>
         </Link>
 
         <Link href={`/admin/${IdMentor}/admin-profile`}>
-          <button className="p-2 my-2 rounded-lg bg-gray-50 hover:bg-gray-150 border border-gray-200 shadow-md transition-colors duration-300 cursor-pointer text-base w-59">
+          <button className="p-2 my-2 rounded-md bg-gray-50 hover:bg-gray-150 border border-gray-200 shadow-md transition-colors duration-300 cursor-pointer text-base w-59">
             Meu perfil
           </button>
         </Link>
 
         <Link href={`/admin/${IdMentor}/admin-history`}>
-          <button className="p-2 my-2 rounded-lg bg-gray-50 hover:bg-gray-150 border border-gray-200 shadow-md transition-colors duration-300 cursor-pointer text-base w-59">
+          <button className="p-2 my-2 rounded-md bg-gray-50 hover:bg-gray-150 border border-gray-200 shadow-md transition-colors duration-300 cursor-pointer text-base w-59">
             Histórico de contribuições
           </button>
         </Link>

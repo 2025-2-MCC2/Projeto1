@@ -8,7 +8,7 @@ interface Properties {
 export default function CustomInput({ placeholder, type, name }: Properties) {
   return (
     <input
-      className="block w-full bg-[white] border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-1.5 text-base focus:outline-none"
+      className="block w-full bg-[white] border border-[#b4b4b4] rounded-md text-black placeholder-gray-400 px-3 py-1.5 text-base focus:outline-none"
       placeholder={placeholder}
       type={type}
       name={name}

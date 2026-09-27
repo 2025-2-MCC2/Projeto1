@@ -126,8 +126,8 @@ export default function AdminProfile() {
             </CardHeader>
             <CardContent>
               <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-                O novo administrador terá os mesmos acessos que você, incluindo o
-                histórico de contribuições de todos os grupos.
+                O novo administrador terá os mesmos acessos que você, incluindo
+                o histórico de contribuições de todos os grupos.
               </p>
 
               <form onSubmit={handleSubmit} className="max-w-md space-y-4">
@@ -160,7 +160,7 @@ export default function AdminProfile() {
           </Card>
         </div>
 
-        <aside className="flex flex-col items-center justify-center gap-6 rounded-lg bg-primary p-8 text-center shadow-sm">
+        <aside className="flex flex-col items-center justify-center gap-6 rounded-md bg-primary p-8 text-center shadow-sm">
           <p className="font-display text-3xl leading-tight text-primary-foreground">
             Arkana
             <br />+ Lideranças Empáticas

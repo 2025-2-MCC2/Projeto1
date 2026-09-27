@@ -303,16 +303,10 @@ export default function Donations() {
   return (
     <PageShell nav={{ role: "user", id: String(RaUsuario) }}>
       <PageHeader
-        title={
-          team?.NomeTime
-            ? `Nova contribuição — ${team.NomeTime}`
-            : "Nova contribuição"
-        }
+        title="Nova contribuição"
         description="Cadastre uma arrecadação financeira ou de alimentos e anexe o comprovante."
       />
 
-      {/* Both forms sit side by side from lg up; below that they share one
-          column and this control picks which is showing. */}
       <div
         role="group"
         aria-label="Tipo de contribuição"
@@ -330,7 +324,7 @@ export default function Donations() {
             onClick={() => setActiveTab(value)}
             aria-pressed={activeTab === value}
             className={cn(
-              "h-10 rounded-sm text-sm font-medium",
+              "h-10 rounded-md text-sm font-medium",
               "transition-colors duration-[--duration-base] ease-[--ease-out]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               activeTab === value
@@ -347,7 +341,7 @@ export default function Donations() {
         <section
           className={cn(
             activeTab === "finance" ? "flex" : "hidden",
-            "flex-col rounded-lg border border-border bg-card p-6 shadow-sm lg:flex",
+            "flex-col rounded-md border border-border bg-card p-6 shadow-sm lg:flex",
           )}
         >
           <h2 className="mb-6 text-lg font-semibold text-primary">
@@ -355,31 +349,29 @@ export default function Donations() {
           </h2>
 
           <DonationsForm
-                fonte={financialData.fonte}
-                setFonte={(v) =>
-                  setFinancialData({ ...financialData, fonte: v })
-                }
-                meta={financialData.meta}
-                setMeta={(v) =>
-                  setFinancialData({ ...financialData, meta: Number(v) })
-                }
-                gastos={financialData.gastos}
-                setGastos={(v) =>
-                  setFinancialData({ ...financialData, gastos: Number(v) })
-                }
-                quantidade={financialData.quantidade}
-                setQuantidade={(v) =>
-                  setFinancialData({ ...financialData, quantidade: Number(v) })
-                }
-                comprovante={financialData.comprovante}
-                setComprovante={(v) =>
-                  setFinancialData({ ...financialData, comprovante: v })
-                }
-                tipoDoacao={"Financeira"}
-                setTipoDoacao={() => {}}
-                RaUsuario={RaUsuario ?? 0}
-                setRaUsuario={setRaUsuario}
-              />
+            fonte={financialData.fonte}
+            setFonte={(v) => setFinancialData({ ...financialData, fonte: v })}
+            meta={financialData.meta}
+            setMeta={(v) =>
+              setFinancialData({ ...financialData, meta: Number(v) })
+            }
+            gastos={financialData.gastos}
+            setGastos={(v) =>
+              setFinancialData({ ...financialData, gastos: Number(v) })
+            }
+            quantidade={financialData.quantidade}
+            setQuantidade={(v) =>
+              setFinancialData({ ...financialData, quantidade: Number(v) })
+            }
+            comprovante={financialData.comprovante}
+            setComprovante={(v) =>
+              setFinancialData({ ...financialData, comprovante: v })
+            }
+            tipoDoacao={"Financeira"}
+            setTipoDoacao={() => {}}
+            RaUsuario={RaUsuario ?? 0}
+            setRaUsuario={setRaUsuario}
+          />
 
           <div className="mt-8 flex justify-end">
             <Button
@@ -395,7 +387,7 @@ export default function Donations() {
         <section
           className={cn(
             activeTab === "food" ? "flex" : "hidden",
-            "flex-col rounded-lg border border-border bg-card p-6 shadow-sm lg:flex",
+            "flex-col rounded-md border border-border bg-card p-6 shadow-sm lg:flex",
           )}
         >
           <h2 className="mb-6 text-lg font-semibold text-primary">
@@ -404,33 +396,31 @@ export default function Donations() {
 
           <div className="min-h-0 flex-1">
             <FoodDonations
-                  fonte={foodData.fonte}
-                  setFonte={(v) => setFoodData({ ...foodData, fonte: v })}
-                  meta={foodData.meta}
-                  setMeta={(v) => setFoodData({ ...foodData, meta: Number(v) })}
-                  gastos={foodData.gastos}
-                  setGastos={(v) =>
-                    setFoodData({ ...foodData, gastos: Number(v) })
-                  }
-                  quantidade={foodData.quantidade}
-                  setQuantidade={(v) =>
-                    setFoodData({ ...foodData, quantidade: Number(v) })
-                  }
-                  pesoUnidade={foodData.pesoUnidade}
-                  setPesoUnidade={(v) =>
-                    setFoodData({ ...foodData, pesoUnidade: Number(v) })
-                  }
-                  idAlimento={foodData.idAlimento}
-                  setIdAlimento={(v) =>
-                    setFoodData({ ...foodData, idAlimento: Number(v) })
-                  }
-                  comprovante={foodData.comprovante}
-                  setComprovante={(v) =>
-                    setFoodData({ ...foodData, comprovante: v })
-                  }
-                  onTotaisChange={(totais) => setTotaisPontos(totais.pontos)}
-                />
-              </div>
+              fonte={foodData.fonte}
+              setFonte={(v) => setFoodData({ ...foodData, fonte: v })}
+              meta={foodData.meta}
+              setMeta={(v) => setFoodData({ ...foodData, meta: Number(v) })}
+              gastos={foodData.gastos}
+              setGastos={(v) => setFoodData({ ...foodData, gastos: Number(v) })}
+              quantidade={foodData.quantidade}
+              setQuantidade={(v) =>
+                setFoodData({ ...foodData, quantidade: Number(v) })
+              }
+              pesoUnidade={foodData.pesoUnidade}
+              setPesoUnidade={(v) =>
+                setFoodData({ ...foodData, pesoUnidade: Number(v) })
+              }
+              idAlimento={foodData.idAlimento}
+              setIdAlimento={(v) =>
+                setFoodData({ ...foodData, idAlimento: Number(v) })
+              }
+              comprovante={foodData.comprovante}
+              setComprovante={(v) =>
+                setFoodData({ ...foodData, comprovante: v })
+              }
+              onTotaisChange={(totais) => setTotaisPontos(totais.pontos)}
+            />
+          </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-end gap-3">
             <p className="rounded-md bg-terciary px-3 py-2 text-sm text-terciary-foreground">

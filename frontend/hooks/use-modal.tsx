@@ -103,7 +103,7 @@ const Modal: React.FC<React.PropsWithChildren<Properties>> = ({
         zIndex: 9999,
       }}
     >
-      <div className="flex relative rounded-lg justify-center items-center w-full h-full sm:h-auto sm:min-h-full p-5">
+      <div className="flex relative rounded-md justify-center items-center w-full h-full sm:h-auto sm:min-h-full p-5">
         <div className={classNames.background()} />
         {!isActiveControl && isLoading && (
           <div className="flex absolute top-0 left-0 z-10 justify-center items-center w-full h-full">
