@@ -202,7 +202,7 @@ export default function RenderContributionCard({
 
   if (contributions.length === 0) {
     return (
-      <div className="col-start-2 border rounded-xl border-gray-200 shadow-md w-auto max-w-100 mx-auto">
+      <div className="col-start-2 border rounded-md border-gray-200 shadow-md w-auto max-w-100 mx-auto">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -232,7 +232,7 @@ export default function RenderContributionCard({
         contributions.map((c, index) => (
           <div
             key={`contribuicao-${c.uuid}-${index}`}
-            className="p-3 rounded-xl hover:bg-secondary/5 hover:text-secondary bg-white border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
+            className="p-3 rounded-md hover:bg-secondary/5 hover:text-secondary bg-white border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
             onClick={() => onSelect?.(c)}
           >
             <p className="font-semibold text-lg ">{c.Fonte}</p>

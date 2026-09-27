@@ -185,7 +185,7 @@ export default function RenderContributionCardAdmin({
 
   if (contributions.length === 0) {
     return (
-      <div className="col-start-2 border rounded-xl border-gray-200 shadow-md w-auto max-w-100 mx-auto">
+      <div className="col-start-2 border rounded-md border-gray-200 shadow-md w-auto max-w-100 mx-auto">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -211,11 +211,11 @@ export default function RenderContributionCardAdmin({
       )}
 
       {!loading && isPublicReport ? (
-        <div className="md:mx-4 mb-15 grid grid-cols-1 md:grid-cols-3 gap-4.5 rounded-sm">
+        <div className="md:mx-4 mb-15 grid grid-cols-1 md:grid-cols-3 gap-4.5 rounded-md">
           {contributions.map((c) => (
             <div
               key={c.uuid}
-              className="p-3 rounded-xl hover:bg-secondary/5 hover:text-secondary bg-white border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
+              className="p-3 rounded-md hover:bg-secondary/5 hover:text-secondary bg-white border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
               onClick={() => onSelect?.(c)}
             >
               <p className="font-semibold text-lg ">{c.NomeTime}</p>
@@ -238,11 +238,11 @@ export default function RenderContributionCardAdmin({
           ))}
         </div>
       ) : (
-        <div className="mb-15 grid grid-cols-1 md:grid-cols-3 gap-4 rounded-sm">
+        <div className="mb-15 grid grid-cols-1 md:grid-cols-3 gap-4 rounded-md">
           {contributions.map((c) => (
             <div
               key={c.uuid}
-              className="p-3 rounded-xl hover:bg-secondary/5 hover:text-secondary bg-white border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
+              className="p-3 rounded-md hover:bg-secondary/5 hover:text-secondary bg-white border border-gray-200 shadow-md transition-shadow duration-300 cursor-pointer"
               onClick={() => onSelect?.(c)}
             >
               <p className="font-semibold text-lg ">{c.NomeTime}</p>

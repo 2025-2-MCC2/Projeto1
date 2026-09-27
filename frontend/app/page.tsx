@@ -177,7 +177,7 @@ function ActionLink({
   return (
     <Link
       href={href}
-      className="flex h-20 flex-col items-center justify-center gap-2 rounded-lg border border-secondary/40 bg-terciary/60 text-terciary-foreground transition-colors duration-[--duration-base] ease-[--ease-out] hover:bg-terciary"
+      className="flex h-20 flex-col items-center justify-center gap-2 rounded-md border border-secondary/40 bg-terciary/60 text-terciary-foreground transition-colors duration-[--duration-base] ease-[--ease-out] hover:bg-terciary"
     >
       <Icon className="size-5" strokeWidth={1.75} aria-hidden />
       <span className="text-sm font-medium">{label}</span>

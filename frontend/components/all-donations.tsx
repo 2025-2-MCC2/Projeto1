@@ -46,7 +46,7 @@ export default function AllDonations({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <input
-        className="w-[80%] bg-white border border-[#b4b4b4] rounded-lg text-black placeholder-gray-400 px-3 py-1.5 text-base focus:outline-none"
+        className="w-[80%] bg-white border border-[#b4b4b4] rounded-md text-black placeholder-gray-400 px-3 py-1.5 text-base focus:outline-none"
         type="text"
         placeholder="Nome do evento"
         value={nomeEvento}

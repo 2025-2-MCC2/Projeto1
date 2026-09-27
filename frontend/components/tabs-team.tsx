@@ -97,7 +97,7 @@ export default function TeamTabs({ raUsuario }: Props) {
 
       <div className="flex min-h-screen items-center justify-center p-6">
         <div className="flex w-full max-w-3xl flex-col md:flex-row">
-          <section className="m-1 flex h-120 max-w-screen flex-col items-center justify-center rounded-lg bg-primary p-6 text-primary-foreground md:w-1/2">
+          <section className="m-1 flex h-120 max-w-screen flex-col items-center justify-center rounded-md bg-primary p-6 text-primary-foreground md:w-1/2">
             <h1 className="mb-1 flex text-center text-2xl font-bold">
               Cadastro de
               <br />
@@ -110,8 +110,11 @@ export default function TeamTabs({ raUsuario }: Props) {
             />
           </section>
 
-          <section className="m-1 flex h-120 max-w-screen flex-col items-start justify-start overflow-y-auto rounded-lg border border-border bg-card py-5 md:w-100">
-            <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3 px-4">
+          <section className="m-1 flex h-120 max-w-screen flex-col items-start justify-start overflow-y-auto rounded-md border border-border bg-card py-5 md:w-100">
+            <form
+              onSubmit={handleSubmit}
+              className="flex w-full flex-col gap-3 px-4"
+            >
               <Field
                 label="Nome fantasia do grupo"
                 name="NomeTime"
@@ -137,7 +140,10 @@ export default function TeamTabs({ raUsuario }: Props) {
               ))}
 
               {error && (
-                <p role="alert" className="text-sm font-medium text-destructive">
+                <p
+                  role="alert"
+                  className="text-sm font-medium text-destructive"
+                >
                   {error}
                 </p>
               )}

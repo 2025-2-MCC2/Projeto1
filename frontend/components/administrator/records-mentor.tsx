@@ -45,7 +45,7 @@ const RecordsMentor: React.FC<RecordsMentorProps> = ({
   return (
     <Modal isActive={isOpen} onClose={toggleModal}>
       <div className="overflow-y-scroll max-h-300  drop-shadow-2xl items-center relative bg-white rounded-2xl ">
-        <div className="flex max-w-[95vw] flex-col gap-5 z-10 p-6 md:p-10 w-120 text-left">
+        <div className="flex max-w-[95vw] flex-col gap-5 z-10 p-6 md:p-8 w-120 text-left">
           <div className="">
             <div>
               <h2 className="text-xl font-semibold">{data.Fonte}</h2>

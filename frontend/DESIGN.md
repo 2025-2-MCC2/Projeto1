@@ -12,13 +12,13 @@ The personality is unchanged from the original build: **forest green and rose on
 
 Before this pass, every page rebuilt its own frame. The audit found the cause, and it was not laziness:
 
-| Root cause | Effect |
-|---|---|
+| Root cause                                                                                                                                                                                                         | Effect                                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--primary-foreground`, `--secondary-foreground`, `--card-foreground`, `--accent-foreground`, `--destructive-foreground`, `--border`, `--input`, `--ring` were referenced in `@theme` but never defined in `:root` | Every stock shadcn control shipped broken. `text-primary-foreground` resolved to nothing, `border-border` was invisible, `focus-visible:ring-ring/50` produced **no focus ring anywhere**. Developers reasonably reached for `border-gray-200`, `#b4b4b4`, `#f4f3f1` instead. |
-| `body { flex items-center justify-center }` | Centered every page, so each page fought back with its own `w-screen` / `min-h-dvh` / `overflow-x-clip` combination. |
-| `@theme` used `--rounded-*` keys; Tailwind v4 reads `--radius-*` | `--radius: 1rem` never applied. All 76 `rounded-*` usages silently rendered at Tailwind defaults. |
-| `@import` statements sat at the **bottom** of `globals.css` (invalid CSS — `@import` must precede all rules) | `fonts.css` and `new-contribution.css` **never loaded**. Changa One was never applied, and the desktop drawer's `.side-menu` styling never existed, so the "drawer" rendered inline in the page. |
-| `--button-hover` declared twice with different values | Neither was reliable. |
+| `body { flex items-center justify-center }`                                                                                                                                                                        | Centered every page, so each page fought back with its own `w-screen` / `min-h-dvh` / `overflow-x-clip` combination.                                                                                                                                                          |
+| `@theme` used `--rounded-*` keys; Tailwind v4 reads `--radius-*`                                                                                                                                                   | `--radius: 1rem` never applied. All 76 `rounded-*` usages silently rendered at Tailwind defaults.                                                                                                                                                                             |
+| `@import` statements sat at the **bottom** of `globals.css` (invalid CSS — `@import` must precede all rules)                                                                                                       | `fonts.css` and `new-contribution.css` **never loaded**. Changa One was never applied, and the desktop drawer's `.side-menu` styling never existed, so the "drawer" rendered inline in the page.                                                                              |
+| `--button-hover` declared twice with different values                                                                                                                                                              | Neither was reliable.                                                                                                                                                                                                                                                         |
 
 **The rule that follows from this:** if a token is referenced, it is defined. A half-defined semantic layer is worse than none, because it silently pushes every author into hard-coding.
 
@@ -30,15 +30,15 @@ All tokens live in `styles/globals.css` under `:root` and are exposed to Tailwin
 
 ### Brand
 
-| Token | Value | Use |
-|---|---|---|
-| `--primary` | `#254128` forest | The brand anchor. Primary actions, active nav, page titles. |
-| `--primary-hover` | `#325836` | Hover on forest fills — lightens, because the fill is dark. |
-| `--primary-foreground` | `#fffefb` | 11.1:1 on forest. |
-| `--secondary` | `#cd6184` rose | Brand accent: large text, chart fills, borders, decoration. |
-| `--secondary-strong` | `#b85070` | **AA-safe rose.** Fills under white text, and any rose text below 18px. |
-| `--secondary-hover` | `#a74662` | Hover on rose fills. |
-| `--terciary` | `#fad8db` blush | Soft fills, badges, supporting actions. |
+| Token                  | Value            | Use                                                                     |
+| ---------------------- | ---------------- | ----------------------------------------------------------------------- |
+| `--primary`            | `#254128` forest | The brand anchor. Primary actions, active nav, page titles.             |
+| `--primary-hover`      | `#325836`        | Hover on forest fills — lightens, because the fill is dark.             |
+| `--primary-foreground` | `#fffefb`        | 11.1:1 on forest.                                                       |
+| `--secondary`          | `#cd6184` rose   | Brand accent: large text, chart fills, borders, decoration.             |
+| `--secondary-strong`   | `#b85070`        | **AA-safe rose.** Fills under white text, and any rose text below 18px. |
+| `--secondary-hover`    | `#a74662`        | Hover on rose fills.                                                    |
+| `--terciary`           | `#fad8db` blush  | Soft fills, badges, supporting actions.                                 |
 
 > **The two-pink rule.** `--secondary` (#cd6184) reaches only **3.7:1** against white and cream. It passes for large text (≥3:1) and fails for body text and button labels. `--secondary-strong` (#b85070) reaches **4.75:1** on both. Brand rose stays the brand rose; anything load-bearing uses the strong variant. The original `bg-secondary hover:bg-secondary/80` submit buttons were this bug.
 
@@ -46,13 +46,13 @@ All tokens live in `styles/globals.css` under `:root` and are exposed to Tailwin
 
 Two neutral layers, per Operate convention — a task ground distinct from the content surface.
 
-| Token | Value | Use |
-|---|---|---|
-| `--background` | `#fffefb` cream | Public, marketing and auth surfaces. |
-| `--surface` | `#f5f3ee` | The authenticated app ground. Replaces the `bg-[#f4f3f1]/60` pasted into three pages. |
-| `--card` | `#ffffff` | Cards, panels, popovers. |
-| `--muted` | `#f0ede6` | Warm muted fill: table headers, inert chips, inset form blocks. |
-| `--accent` | `#f6ecee` | Hover wash. Derived from rose — **not** a gray. |
+| Token          | Value           | Use                                                                                   |
+| -------------- | --------------- | ------------------------------------------------------------------------------------- |
+| `--background` | `#fffefb` cream | Public, marketing and auth surfaces.                                                  |
+| `--surface`    | `#fbfaf8`       | The authenticated app ground. Replaces the `bg-[#f4f3f1]/60` pasted into three pages. |
+| `--card`       | `#ffffff`       | Cards, panels, popovers.                                                              |
+| `--muted`      | `#f6f6f6`       | Warm muted fill: table headers, inert chips, inset form blocks.                       |
+| `--accent`     | `#f6ecee`       | Hover wash. Derived from rose — **not** a gray.                                       |
 
 ### Text, lines, feedback
 
@@ -74,15 +74,15 @@ Restrained is the floor. Accent color marks primary actions, current selection a
 
 Semantic roles:
 
-| Role | Treatment | Owner |
-|---|---|---|
-| Page title | `text-2xl font-semibold uppercase tracking-wide text-primary` | `PageHeader` — uppercase gets positive tracking, or it stops being readable |
-| Page description | `text-sm text-muted-foreground`, `max-w-prose` | `PageHeader` |
-| Card title | `font-semibold leading-none` | `CardTitle` |
-| Section heading | `text-lg font-semibold text-primary` | inline |
-| Field label | `text-sm font-medium` | `Field` / `Label` |
-| Body | `text-sm` | inline |
-| Hint / meta | `text-xs text-muted-foreground` | `Field` |
+| Role             | Treatment                                                     | Owner                                                                       |
+| ---------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Page title       | `text-2xl font-semibold uppercase tracking-wide text-primary` | `PageHeader` — uppercase gets positive tracking, or it stops being readable |
+| Page description | `text-sm text-muted-foreground`, `max-w-prose`                | `PageHeader`                                                                |
+| Card title       | `font-semibold leading-none`                                  | `CardTitle`                                                                 |
+| Section heading  | `text-lg font-semibold text-primary`                          | inline                                                                      |
+| Field label      | `text-sm font-medium`                                         | `Field` / `Label`                                                           |
+| Body             | `text-sm`                                                     | inline                                                                      |
+| Hint / meta      | `text-xs text-muted-foreground`                               | `Field`                                                                     |
 
 Prose measure stays 65–75ch (`max-w-prose`). Tables may run denser. Numeric columns get `tabular-nums`.
 
@@ -92,7 +92,7 @@ Prose measure stays 65–75ch (`max-w-prose`). Tables may run denser. Numeric co
 
 **Radius** — `--radius: 0.75rem` is the base, and the scale is real rather than four values 2px apart:
 
-`rounded-sm` 6px badges/segments · `rounded-md` 8px controls, inputs, buttons · `rounded-lg` 12px cards and panels · `rounded-xl` 16px modals and large panels · `rounded-2xl` 24px feature panels.
+`rounded-md` 6px badges/segments · `rounded-md` 8px controls, inputs, buttons · `rounded-md` 12px cards and panels · `rounded-md` 16px modals and large panels · `rounded-2xl` 24px feature panels.
 
 No `rounded-[Npx]`. The pill radii (`rounded-[40px]`, `rounded-[30px]`, `rounded-[10px]`) are gone.
 
@@ -118,13 +118,13 @@ Spacing uses Tailwind's 4px scale. The audit found this was already consistent �
 
 ### The frame
 
-| Component | Responsibility |
-|---|---|
-| `layout/page-shell.tsx` | Ground color, navigation, content measure, gutters, bottom-nav clearance. `nav` prop opts a surface into authenticated navigation; `ground` picks cream or app surface; `bleed` opts out of the measure for the hero. |
-| `layout/page-header.tsx` | The one page title treatment, with optional description and actions. |
-| `layout/auth-shell.tsx` | The split brand/form panel shared by login and sign-up. |
-| `layout/info-list.tsx` | `InfoList` / `InfoRow` for read-only labelled values. |
-| `layout/state-panel.tsx` | `LoadingPanel` (skeletons) and `ErrorPanel`. |
+| Component                | Responsibility                                                                                                                                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `layout/page-shell.tsx`  | Ground color, navigation, content measure, gutters, bottom-nav clearance. `nav` prop opts a surface into authenticated navigation; `ground` picks cream or app surface; `bleed` opts out of the measure for the hero. |
+| `layout/page-header.tsx` | The one page title treatment, with optional description and actions.                                                                                                                                                  |
+| `layout/auth-shell.tsx`  | The split brand/form panel shared by login and sign-up.                                                                                                                                                               |
+| `layout/info-list.tsx`   | `InfoList` / `InfoRow` for read-only labelled values.                                                                                                                                                                 |
+| `layout/state-panel.tsx` | `LoadingPanel` (skeletons) and `ErrorPanel`.                                                                                                                                                                          |
 
 **No page declares its own background, max-width or horizontal padding.** That divergence is what made each page feel like its own product.
 
@@ -148,7 +148,7 @@ Every interactive component ships default, hover, focus, active, disabled and lo
 
 ### Feedback
 
-`Toaster` is mounted once in `app/layout.tsx`. `window.alert()` is not a feedback mechanism and no longer appears in the product. Errors name the problem *and* the recovery, in Portuguese; raw error objects go to `console.error`, never to the user.
+`Toaster` is mounted once in `app/layout.tsx`. `window.alert()` is not a feedback mechanism and no longer appears in the product. Errors name the problem _and_ the recovery, in Portuguese; raw error objects go to `console.error`, never to the user.
 
 Loading uses **skeletons that hold the incoming layout**, not a spinner centered in empty space. Empty states teach the interface rather than reporting absence.
 

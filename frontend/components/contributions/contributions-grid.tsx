@@ -29,7 +29,7 @@ interface ContributionsGridProps {
 // `text-secondary` would be small rose text at 3.7:1, so the hover tint uses
 // the AA-safe rose. See DESIGN.md, "The two-pink rule".
 const cardClass = [
-  "w-full rounded-lg border border-border bg-card p-3 text-left shadow-sm",
+  "w-full rounded-md border border-border bg-card p-3 text-left shadow-sm",
   "transition-colors duration-[--duration-base] ease-[--ease-out]",
   "hover:bg-secondary/5 hover:text-secondary-strong hover:shadow-md",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
@@ -62,7 +62,7 @@ export default function ContributionsGrid({
 
   if (contributions.length === 0) {
     return (
-      <div className="mx-auto w-full max-w-md rounded-lg border border-border bg-card shadow-sm">
+      <div className="mx-auto w-full max-w-md rounded-md border border-border bg-card shadow-sm">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">

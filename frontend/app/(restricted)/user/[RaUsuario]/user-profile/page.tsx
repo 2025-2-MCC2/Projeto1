@@ -103,7 +103,7 @@ export default function UserProfile() {
         description={`Turma ${user?.TurmaUsuario ?? "—"}. Estes são os dados do seu grupo nesta edição da campanha.`}
       />
 
-      <Card className="max-w-3xl">
+      <Card>
         <CardHeader>
           <CardTitle>Informações do time</CardTitle>
         </CardHeader>

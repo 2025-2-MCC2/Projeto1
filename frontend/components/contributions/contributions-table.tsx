@@ -59,7 +59,7 @@ export default function ContributionsTable({
 
   if (!contributions.length) {
     return (
-      <div className="mx-auto w-full max-w-md rounded-lg border border-border bg-card shadow-sm">
+      <div className="mx-auto w-full max-w-md rounded-md border border-border bg-card shadow-sm">
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
